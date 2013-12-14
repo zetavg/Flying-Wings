@@ -1,0 +1,255 @@
+fileFormatVersion: 2
+guid: 6f849feaca7504580a1cae7afb648a82
+ModelImporter:
+  serializedVersion: 15
+  fileIDToRecycleName:
+    100000: Bip002
+    100002: Bip002 Footsteps
+    100004: Bip002 Head
+    100006: Bip002 HeadNub
+    100008: Bip002 L Calf
+    100010: Bip002 L Clavicle
+    100012: Bip002 L Finger0
+    100014: Bip002 L Finger0Nub
+    100016: Bip002 L Foot
+    100018: Bip002 L Forearm
+    100020: Bip002 L Hand
+    100022: Bip002 L Thigh
+    100024: Bip002 L Toe0
+    100026: Bip002 L Toe0Nub
+    100028: Bip002 L UpperArm
+    100030: Bip002 Neck
+    100032: Bip002 Pelvis
+    100034: Bip002 R Calf
+    100036: Bip002 R Clavicle
+    100038: Bip002 R Finger0
+    100040: Bip002 R Finger0Nub
+    100042: Bip002 R Foot
+    100044: Bip002 R Forearm
+    100046: Bip002 R Hand
+    100048: Bip002 R Thigh
+    100050: Bip002 R Toe0
+    100052: Bip002 R Toe0Nub
+    100054: Bip002 R UpperArm
+    100056: Bip002 Spine
+    100058: Bip002 Spine1
+    100060: Box001
+    100062: //RootNode
+    100064: titan10
+    100066: titan10biped
+    100068: titan10biped Footsteps
+    100070: titan10biped Head
+    100072: titan10biped HeadNub
+    100074: titan10biped L Calf
+    100076: titan10biped L Clavicle
+    100078: titan10biped L Finger0
+    100080: titan10biped L Finger0Nub
+    100082: titan10biped L Foot
+    100084: titan10biped L Forearm
+    100086: titan10biped L Hand
+    100088: titan10biped L Thigh
+    100090: titan10biped L Toe0
+    100092: titan10biped L Toe0Nub
+    100094: titan10biped L UpperArm
+    100096: titan10biped Neck
+    100098: titan10biped Pelvis
+    100100: titan10biped R Calf
+    100102: titan10biped R Clavicle
+    100104: titan10biped R Finger0
+    100106: titan10biped R Finger0Nub
+    100108: titan10biped R Foot
+    100110: titan10biped R Forearm
+    100112: titan10biped R Hand
+    100114: titan10biped R Thigh
+    100116: titan10biped R Toe0
+    100118: titan10biped R Toe0Nub
+    100120: titan10biped R UpperArm
+    100122: titan10biped Spine
+    100124: titan10biped Spine1
+    400000: Bip002
+    400002: Bip002 Footsteps
+    400004: Bip002 Head
+    400006: Bip002 HeadNub
+    400008: Bip002 L Calf
+    400010: Bip002 L Clavicle
+    400012: Bip002 L Finger0
+    400014: Bip002 L Finger0Nub
+    400016: Bip002 L Foot
+    400018: Bip002 L Forearm
+    400020: Bip002 L Hand
+    400022: Bip002 L Thigh
+    400024: Bip002 L Toe0
+    400026: Bip002 L Toe0Nub
+    400028: Bip002 L UpperArm
+    400030: Bip002 Neck
+    400032: Bip002 Pelvis
+    400034: Bip002 R Calf
+    400036: Bip002 R Clavicle
+    400038: Bip002 R Finger0
+    400040: Bip002 R Finger0Nub
+    400042: Bip002 R Foot
+    400044: Bip002 R Forearm
+    400046: Bip002 R Hand
+    400048: Bip002 R Thigh
+    400050: Bip002 R Toe0
+    400052: Bip002 R Toe0Nub
+    400054: Bip002 R UpperArm
+    400056: Bip002 Spine
+    400058: Bip002 Spine1
+    400060: Box001
+    400062: //RootNode
+    400064: titan10
+    400066: titan10biped
+    400068: titan10biped Footsteps
+    400070: titan10biped Head
+    400072: titan10biped HeadNub
+    400074: titan10biped L Calf
+    400076: titan10biped L Clavicle
+    400078: titan10biped L Finger0
+    400080: titan10biped L Finger0Nub
+    400082: titan10biped L Foot
+    400084: titan10biped L Forearm
+    400086: titan10biped L Hand
+    400088: titan10biped L Thigh
+    400090: titan10biped L Toe0
+    400092: titan10biped L Toe0Nub
+    400094: titan10biped L UpperArm
+    400096: titan10biped Neck
+    400098: titan10biped Pelvis
+    400100: titan10biped R Calf
+    400102: titan10biped R Clavicle
+    400104: titan10biped R Finger0
+    400106: titan10biped R Finger0Nub
+    400108: titan10biped R Foot
+    400110: titan10biped R Forearm
+    400112: titan10biped R Hand
+    400114: titan10biped R Thigh
+    400116: titan10biped R Toe0
+    400118: titan10biped R Toe0Nub
+    400120: titan10biped R UpperArm
+    400122: titan10biped Spine
+    400124: titan10biped Spine1
+    4300000: Box001
+    4300002: titan10
+    7400000: Take 001
+    7400002: Walk
+    7400004: Die
+    9500000: //RootNode
+    11100000: //RootNode
+    13700000: Box001
+    13700002: titan10
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    animationCompression: 1
+    animationRotationError: .5
+    animationPositionError: .5
+    animationScaleError: .5
+    animationWrapMode: 0
+    clipAnimations:
+    - name: Take 001
+      takeName: Take 001
+      firstFrame: 0
+      lastFrame: 250
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      transformMask: []
+    - name: Walk
+      takeName: Take 001
+      firstFrame: 11
+      lastFrame: 70
+      wrapMode: 2
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      loopBlend: 1
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      transformMask: []
+    - name: Die
+      takeName: Take 001
+      firstFrame: 81
+      lastFrame: 120
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      transformMask: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: .00999999978
+    meshCompression: 0
+    addColliders: 0
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+  tangentSpace:
+    normalSmoothAngle: 60
+    splitTangentsAcrossUV: 1
+    normalImportMode: 0
+    tangentImportMode: 1
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    human: []
+    skeleton: []
+    handles: []
+    armTwist: .5
+    foreArmTwist: .5
+    upperLegTwist: .5
+    legTwist: .5
+    armStretch: .0500000007
+    legStretch: .0500000007
+    feetSpacing: 0
+    rootMotionBoneName: 
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  additionalBone: 1
+  animationType: 1
+  userData: 
