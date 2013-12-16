@@ -89,7 +89,7 @@ private var kill_cd = 0;
 private var control_buffer_rate = 7;
 private var update_buffer_c = 0;
 private var buffer_forward = new float[control_buffer_rate];
-private var buffer_rotate_up = new float[control_buffer_rate];
+private var buffer_input_rotate_y = new float[control_buffer_rate];
 private var buffer_rotate_right = new float[control_buffer_rate];
 private var TDMG_Wire_max_distance = 2/0.02;
 
@@ -157,7 +157,7 @@ function Start () {
 	// Initialize Variables //
 
 	for (i in buffer_forward) { buffer_forward[i] = 0; };
-	for (i in buffer_rotate_up) { buffer_rotate_up[i] = 0; };
+	for (i in buffer_input_rotate_y) { buffer_input_rotate_y[i] = 0; };
 	for (i in buffer_rotate_right) { buffer_rotate_right[i] = 0; };
 
 	// Find GameObjects //
@@ -186,45 +186,39 @@ function FixedUpdate () {
 
 	var TDMG_Gear_sound = 0;
 
-	// Gravity //
-	if (Input.acceleration.x || Input.acceleration.y) {
+	// Rotation (Gravity) //
 
-		// 左右
-		if (rotate_cam) MainCam.transform.localRotation.z = -Input.acceleration.x/2;
-		buffer_rotate_up[update_buffer_c] = Input.acceleration.x;
-		var rotate_up = 0.0;
-		for (i=0; i<control_buffer_rate; i++)
-			rotate_up += buffer_rotate_up[i];
-		rotate_up /= control_buffer_rate;
+	// Y (left & right)
+	var input_rotate_y = GetInputAcceleration_x();
 
-		if (rotate_up > 0.4) rotate_up = 0.4;
-		else if (rotate_up < -0.4) rotate_up = -0.4;
+	if (input_rotate_y > 0.4) input_rotate_y = 0.4;
+	else if (input_rotate_y < -0.4) input_rotate_y = -0.4;
 
-		TargetW.transform.localRotation.y = rotate_up;
-		MainCamW.transform.localRotation.y += (rotate_up/3-MainCamW.transform.localRotation.y)/10;
-		if (rotate_up > 0.1) {
-			transform.Rotate(Vector3.up, (TargetW.transform.localRotation.y-0.1)*5);
-		} else if (rotate_up < -0.1) {
-			transform.Rotate(Vector3.up, (TargetW.transform.localRotation.y+0.1)*5);
-		}
-
-		// 上下
-		buffer_rotate_right[update_buffer_c] = Input.acceleration.y+0.6;
-		var rotate_right = 0.0;
-		for (i=0; i<control_buffer_rate; i++)
-			rotate_right += buffer_rotate_right[i];
-		rotate_right /= control_buffer_rate;
-
-		if (rotate_right > 0.4) rotate_right = 0.4;
-		else if (rotate_right < -0.4) rotate_right = -0.4;
-		if (rotate_right > 0.34) rotate_right += (rotate_right-0.34)*3;
-
-		TargetW.transform.localRotation.x = rotate_right;
-		MainCamW.transform.localRotation.x += (rotate_right/3-MainCamW.transform.localRotation.x)/10;
+	TargetW.transform.localRotation.y = input_rotate_y;
+	MainCamW.transform.localRotation.y += (input_rotate_y/3-MainCamW.transform.localRotation.y)/10;
+	if (input_rotate_y > 0.1) {
+		transform.Rotate(Vector3.up, (TargetW.transform.localRotation.y-0.1)*5);
+	} else if (input_rotate_y < -0.1) {
+		transform.Rotate(Vector3.up, (TargetW.transform.localRotation.y+0.1)*5);
 	}
 
+	// X (up & down)
+	buffer_rotate_right[update_buffer_c] = Input.acceleration.y+0.6;
+	var rotate_right = 0.0;
+	for (i=0; i<control_buffer_rate; i++)
+		rotate_right += buffer_rotate_right[i];
+	rotate_right /= control_buffer_rate;
 
-	// Joystick (Thrust Lever) //
+	if (rotate_right > 0.4) rotate_right = 0.4;
+	else if (rotate_right < -0.4) rotate_right = -0.4;
+	if (rotate_right > 0.34) rotate_right += (rotate_right-0.34)*3;
+
+	TargetW.transform.localRotation.x = rotate_right;
+	MainCamW.transform.localRotation.x += (rotate_right/3-MainCamW.transform.localRotation.x)/10;
+
+
+
+	// Forward (Joystick:Thrust Lever) //
 	buffer_forward[update_buffer_c] = (Joystick.position.y+1)*4;  // 0~8
 	var forward = 0.0;
 	for (i=0; i<control_buffer_rate; i++)
@@ -232,8 +226,8 @@ function FixedUpdate () {
 	forward /= control_buffer_rate;
 	if (forward < 1) forward = 0;
 	if (on_ground) {  // 地上走
-		if (forward < 1 && Mathf.Abs(rotate_up) > 0.15) {  // 禁止在地面定點旋轉，若要旋轉，則強制加力前進
-			forward = 0.9 + Mathf.Abs(rotate_up)*2;
+		if (forward < 1 && Mathf.Abs(input_rotate_y) > 0.15) {  // 禁止在地面定點旋轉，若要旋轉，則強制加力前進
+			forward = 0.9 + Mathf.Abs(input_rotate_y)*2;
 		}
 		rigidbody.AddForce(transform.forward * (forward-transform.InverseTransformDirection(rigidbody.velocity).z), ForceMode.VelocityChange);
 		rigidbody.AddForce((-1) * transform.right * (transform.InverseTransformDirection(rigidbody.velocity).x), ForceMode.VelocityChange);
@@ -340,7 +334,7 @@ function FixedUpdate () {
 						TDMG_Attacher_L.transform.position = fire_hit.point;  // 將 TDMG_Attacher 移至擊中點
 						TDMG_Attacher_L.transform.parent = fire_hit.transform;  // 將 TDMG_Attacher 的 parent 設為被擊中物件，等同將 TDMG_Attacher attach 到被擊中物件上
 					} else {
-						if (rotate_up > 0) {
+						if (input_rotate_y > 0) {
 							use_hook_R = true;
 							TDMG_Attacher_R.transform.position = fire_hit.point;  // 將 TDMG_Attacher 移至擊中點
 							TDMG_Attacher_R.transform.parent = fire_hit.transform;  // 將 TDMG_Attacher 的 parent 設為被擊中物件，等同將 TDMG_Attacher attach 到被擊中物件上
