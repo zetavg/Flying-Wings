@@ -1,12 +1,28 @@
 ﻿/////////////////
 // 立體機動裝置 //
 /////////////////
+/**
+ * @fileoverview 玩家控制.
+ *
+ * @author neson@dex.tw
+ */
 #pragma strict
 
 
-public var rotate_cam = false;
-public var max_speed = 30.0;
-public var PlayerControlsGUI : GameObject;
+// Universal
+//////////////////////////////////////////////////////////////////////
+
+private var i : int;
+private var j : int;
+private var t : int;
+
+
+//
+//////////////////////////////////////////////////////////////////////
+
+public var rotate_cam = false;  // 是否旋轉視角, 用於左右旋轉畫面平衡
+public var max_speed = 30.0;  // 玩家在場景中的最大速度, 避免失速
+public var PlayerControlsGUI : GameObject;  // 控制界面
 public var Gear : GameObject;
 public var Joystick : Joystick;
 public var FireBotton : TapButton;
@@ -21,24 +37,24 @@ public var ReleaseBotton_texture_disabled : Texture;
 public var ReleaseBotton_texture_released : Texture;
 public var Aim_texture : Texture;
 public var Aim_aim_texture : Texture;
-public var TDMG_Fire_sound : AudioClip;
-public var TDMG_Hooked_sound : AudioClip;
-public var TDMG_Withdraw_sound : AudioClip;
-public var Land_sound : AudioClip;
-public var Kill_sound : AudioClip;
+public var TDMG_Fire_sound : AudioClip;  // 射出 hook 的音效
+public var TDMG_Hooked_sound : AudioClip;  // hook 釘住的音效
+public var TDMG_Withdraw_sound : AudioClip;  // 收回 hook 音效
+public var Land_sound : AudioClip;  // 落地音效
+public var Kill_sound : AudioClip;  // 揮刀音效
 
 public var TDMG_Attacher_L : GameObject;
 public var TDMG_Attacher_R : GameObject;
 
 
 // Self
-//////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////
 
-private var MainCamW : GameObject;
-private var MainCam : GameObject;
-private var TargetW : GameObject;
-private var Target : GameObject;
-private var TDMG : GameObject;
+private var MainCamW : GameObject;  // Cam 的容器
+private var MainCam : GameObject;  // Cam
+private var TargetW : GameObject;  // 準心容器
+private var Target : GameObject;  // 準心
+private var TDMG : GameObject;  // 立體機動裝置
 private var TDMG_Gear : GameObject;
 private var TDMG_Hook_LC : GameObject;
 private var TDMG_Hook_RC : GameObject;
@@ -48,13 +64,13 @@ private var TDMG_Jet : GameObject;
 
 
 // Status
-//////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////
 
-public var on_ground = 0;
-private var pre_on_ground = 0;
-private var pre_position : Vector3;
+public var on_ground = 0;  // 是否在地上? 0: 否, n>0: 接觸到 n 個地面物件. 由 playerFoot 維護.
+private var pre_on_ground = 0;  // 上一次 update 時是否在地上?
+private var pre_position : Vector3;  // 上一次 update 時的坐標
 private var kill_mode = 0;  // 0: not killing, 1: prepare killing, 2: kill
-private var hit_thing = false;
+private var hit_thing = false;  // 是否有接觸到物體?
 public var prev_y = 00.0;
 public var prev_velocity : Vector3;
 public var fire_start_time = 00.0;
@@ -68,7 +84,7 @@ private var kill_cd = 0;
 
 
 // Controls
-//////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////
 
 private var control_buffer_rate = 7;
 private var update_buffer_c = 0;
@@ -78,35 +94,73 @@ private var buffer_rotate_right = new float[control_buffer_rate];
 private var TDMG_Wire_max_distance = 2/0.02;
 
 
+// Gravity //
+var gravity_buffer_rate = 8;  // 緩衝區大小
+var gravity_buffer_i_x = 0;  // 緩衝區計數器
+var gravity_buffer_i_y = 0;  // 緩衝區計數器
+var InputAcceleration_x_buffer = new float[gravity_buffer_rate];  // 緩衝區
+var InputAcceleration_y_buffer = new float[gravity_buffer_rate];  // 緩衝區
+for (i=0 ; i<gravity_buffer_rate ; i++) {  // 緩衝區歸零
+	InputAcceleration_x_buffer[i] = 0;
+	InputAcceleration_y_buffer[i] = 0;
+}
+
+/**
+ * Returns the stabilized InputAcceleration_x.
+ *
+ * @return {boolean}.
+ */
+function GetInputAcceleration_x() {
+	if (++gravity_buffer_i_x >= gravity_buffer_rate) gravity_buffer_i_x = 0;
+	InputAcceleration_x_buffer[gravity_buffer_i_x] = Input.acceleration.x;
+	var sum = 0.0;
+	for (i=0 ; i < gravity_buffer_rate ; i++) {
+		sum += InputAcceleration_x_buffer[i];
+	}
+	var avg = sum/gravity_buffer_rate;
+	return avg;
+}
+
+/**
+ * Returns the stabilized InputAcceleration_y.
+ *
+ * @return {boolean}.
+ */
+function GetInputAcceleration_y() {
+	if (++gravity_buffer_i_y >= gravity_buffer_rate) gravity_buffer_i_y = 0;
+	InputAcceleration_y_buffer[gravity_buffer_i_y] = Input.acceleration.y;
+	var sum = 0.0;
+	for (i=0 ; i < gravity_buffer_rate ; i++) {
+		sum += InputAcceleration_y_buffer[i];
+	}
+	var avg = sum/gravity_buffer_rate;
+	return avg;
+}
+
+
+
 // Animatiom
-//////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////
 
 private var speed_state : int;  // 0 靜止，1 走，2 跑
 
 
-// Universal
-//////////////////////////////////////////////////
-
-private var i : int;
-private var j : int;
-private var t : int;
 
 
-function AddForceToSpeed (speed:Vector3, t:int) {
-}
 
+
+// Init
+//////////////////////////////////////////////////////////////////////
 
 function Start () {
 
-	// Initialize Variables
-	//////////////////////////////////////////////////
+	// Initialize Variables //
 
 	for (i in buffer_forward) { buffer_forward[i] = 0; };
 	for (i in buffer_rotate_up) { buffer_rotate_up[i] = 0; };
 	for (i in buffer_rotate_right) { buffer_rotate_right[i] = 0; };
 
-	// Find GameObjects
-	//////////////////////////////////////////////////
+	// Find GameObjects //
 
 	MainCam = transform.Find("Camera Wrapper/Main Camera").gameObject;
 	MainCamW = transform.Find("Camera Wrapper").gameObject;
@@ -121,10 +175,14 @@ function Start () {
 	TDMG_Jet = transform.Find("TDMG/TDMG_Jet").gameObject;
 }
 
+
+// Update
+//////////////////////////////////////////////////////////////////////
+
 function FixedUpdate () {
 
 	// Basic Controls and Controls SFX
-	//////////////////////////////////////////////////
+	//////////////////////////////////////////////////////////////////////
 
 	var TDMG_Gear_sound = 0;
 
@@ -191,7 +249,7 @@ function FixedUpdate () {
 
 
 	// Wire
-	//////////////////////////////////////////////////
+	//////////////////////////////////////////////////////////////////////
 
 	// 總體狀態，及 GUI 反應 //
 	var FireBotton_status;  // 0: Fire, 1: Pull, 2: Disabled.
@@ -415,7 +473,7 @@ function FixedUpdate () {
 	//print(TDMG_Attacher.transform.position);
 
 	// Kill
-	//////////////////////////////////////////////////
+	//////////////////////////////////////////////////////////////////////
 
 	if (kill_mode == 2) {
 		audio.PlayOneShot(Kill_sound, 1);
@@ -423,7 +481,7 @@ function FixedUpdate () {
 
 
 	// Moving Animation
-	//////////////////////////////////////////////////
+	//////////////////////////////////////////////////////////////////////
 
 	// Decide speed state
 	if (speed_state == 0 && rigidbody.velocity.magnitude > 0.01)  // 0 to 1
@@ -478,7 +536,7 @@ function FixedUpdate () {
 
 
 	// Update var
-	//////////////////////////////////////////////////
+	//////////////////////////////////////////////////////////////////////
 
 	update_buffer_c++;
 	if (update_buffer_c >= control_buffer_rate) update_buffer_c = 0;
