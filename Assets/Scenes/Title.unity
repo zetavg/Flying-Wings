@@ -97,7 +97,7 @@ GUITexture:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 424681800}
   m_Enabled: 1
-  m_Texture: {fileID: 2800000, guid: d94e07d0cc61d40edb71b43aed7b1050, type: 3}
+  m_Texture: {fileID: 2800000, guid: 0ed0ee2347eb5413cbd028557e0b9522, type: 3}
   m_Color: {r: .5, g: .5, b: .5, a: .5}
   m_PixelInset:
     serializedVersion: 2
@@ -358,76 +358,6 @@ Transform:
   m_LocalScale: {x: 0, y: 0, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
---- !u!1 &1077722820
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  serializedVersion: 4
-  m_Component:
-  - 4: {fileID: 1077722822}
-  - 132: {fileID: 1077722821}
-  - 131: {fileID: 1077722824}
-  m_Layer: 0
-  m_Name: GUI Text
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!132 &1077722821
-GUIText:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1077722820}
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Text: Go To Tutorial?
-  m_Anchor: 0
-  m_Alignment: 0
-  m_PixelOffset: {x: 140.970001, y: 263.399994}
-  m_LineSpacing: 1
-  m_TabSize: 4
-  m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
-  m_Material: {fileID: 0}
-  m_FontSize: 57
-  m_FontStyle: 0
-  m_Color:
-    serializedVersion: 2
-    rgba: 4294967295
-  m_PixelCorrect: 1
-  m_RichText: 1
---- !u!4 &1077722822
-Transform:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1077722820}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 1128133663}
---- !u!131 &1077722824
-GUITexture:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1077722820}
-  m_Enabled: 1
-  m_Texture: {fileID: 0}
-  m_Color: {r: .5, g: .5, b: .5, a: .5}
-  m_PixelInset:
-    serializedVersion: 2
-    x: 0
-    y: 0
-    width: 0
-    height: 0
-  m_LeftBorder: 0
-  m_RightBorder: 0
-  m_TopBorder: 0
-  m_BottomBorder: 0
 --- !u!1 &1115119695
 GameObject:
   m_ObjectHideFlags: 0
@@ -530,6 +460,7 @@ MonoBehaviour:
   training: {fileID: 1127514005}
   profile: {fileID: 597932385}
   menu_group: {fileID: 1707630619}
+  controlButtons: []
 --- !u!1 &1127514002
 GameObject:
   m_ObjectHideFlags: 0
@@ -621,7 +552,6 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 424681802}
-  - {fileID: 1077722822}
   - {fileID: 1575020655}
   - {fileID: 2022679337}
   m_Father: {fileID: 0}
@@ -666,13 +596,13 @@ GUITexture:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1575020653}
   m_Enabled: 1
-  m_Texture: {fileID: 2800000, guid: 383445a347fe0437691f063507a99d35, type: 3}
+  m_Texture: {fileID: 2800000, guid: 18fccab0649e94b9bb10401830cd5f79, type: 3}
   m_Color: {r: .5, g: .5, b: .5, a: .5}
   m_PixelInset:
     serializedVersion: 2
-    x: 163.300003
+    x: 110
     y: 43.0999985
-    width: 100
+    width: 160
     height: 50
   m_LeftBorder: 0
   m_RightBorder: 0
@@ -715,9 +645,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ad84a2fa37c1a45e5ab5b945a799e4fa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  normal_texture: {fileID: 2800000, guid: 383445a347fe0437691f063507a99d35, type: 3}
+  normal_texture: {fileID: 2800000, guid: 18fccab0649e94b9bb10401830cd5f79, type: 3}
   disabled_texture: {fileID: 0}
-  held_texture: {fileID: 2800000, guid: 3e09c053321f54a16ba432f8175c68aa, type: 3}
+  held_texture: {fileID: 2800000, guid: 89b9788bbe17f452f943eaefabb574a1, type: 3}
   tapped: 0
   held: 0
   released: 0
@@ -791,13 +721,13 @@ GUITexture:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 2022679334}
   m_Enabled: 1
-  m_Texture: {fileID: 2800000, guid: d666fadefe08b43e88d49cc4570ba1a1, type: 3}
+  m_Texture: {fileID: 2800000, guid: 440266906544f421abae6876ecd537eb, type: 3}
   m_Color: {r: .5, g: .5, b: .5, a: .5}
   m_PixelInset:
     serializedVersion: 2
-    x: 409.299988
+    x: 397.700012
     y: 43.9700012
-    width: 100
+    width: 160
     height: 50
   m_LeftBorder: 0
   m_RightBorder: 0
@@ -825,9 +755,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ad84a2fa37c1a45e5ab5b945a799e4fa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  normal_texture: {fileID: 2800000, guid: d666fadefe08b43e88d49cc4570ba1a1, type: 3}
+  normal_texture: {fileID: 2800000, guid: 440266906544f421abae6876ecd537eb, type: 3}
   disabled_texture: {fileID: 0}
-  held_texture: {fileID: 2800000, guid: 3e09c053321f54a16ba432f8175c68aa, type: 3}
+  held_texture: {fileID: 2800000, guid: a5226b963dc0a4a79b95be81e5814b86, type: 3}
   tapped: 0
   held: 0
   released: 0

@@ -10,17 +10,7 @@ var kill_about : GameObject;
 var timeattack_about : GameObject;
 var tutorial_about : GameObject;
 
-
-//各種Texture
-var defense_texture : Texture2D;
-var kill_texture : Texture2D;
-var timeattack_texture : Texture2D;
-var tutorial_texture : Texture2D;
-
-var defense_hold_texture : Texture2D;
-var kill_hold_texture : Texture2D;
-var timeattack_hold_texture : Texture2D;
-var tutorial_hold_texture : Texture2D;
+var controlButtons : GameObject[];
 
 function Start () {
 	InactiveAllContents();
@@ -29,14 +19,6 @@ function Start () {
 function Update () {
 
 	//各種壓住、推倒。
-	if (defense.held) defense.guiTexture.texture = defense_hold_texture; 
-		else defense.guiTexture.texture = defense_texture;
-	if (kill.held) kill.guiTexture.texture = kill_hold_texture; 
-		else kill.guiTexture.texture = kill_texture;
-	if (timeattack.held) timeattack.guiTexture.texture = timeattack_hold_texture; 
-		else timeattack.guiTexture.texture = timeattack_texture;
-	if (tutorial.held) tutorial.guiTexture.texture = tutorial_hold_texture;
-		else tutorial.guiTexture.texture = tutorial_texture;
 
 	if (defense.tapped) {
 		InactiveAllContents();
@@ -45,6 +27,16 @@ function Update () {
 	if (kill.tapped) {
 		InactiveAllContents();
 		kill_about.SetActive(true);
+	}
+
+	
+	controlButtons = GameObject.FindGameObjectsWithTag("ControlButton");
+
+	for (var each in controlButtons)
+	{
+		var tb = each.GetComponent(TapButton);
+		if (tb.released || !tb.held) tb.guiTexture.texture = tb.normal_texture;
+		if (tb.held) tb.guiTexture.texture = tb.held_texture;
 	}
 
 

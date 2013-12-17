@@ -50,6 +50,12 @@ function Update ()
 		menu_group.SetActive(true);
 	}
 
+	if (play.tapped)
+	{
+		Application.LoadLevel("stage");
+	}
+
+
 	//Texture Control
 	controlButtons = GameObject.FindGameObjectsWithTag("ControlButton");
 

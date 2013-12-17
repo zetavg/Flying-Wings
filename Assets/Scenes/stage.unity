@@ -174,17 +174,7 @@ MonoBehaviour:
   kill_about: {fileID: 1365754755}
   timeattack_about: {fileID: 0}
   tutorial_about: {fileID: 0}
-  defense_texture: {fileID: 2800000, guid: 46ff7afb8e2dd4b90b077a8ad84592ec, type: 3}
-  kill_texture: {fileID: 2800000, guid: febd6e5fd88524e0583135d44f08ba3e, type: 3}
-  timeattack_texture: {fileID: 2800000, guid: 3eea5fad36e494dff839042b0ee8997e, type: 3}
-  tutorial_texture: {fileID: 2800000, guid: 03bc4944bab5344c4a4a09e40f980b9f, type: 3}
-  defense_hold_texture: {fileID: 2800000, guid: 3e09c053321f54a16ba432f8175c68aa,
-    type: 3}
-  kill_hold_texture: {fileID: 2800000, guid: 3e09c053321f54a16ba432f8175c68aa, type: 3}
-  timeattack_hold_texture: {fileID: 2800000, guid: 3e09c053321f54a16ba432f8175c68aa,
-    type: 3}
-  tutorial_hold_texture: {fileID: 2800000, guid: 3e09c053321f54a16ba432f8175c68aa,
-    type: 3}
+  controlButtons: []
 --- !u!1 &343907369
 GameObject:
   m_ObjectHideFlags: 0
@@ -197,7 +187,7 @@ GameObject:
   - 114: {fileID: 343907372}
   m_Layer: 0
   m_Name: gamemode_kill
-  m_TagString: Untagged
+  m_TagString: ControlButton
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -243,9 +233,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ad84a2fa37c1a45e5ab5b945a799e4fa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  normal_texture: {fileID: 0}
+  normal_texture: {fileID: 2800000, guid: febd6e5fd88524e0583135d44f08ba3e, type: 3}
   disabled_texture: {fileID: 0}
-  held_texture: {fileID: 0}
+  held_texture: {fileID: 2800000, guid: 3e09c053321f54a16ba432f8175c68aa, type: 3}
   tapped: 0
   held: 0
   released: 0
@@ -261,7 +251,7 @@ GameObject:
   - 114: {fileID: 715263101}
   m_Layer: 0
   m_Name: gamemode_time
-  m_TagString: Untagged
+  m_TagString: ControlButton
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -307,9 +297,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ad84a2fa37c1a45e5ab5b945a799e4fa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  normal_texture: {fileID: 0}
+  normal_texture: {fileID: 2800000, guid: 3eea5fad36e494dff839042b0ee8997e, type: 3}
   disabled_texture: {fileID: 0}
-  held_texture: {fileID: 0}
+  held_texture: {fileID: 2800000, guid: 3e09c053321f54a16ba432f8175c68aa, type: 3}
   tapped: 0
   held: 0
   released: 0
@@ -371,7 +361,7 @@ GameObject:
   - 114: {fileID: 851957160}
   m_Layer: 0
   m_Name: 'gamemode_defense '
-  m_TagString: Untagged
+  m_TagString: ControlButton
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -417,9 +407,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ad84a2fa37c1a45e5ab5b945a799e4fa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  normal_texture: {fileID: 0}
+  normal_texture: {fileID: 2800000, guid: 46ff7afb8e2dd4b90b077a8ad84592ec, type: 3}
   disabled_texture: {fileID: 0}
-  held_texture: {fileID: 0}
+  held_texture: {fileID: 2800000, guid: 3e09c053321f54a16ba432f8175c68aa, type: 3}
   tapped: 0
   held: 0
   released: 0
@@ -435,7 +425,7 @@ GameObject:
   - 114: {fileID: 939352966}
   m_Layer: 0
   m_Name: play
-  m_TagString: Untagged
+  m_TagString: ControlButton
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -451,9 +441,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ad84a2fa37c1a45e5ab5b945a799e4fa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  normal_texture: {fileID: 0}
+  normal_texture: {fileID: 2800000, guid: a32e31253f219404687f3dc120a8f6f1, type: 3}
   disabled_texture: {fileID: 0}
-  held_texture: {fileID: 0}
+  held_texture: {fileID: 2800000, guid: a04bbc856289c40f4b843999189b158c, type: 3}
   tapped: 0
   held: 0
   released: 0
@@ -464,13 +454,13 @@ GUITexture:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 939352965}
   m_Enabled: 1
-  m_Texture: {fileID: 2800000, guid: 1bfd00f0b66d04b2cb2506d4073bdb92, type: 3}
+  m_Texture: {fileID: 2800000, guid: a32e31253f219404687f3dc120a8f6f1, type: 3}
   m_Color: {r: .5, g: .5, b: .5, a: .5}
   m_PixelInset:
     serializedVersion: 2
-    x: 154.100006
+    x: 9.69999981
     y: -111.099998
-    width: 179.399994
+    width: 456.600006
     height: 73.9000015
   m_LeftBorder: 0
   m_RightBorder: 0
@@ -499,7 +489,7 @@ GameObject:
   - 114: {fileID: 1219992355}
   m_Layer: 0
   m_Name: gamemode_tutorial
-  m_TagString: Untagged
+  m_TagString: ControlButton
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -545,9 +535,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ad84a2fa37c1a45e5ab5b945a799e4fa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  normal_texture: {fileID: 0}
+  normal_texture: {fileID: 2800000, guid: 03bc4944bab5344c4a4a09e40f980b9f, type: 3}
   disabled_texture: {fileID: 0}
-  held_texture: {fileID: 0}
+  held_texture: {fileID: 2800000, guid: 3e09c053321f54a16ba432f8175c68aa, type: 3}
   tapped: 0
   held: 0
   released: 0
@@ -579,9 +569,9 @@ GUITexture:
   m_PixelInset:
     serializedVersion: 2
     x: 29.7000008
-    y: 57.0999985
+    y: 70.5999985
     width: 432.299988
-    height: 343.600006
+    height: 249.800003
   m_LeftBorder: 0
   m_RightBorder: 0
   m_TopBorder: 0
@@ -625,9 +615,9 @@ GUITexture:
   m_PixelInset:
     serializedVersion: 2
     x: 29.7000008
-    y: 57.0999985
+    y: 70.5999985
     width: 432.299988
-    height: 343.600006
+    height: 249.800003
   m_LeftBorder: 0
   m_RightBorder: 0
   m_TopBorder: 0
