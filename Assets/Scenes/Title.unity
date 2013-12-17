@@ -178,12 +178,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ad84a2fa37c1a45e5ab5b945a799e4fa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  normal_texture: {fileID: 2800000, guid: 455c09d11b7d3482aa0e09433eb0dbb2, type: 3}
-  disabled_texture: {fileID: 0}
-  held_texture: {fileID: 2800000, guid: 899c3ffa09f724cd8a016c2f123c052a, type: 3}
+  normal_texture:
+  - {fileID: 2800000, guid: 455c09d11b7d3482aa0e09433eb0dbb2, type: 3}
+  disabled_texture: []
+  held_texture:
+  - {fileID: 2800000, guid: 899c3ffa09f724cd8a016c2f123c052a, type: 3}
   tapped: 0
   held: 0
   released: 0
+  effects:
+    sunkenWhenPressed: 0
+    sunkenRate: .879999995
+    sunkenAnimation: 0
+    sunkenAnimationInitialVelocity: 0
+    sunkenAnimationVelocityAcceleration: .0199999996
+    sunkenAnimationMinScale: .860000014
+    sunkenAnimationMaxScale: 1.00999999
+    sunkenAnimationTime: 0
+    tapSFX: {fileID: 0}
 --- !u!1 &605295648
 GameObject:
   m_ObjectHideFlags: 0
@@ -208,13 +220,13 @@ GUITexture:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 605295648}
   m_Enabled: 1
-  m_Texture: {fileID: 2800000, guid: dc1d0e82f842148a8ba8bc3389ea7df4, type: 3}
+  m_Texture: {fileID: 2800000, guid: 616d6c21220874207abeb131d6020ff8, type: 3}
   m_Color: {r: .5, g: .5, b: .5, a: .5}
   m_PixelInset:
     serializedVersion: 2
-    x: -43.2999992
+    x: 17.7999992
     y: -.5
-    width: 229.600006
+    width: 49.7000008
     height: 50
   m_LeftBorder: 0
   m_RightBorder: 0
@@ -242,12 +254,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ad84a2fa37c1a45e5ab5b945a799e4fa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  normal_texture: {fileID: 2800000, guid: dc1d0e82f842148a8ba8bc3389ea7df4, type: 3}
-  disabled_texture: {fileID: 0}
-  held_texture: {fileID: 2800000, guid: 4068721c8057c448ba8efcce38d60d70, type: 3}
+  normal_texture:
+  - {fileID: 2800000, guid: 616d6c21220874207abeb131d6020ff8, type: 3}
+  disabled_texture: []
+  held_texture:
+  - {fileID: 2800000, guid: eea9338fed8224a288eab49ce828fcc6, type: 3}
   tapped: 0
   held: 0
   released: 0
+  effects:
+    sunkenWhenPressed: 0
+    sunkenRate: .879999995
+    sunkenAnimation: 0
+    sunkenAnimationInitialVelocity: 0
+    sunkenAnimationVelocityAcceleration: .0199999996
+    sunkenAnimationMinScale: .860000014
+    sunkenAnimationMaxScale: 1.00999999
+    sunkenAnimationTime: 0
+    tapSFX: {fileID: 0}
 --- !u!1 &772153398
 GameObject:
   m_ObjectHideFlags: 0
@@ -306,12 +330,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ad84a2fa37c1a45e5ab5b945a799e4fa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  normal_texture: {fileID: 2800000, guid: 48d894b5678b9420ea580d5382aa6ed3, type: 3}
-  disabled_texture: {fileID: 0}
-  held_texture: {fileID: 2800000, guid: 926b8ef58ce474f5ab2ae3d37cc85bc9, type: 3}
+  normal_texture:
+  - {fileID: 2800000, guid: 48d894b5678b9420ea580d5382aa6ed3, type: 3}
+  disabled_texture: []
+  held_texture:
+  - {fileID: 2800000, guid: 926b8ef58ce474f5ab2ae3d37cc85bc9, type: 3}
   tapped: 0
   held: 0
   released: 0
+  effects:
+    sunkenWhenPressed: 0
+    sunkenRate: .879999995
+    sunkenAnimation: 0
+    sunkenAnimationInitialVelocity: 0
+    sunkenAnimationVelocityAcceleration: .0199999996
+    sunkenAnimationMinScale: .860000014
+    sunkenAnimationMaxScale: 1.00999999
+    sunkenAnimationTime: 0
+    tapSFX: {fileID: 0}
 --- !u!1 &832930104
 GameObject:
   m_ObjectHideFlags: 0
@@ -519,12 +555,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ad84a2fa37c1a45e5ab5b945a799e4fa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  normal_texture: {fileID: 2800000, guid: 6e3ac95ab9124496085894e53bda7513, type: 3}
-  disabled_texture: {fileID: 0}
-  held_texture: {fileID: 2800000, guid: 38e26091c06c04f78a0406ee6aadd991, type: 3}
+  normal_texture:
+  - {fileID: 2800000, guid: 6e3ac95ab9124496085894e53bda7513, type: 3}
+  disabled_texture: []
+  held_texture:
+  - {fileID: 2800000, guid: 38e26091c06c04f78a0406ee6aadd991, type: 3}
   tapped: 0
   held: 0
   released: 0
+  effects:
+    sunkenWhenPressed: 0
+    sunkenRate: .879999995
+    sunkenAnimation: 0
+    sunkenAnimationInitialVelocity: 0
+    sunkenAnimationVelocityAcceleration: .0199999996
+    sunkenAnimationMinScale: .860000014
+    sunkenAnimationMaxScale: 1.00999999
+    sunkenAnimationTime: 0
+    tapSFX: {fileID: 0}
 --- !u!1 &1128133662
 GameObject:
   m_ObjectHideFlags: 0
@@ -629,12 +677,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ad84a2fa37c1a45e5ab5b945a799e4fa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  normal_texture: {fileID: 2800000, guid: 18fccab0649e94b9bb10401830cd5f79, type: 3}
-  disabled_texture: {fileID: 0}
-  held_texture: {fileID: 2800000, guid: 89b9788bbe17f452f943eaefabb574a1, type: 3}
+  normal_texture:
+  - {fileID: 2800000, guid: 18fccab0649e94b9bb10401830cd5f79, type: 3}
+  disabled_texture: []
+  held_texture:
+  - {fileID: 2800000, guid: 89b9788bbe17f452f943eaefabb574a1, type: 3}
   tapped: 0
   held: 0
   released: 0
+  effects:
+    sunkenWhenPressed: 0
+    sunkenRate: .879999995
+    sunkenAnimation: 0
+    sunkenAnimationInitialVelocity: 0
+    sunkenAnimationVelocityAcceleration: .0199999996
+    sunkenAnimationMinScale: .860000014
+    sunkenAnimationMaxScale: 1.00999999
+    sunkenAnimationTime: 0
+    tapSFX: {fileID: 0}
 --- !u!1 &1707630619
 GameObject:
   m_ObjectHideFlags: 0
@@ -723,12 +783,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ad84a2fa37c1a45e5ab5b945a799e4fa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  normal_texture: {fileID: 2800000, guid: 440266906544f421abae6876ecd537eb, type: 3}
-  disabled_texture: {fileID: 0}
-  held_texture: {fileID: 2800000, guid: a5226b963dc0a4a79b95be81e5814b86, type: 3}
+  normal_texture:
+  - {fileID: 2800000, guid: 440266906544f421abae6876ecd537eb, type: 3}
+  disabled_texture: []
+  held_texture:
+  - {fileID: 2800000, guid: a5226b963dc0a4a79b95be81e5814b86, type: 3}
   tapped: 0
   held: 0
   released: 0
+  effects:
+    sunkenWhenPressed: 0
+    sunkenRate: .879999995
+    sunkenAnimation: 0
+    sunkenAnimationInitialVelocity: 0
+    sunkenAnimationVelocityAcceleration: .0199999996
+    sunkenAnimationMinScale: .860000014
+    sunkenAnimationMaxScale: 1.00999999
+    sunkenAnimationTime: 0
+    tapSFX: {fileID: 0}
 --- !u!1 &2060512004
 GameObject:
   m_ObjectHideFlags: 0
@@ -787,9 +859,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ad84a2fa37c1a45e5ab5b945a799e4fa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  normal_texture: {fileID: 2800000, guid: a32e31253f219404687f3dc120a8f6f1, type: 3}
-  disabled_texture: {fileID: 0}
-  held_texture: {fileID: 2800000, guid: a04bbc856289c40f4b843999189b158c, type: 3}
+  normal_texture:
+  - {fileID: 2800000, guid: a32e31253f219404687f3dc120a8f6f1, type: 3}
+  disabled_texture: []
+  held_texture:
+  - {fileID: 2800000, guid: a04bbc856289c40f4b843999189b158c, type: 3}
   tapped: 0
   held: 0
   released: 0
+  effects:
+    sunkenWhenPressed: 0
+    sunkenRate: .879999995
+    sunkenAnimation: 0
+    sunkenAnimationInitialVelocity: 0
+    sunkenAnimationVelocityAcceleration: .0199999996
+    sunkenAnimationMinScale: .860000014
+    sunkenAnimationMaxScale: 1.00999999
+    sunkenAnimationTime: 0
+    tapSFX: {fileID: 0}

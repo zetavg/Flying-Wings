@@ -34,11 +34,9 @@ function Update ()
 			dialog_group.transform.position.x = 0;
 			menu_group.SetActive(false);
 		}
-		Debug.Log("tapped");
 
 	}
-	if (quit.released) Debug.Log("released");
-
+	
 	if (yes.tapped == true)
 	{
 		//quit.animation.Play();
@@ -64,8 +62,8 @@ function Update ()
 	for (var each in controlButtons)
 	{
 		var tb = each.GetComponent(TapButton);
-		if (tb.released || !tb.held) tb.guiTexture.texture = tb.normal_texture;
-		if (tb.held) tb.guiTexture.texture = tb.held_texture;
+		if (tb.released || !tb.held) tb.guiTexture.texture = tb.normal_texture[0];
+		if (tb.held) tb.guiTexture.texture = tb.held_texture[0];
 	}
 }
 

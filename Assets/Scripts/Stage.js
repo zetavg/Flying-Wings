@@ -4,6 +4,7 @@ var defense : TapButton;
 var kill : TapButton;
 var timeattack : TapButton;
 var tutorial : TapButton;
+var back : TapButton;
 
 var defense_about : GameObject;
 var kill_about : GameObject;
@@ -29,14 +30,17 @@ function Update () {
 		kill_about.SetActive(true);
 	}
 
-	
+	if (back.tapped) {
+		Application.LoadLevel("Title");
+	}
+
 	controlButtons = GameObject.FindGameObjectsWithTag("ControlButton");
 
 	for (var each in controlButtons)
 	{
 		var tb = each.GetComponent(TapButton);
-		if (tb.released || !tb.held) tb.guiTexture.texture = tb.normal_texture;
-		if (tb.held) tb.guiTexture.texture = tb.held_texture;
+		if (tb.released || !tb.held) tb.guiTexture.texture = tb.normal_texture[0];
+		if (tb.held) tb.guiTexture.texture = tb.held_texture[0];
 	}
 
 
