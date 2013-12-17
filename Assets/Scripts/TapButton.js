@@ -133,6 +133,7 @@ function FixedUpdate() {
 		if (disabled_texture_in_use) {
 			guiTexture.texture = disabled_texture_in_use;
 		}
+		if (animation_step) animation_next = 11;
 	}
 
 	// Effects
