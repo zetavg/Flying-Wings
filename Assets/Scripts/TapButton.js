@@ -35,6 +35,10 @@ public var tapped : boolean;  // 點按
 public var held : boolean;  // 按住
 public var released : boolean;  // 放開
 
+public var press_animation = false;
+private var juststart = true;
+private var texture_center : Vector2;
+private var pixelInset_org : Rect;
 
 function Start() {
 	// Cache this component at startup instead of looking up every frame
@@ -47,10 +51,16 @@ function Start() {
 	tapped = false;
 	held = false;
 	released = false;
+
 }
 
 
 function FixedUpdate() {
+
+	if (juststart) {
+		pixelInset_org = guiTexture.pixelInset;
+		juststart = false;
+	}
 
 	if (is_enabled) {
 		if ( !enumeratedJoysticks ) {
@@ -90,18 +100,25 @@ function FixedUpdate() {
 			held = false;
 		}
 
-		if (held && held_texture) {
+		if (held && held_texture_in_use) {
 			guiTexture.texture = held_texture_in_use;
 		} else if (normal_texture_in_use) {
 			guiTexture.texture = normal_texture_in_use;
 		}
 
 	} else {
-		if (disabled_texture) {
+		if (disabled_texture_in_use) {
 			guiTexture.texture = disabled_texture_in_use;
 		}
 	}
 
+	if (press_animation) {
+		if (held) {
+			Scale(0.9);
+		} else {
+			Scale(1);
+		}
+	}
 }
 
 
@@ -144,4 +161,15 @@ function UseSet(n : int) {  // 使用某 set
 		}
 		i--;
 	}
+}
+
+
+function Scale(p : float) {  // Scale the GUITexture to a specified percentage, maintaining the center location.
+
+	var new_width = pixelInset_org.width*p;
+	var new_height = pixelInset_org.height*p;
+	var new_x = pixelInset_org.x-(new_width-pixelInset_org.width)/2;
+	var new_y = pixelInset_org.y-(new_height-pixelInset_org.height)/2;
+
+	guiTexture.pixelInset = new Rect(new_x, new_y, new_width, new_height);
 }
