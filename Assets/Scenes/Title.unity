@@ -102,7 +102,7 @@ GUITexture:
   m_PixelInset:
     serializedVersion: 2
     x: 73.5
-    y: 24.2000008
+    y: 54.4000015
     width: 512
     height: 269.399994
   m_LeftBorder: 0
@@ -195,7 +195,7 @@ GameObject:
   - 131: {fileID: 605295649}
   - 114: {fileID: 605295651}
   m_Layer: 0
-  m_Name: quit
+  m_Name: back
   m_TagString: ControlButton
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -580,7 +580,6 @@ GameObject:
   m_Component:
   - 4: {fileID: 1575020655}
   - 131: {fileID: 1575020654}
-  - 111: {fileID: 1575020656}
   - 114: {fileID: 1575020657}
   m_Layer: 0
   m_Name: NO
@@ -601,7 +600,7 @@ GUITexture:
   m_PixelInset:
     serializedVersion: 2
     x: 110
-    y: 43.0999985
+    y: 75.9000015
     width: 160
     height: 50
   m_LeftBorder: 0
@@ -619,21 +618,6 @@ Transform:
   m_LocalScale: {x: 0, y: 0, z: 1}
   m_Children: []
   m_Father: {fileID: 1128133663}
---- !u!111 &1575020656
-Animation:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1575020653}
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Animation: {fileID: 7400000, guid: 562cd3f3d54864169860c0adf037f930, type: 2}
-  m_Animations:
-  - {fileID: 7400000, guid: 562cd3f3d54864169860c0adf037f930, type: 2}
-  m_WrapMode: 0
-  m_PlayAutomatically: 0
-  m_AnimatePhysics: 0
-  m_CullingType: 0
 --- !u!114 &1575020657
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -690,7 +674,6 @@ GameObject:
   m_Component:
   - 4: {fileID: 2022679337}
   - 131: {fileID: 2022679336}
-  - 111: {fileID: 2022679335}
   - 114: {fileID: 2022679338}
   m_Layer: 0
   m_Name: YES
@@ -699,21 +682,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!111 &2022679335
-Animation:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 2022679334}
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Animation: {fileID: 7400000, guid: 06e6f843900504cee9a6647f2f8b63a0, type: 2}
-  m_Animations:
-  - {fileID: 7400000, guid: 06e6f843900504cee9a6647f2f8b63a0, type: 2}
-  m_WrapMode: 0
-  m_PlayAutomatically: 0
-  m_AnimatePhysics: 0
-  m_CullingType: 0
 --- !u!131 &2022679336
 GUITexture:
   m_ObjectHideFlags: 0
@@ -726,7 +694,7 @@ GUITexture:
   m_PixelInset:
     serializedVersion: 2
     x: 397.700012
-    y: 43.9700012
+    y: 75.9000015
     width: 160
     height: 50
   m_LeftBorder: 0

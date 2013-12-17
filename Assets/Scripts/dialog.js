@@ -34,8 +34,10 @@ function Update ()
 			dialog_group.transform.position.x = 0;
 			menu_group.SetActive(false);
 		}
+		Debug.Log("tapped");
 
 	}
+	if (quit.released) Debug.Log("released");
 
 	if (yes.tapped == true)
 	{
