@@ -2445,7 +2445,7 @@ Renderer:
   m_LightmapIndex: 255
   m_LightmapTilingOffset: {x: 1, y: 1, z: 0, w: 0}
   m_Materials:
-  - {fileID: 2100000, guid: 9f859714113aa4fd89e47f7b1abb28e6, type: 2}
+  - {fileID: 2100000, guid: 7e9f81ca4294d4e1988deb3ae2a82964, type: 2}
   m_SubsetIndices: 
   m_StaticBatchRoot: {fileID: 0}
   m_UseLightProbes: 0
@@ -2891,6 +2891,42 @@ Prefab:
       propertyPath: target
       value: 
       objectReference: {fileID: 110640813}
+    - target: {fileID: 11400002, guid: 28b07ed0cf57b437ab601a3d671c8e37, type: 2}
+      propertyPath: effects.sunkenWhenPressed
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400002, guid: 28b07ed0cf57b437ab601a3d671c8e37, type: 2}
+      propertyPath: effects.sunkenAnimation
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400006, guid: 28b07ed0cf57b437ab601a3d671c8e37, type: 2}
+      propertyPath: effects.sunkenWhenPressed
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400006, guid: 28b07ed0cf57b437ab601a3d671c8e37, type: 2}
+      propertyPath: effects.sunkenAnimation
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400026, guid: 28b07ed0cf57b437ab601a3d671c8e37, type: 2}
+      propertyPath: effects.sunkenWhenPressed
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400026, guid: 28b07ed0cf57b437ab601a3d671c8e37, type: 2}
+      propertyPath: effects.sunkenAnimation
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400026, guid: 28b07ed0cf57b437ab601a3d671c8e37, type: 2}
+      propertyPath: effects.sunkenAnimationInitialVelocity
+      value: .0199999996
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400006, guid: 28b07ed0cf57b437ab601a3d671c8e37, type: 2}
+      propertyPath: effects.sunkenAnimationInitialVelocity
+      value: .0199999996
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400002, guid: 28b07ed0cf57b437ab601a3d671c8e37, type: 2}
+      propertyPath: effects.sunkenAnimationInitialVelocity
+      value: .0199999996
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 28b07ed0cf57b437ab601a3d671c8e37, type: 2}
   m_RootGameObject: {fileID: 1235452750}
@@ -6699,7 +6735,7 @@ Renderer:
   m_LightmapIndex: 255
   m_LightmapTilingOffset: {x: 1, y: 1, z: 0, w: 0}
   m_Materials:
-  - {fileID: 2100000, guid: 9f859714113aa4fd89e47f7b1abb28e6, type: 2}
+  - {fileID: 2100000, guid: 7e9f81ca4294d4e1988deb3ae2a82964, type: 2}
   m_SubsetIndices: 
   m_StaticBatchRoot: {fileID: 0}
   m_UseLightProbes: 0
@@ -13991,8 +14027,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ad84a2fa37c1a45e5ab5b945a799e4fa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  normal_texture: []
+  disabled_texture: []
+  held_texture: []
   tapped: 0
   held: 0
+  released: 0
+  effects:
+    sunkenWhenPressed: 1
+    sunkenRate: .879999995
+    sunkenAnimation: 1
+    sunkenAnimationInitialVelocity: .0199999996
+    sunkenAnimationVelocityAcceleration: .0199999996
+    sunkenAnimationMinScale: .860000014
+    sunkenAnimationMaxScale: 1.00999999
+    sunkenAnimationTime: 0
+    tapSFX: {fileID: 0}
 --- !u!131 &926442159
 GUITexture:
   m_ObjectHideFlags: 0
@@ -16076,8 +16126,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ad84a2fa37c1a45e5ab5b945a799e4fa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  normal_texture: []
+  disabled_texture: []
+  held_texture: []
   tapped: 0
   held: 0
+  released: 0
+  effects:
+    sunkenWhenPressed: 1
+    sunkenRate: .879999995
+    sunkenAnimation: 1
+    sunkenAnimationInitialVelocity: .0199999996
+    sunkenAnimationVelocityAcceleration: .0199999996
+    sunkenAnimationMinScale: .860000014
+    sunkenAnimationMaxScale: 1.00999999
+    sunkenAnimationTime: 0
+    tapSFX: {fileID: 0}
 --- !u!131 &1018766277
 GUITexture:
   m_ObjectHideFlags: 0
@@ -16690,7 +16754,7 @@ Renderer:
   m_LightmapIndex: 255
   m_LightmapTilingOffset: {x: 1, y: 1, z: 0, w: 0}
   m_Materials:
-  - {fileID: 2100000, guid: 9f859714113aa4fd89e47f7b1abb28e6, type: 2}
+  - {fileID: 2100000, guid: 7e9f81ca4294d4e1988deb3ae2a82964, type: 2}
   m_SubsetIndices: 
   m_StaticBatchRoot: {fileID: 0}
   m_UseLightProbes: 0
@@ -16900,8 +16964,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ad84a2fa37c1a45e5ab5b945a799e4fa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  normal_texture: []
+  disabled_texture: []
+  held_texture: []
   tapped: 0
   held: 0
+  released: 0
+  effects:
+    sunkenWhenPressed: 0
+    sunkenRate: .879999995
+    sunkenAnimation: 0
+    sunkenAnimationInitialVelocity: 0
+    sunkenAnimationVelocityAcceleration: .0199999996
+    sunkenAnimationMinScale: .860000014
+    sunkenAnimationMaxScale: 1.00999999
+    sunkenAnimationTime: 0
+    tapSFX: {fileID: 0}
 --- !u!131 &1059006265
 GUITexture:
   m_ObjectHideFlags: 0
@@ -19705,8 +19783,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ad84a2fa37c1a45e5ab5b945a799e4fa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  normal_texture: []
+  disabled_texture: []
+  held_texture: []
   tapped: 0
   held: 0
+  released: 0
+  effects:
+    sunkenWhenPressed: 0
+    sunkenRate: .879999995
+    sunkenAnimation: 0
+    sunkenAnimationInitialVelocity: 0
+    sunkenAnimationVelocityAcceleration: .0199999996
+    sunkenAnimationMinScale: .860000014
+    sunkenAnimationMaxScale: 1.00999999
+    sunkenAnimationTime: 0
+    tapSFX: {fileID: 0}
 --- !u!131 &1184505943
 GUITexture:
   m_ObjectHideFlags: 0
@@ -24105,7 +24197,7 @@ Renderer:
   m_LightmapIndex: 255
   m_LightmapTilingOffset: {x: 1, y: 1, z: 0, w: 0}
   m_Materials:
-  - {fileID: 2100000, guid: 9f859714113aa4fd89e47f7b1abb28e6, type: 2}
+  - {fileID: 2100000, guid: 7e9f81ca4294d4e1988deb3ae2a82964, type: 2}
   m_SubsetIndices: 
   m_StaticBatchRoot: {fileID: 0}
   m_UseLightProbes: 0
@@ -25199,6 +25291,32 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 444f3edf5d7684163bd364b875cef774, type: 3}
   m_Name: 
+  m_EditorClassIdentifier: 
+  m_EditorClassIdentifier: 
+  m_EditorClassIdentifier: 
+  m_EditorClassIdentifier: 
+  m_EditorClassIdentifier: 
+  m_EditorClassIdentifier: 
+  m_EditorClassIdentifier: 
+  m_EditorClassIdentifier: 
+  m_EditorClassIdentifier: 
+  m_EditorClassIdentifier: 
+  m_EditorClassIdentifier: 
+  m_EditorClassIdentifier: 
+  m_EditorClassIdentifier: 
+  m_EditorClassIdentifier: 
+  m_EditorClassIdentifier: 
+  m_EditorClassIdentifier: 
+  m_EditorClassIdentifier: 
+  m_EditorClassIdentifier: 
+  m_EditorClassIdentifier: 
+  m_EditorClassIdentifier: 
+  m_EditorClassIdentifier: 
+  m_EditorClassIdentifier: 
+  m_EditorClassIdentifier: 
+  m_EditorClassIdentifier: 
+  m_EditorClassIdentifier: 
+  m_EditorClassIdentifier: 
   m_EditorClassIdentifier: 
   m_EditorClassIdentifier: 
   m_EditorClassIdentifier: 
@@ -27127,6 +27245,32 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_EditorClassIdentifier: 
   m_EditorClassIdentifier: 
+  m_EditorClassIdentifier: 
+  m_EditorClassIdentifier: 
+  m_EditorClassIdentifier: 
+  m_EditorClassIdentifier: 
+  m_EditorClassIdentifier: 
+  m_EditorClassIdentifier: 
+  m_EditorClassIdentifier: 
+  m_EditorClassIdentifier: 
+  m_EditorClassIdentifier: 
+  m_EditorClassIdentifier: 
+  m_EditorClassIdentifier: 
+  m_EditorClassIdentifier: 
+  m_EditorClassIdentifier: 
+  m_EditorClassIdentifier: 
+  m_EditorClassIdentifier: 
+  m_EditorClassIdentifier: 
+  m_EditorClassIdentifier: 
+  m_EditorClassIdentifier: 
+  m_EditorClassIdentifier: 
+  m_EditorClassIdentifier: 
+  m_EditorClassIdentifier: 
+  m_EditorClassIdentifier: 
+  m_EditorClassIdentifier: 
+  m_EditorClassIdentifier: 
+  m_EditorClassIdentifier: 
+  m_EditorClassIdentifier: 
 --- !u!114 &1666304348
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -27138,6 +27282,32 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5023b47652ca9b34d807476a6f7fddbb, type: 3}
   m_Name: 
+  m_EditorClassIdentifier: 
+  m_EditorClassIdentifier: 
+  m_EditorClassIdentifier: 
+  m_EditorClassIdentifier: 
+  m_EditorClassIdentifier: 
+  m_EditorClassIdentifier: 
+  m_EditorClassIdentifier: 
+  m_EditorClassIdentifier: 
+  m_EditorClassIdentifier: 
+  m_EditorClassIdentifier: 
+  m_EditorClassIdentifier: 
+  m_EditorClassIdentifier: 
+  m_EditorClassIdentifier: 
+  m_EditorClassIdentifier: 
+  m_EditorClassIdentifier: 
+  m_EditorClassIdentifier: 
+  m_EditorClassIdentifier: 
+  m_EditorClassIdentifier: 
+  m_EditorClassIdentifier: 
+  m_EditorClassIdentifier: 
+  m_EditorClassIdentifier: 
+  m_EditorClassIdentifier: 
+  m_EditorClassIdentifier: 
+  m_EditorClassIdentifier: 
+  m_EditorClassIdentifier: 
+  m_EditorClassIdentifier: 
   m_EditorClassIdentifier: 
   m_EditorClassIdentifier: 
   m_EditorClassIdentifier: 
@@ -28625,8 +28795,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ad84a2fa37c1a45e5ab5b945a799e4fa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  normal_texture: []
+  disabled_texture: []
+  held_texture: []
   tapped: 0
   held: 0
+  released: 0
+  effects:
+    sunkenWhenPressed: 1
+    sunkenRate: .879999995
+    sunkenAnimation: 1
+    sunkenAnimationInitialVelocity: .0199999996
+    sunkenAnimationVelocityAcceleration: .0199999996
+    sunkenAnimationMinScale: .860000014
+    sunkenAnimationMaxScale: 1.00999999
+    sunkenAnimationTime: 0
+    tapSFX: {fileID: 0}
 --- !u!131 &1776277315
 GUITexture:
   m_ObjectHideFlags: 0
@@ -30489,7 +30673,7 @@ Renderer:
   m_LightmapIndex: 255
   m_LightmapTilingOffset: {x: 1, y: 1, z: 0, w: 0}
   m_Materials:
-  - {fileID: 2100000, guid: 9f859714113aa4fd89e47f7b1abb28e6, type: 2}
+  - {fileID: 2100000, guid: 7e9f81ca4294d4e1988deb3ae2a82964, type: 2}
   m_SubsetIndices: 
   m_StaticBatchRoot: {fileID: 0}
   m_UseLightProbes: 0
@@ -31569,7 +31753,7 @@ Renderer:
   m_LightmapIndex: 255
   m_LightmapTilingOffset: {x: 1, y: 1, z: 0, w: 0}
   m_Materials:
-  - {fileID: 2100000, guid: 9f859714113aa4fd89e47f7b1abb28e6, type: 2}
+  - {fileID: 2100000, guid: 7e9f81ca4294d4e1988deb3ae2a82964, type: 2}
   m_SubsetIndices: 
   m_StaticBatchRoot: {fileID: 0}
   m_UseLightProbes: 0

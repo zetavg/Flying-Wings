@@ -90,7 +90,7 @@ private var control_buffer_rate = 7;
 private var update_buffer_c = 0;
 private var buffer_forward = new float[control_buffer_rate];
 private var buffer_input_rotate_y = new float[control_buffer_rate];
-private var buffer_rotate_right = new float[control_buffer_rate];
+private var buffer_input_rotate_x = new float[control_buffer_rate];
 private var TDMG_Wire_max_distance = 2/0.02;
 
 
@@ -156,9 +156,6 @@ function Start () {
 
 	// Initialize Variables //
 
-	for (i in buffer_forward) { buffer_forward[i] = 0; };
-	for (i in buffer_input_rotate_y) { buffer_input_rotate_y[i] = 0; };
-	for (i in buffer_rotate_right) { buffer_rotate_right[i] = 0; };
 
 	// Find GameObjects //
 
@@ -203,18 +200,14 @@ function FixedUpdate () {
 	}
 
 	// X (up & down)
-	buffer_rotate_right[update_buffer_c] = Input.acceleration.y+0.6;
-	var rotate_right = 0.0;
-	for (i=0; i<control_buffer_rate; i++)
-		rotate_right += buffer_rotate_right[i];
-	rotate_right /= control_buffer_rate;
+	var input_rotate_x = GetInputAcceleration_y();
 
-	if (rotate_right > 0.4) rotate_right = 0.4;
-	else if (rotate_right < -0.4) rotate_right = -0.4;
-	if (rotate_right > 0.34) rotate_right += (rotate_right-0.34)*3;
+	if (input_rotate_x > 0.4) input_rotate_x = 0.4;
+	else if (input_rotate_x < -0.4) input_rotate_x = -0.4;
+	if (input_rotate_x > 0.34) input_rotate_x += (input_rotate_x-0.34)*3;
 
-	TargetW.transform.localRotation.x = rotate_right;
-	MainCamW.transform.localRotation.x += (rotate_right/3-MainCamW.transform.localRotation.x)/10;
+	TargetW.transform.localRotation.x = input_rotate_x;
+	MainCamW.transform.localRotation.x += (input_rotate_x/3-MainCamW.transform.localRotation.x)/10;
 
 
 
@@ -462,7 +455,7 @@ function FixedUpdate () {
 	}
 
 
-	// rotate_right
+	// input_rotate_x
 	//print(TargetW.transform.position);
 	//print(TDMG_Attacher.transform.position);
 
