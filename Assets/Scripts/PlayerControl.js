@@ -95,11 +95,11 @@ private var TDMG_Wire_max_distance = 2/0.02;
 
 
 // Gravity //
-var gravity_buffer_rate = 8;  // 緩衝區大小
-var gravity_buffer_i_x = 0;  // 緩衝區計數器
-var gravity_buffer_i_y = 0;  // 緩衝區計數器
-var InputAcceleration_x_buffer = new float[gravity_buffer_rate];  // 緩衝區
-var InputAcceleration_y_buffer = new float[gravity_buffer_rate];  // 緩衝區
+private var gravity_buffer_rate = 8;  // 緩衝區大小
+private var gravity_buffer_i_x = 0;  // 緩衝區計數器
+private var gravity_buffer_i_y = 0;  // 緩衝區計數器
+private var InputAcceleration_x_buffer = new float[gravity_buffer_rate];  // 緩衝區
+private var InputAcceleration_y_buffer = new float[gravity_buffer_rate];  // 緩衝區
 for (i=0 ; i<gravity_buffer_rate ; i++) {  // 緩衝區歸零
 	InputAcceleration_x_buffer[i] = 0;
 	InputAcceleration_y_buffer[i] = 0;
