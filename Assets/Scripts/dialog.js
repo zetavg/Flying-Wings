@@ -17,6 +17,8 @@ var menu_group : GameObject;
 
 dialog_group = GameObject.Find("dialog_group");
 
+var controlButtons : GameObject[];
+
 
 function Update ()
 {
@@ -48,7 +50,7 @@ function Update ()
 		menu_group.SetActive(true);
 	}
 
-	var controlButtons : GameObject[];
+	//Texture Control
 	controlButtons = GameObject.FindGameObjectsWithTag("ControlButton");
 
 	for (var each in controlButtons)
