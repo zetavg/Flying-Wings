@@ -243,8 +243,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ad84a2fa37c1a45e5ab5b945a799e4fa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  normal_texture: {fileID: 0}
+  disabled_texture: {fileID: 0}
+  held_texture: {fileID: 0}
   tapped: 0
   held: 0
+  released: 0
 --- !u!1 &715263098
 GameObject:
   m_ObjectHideFlags: 0
@@ -303,8 +307,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ad84a2fa37c1a45e5ab5b945a799e4fa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  normal_texture: {fileID: 0}
+  disabled_texture: {fileID: 0}
+  held_texture: {fileID: 0}
   tapped: 0
   held: 0
+  released: 0
 --- !u!1 &840082710
 GameObject:
   m_ObjectHideFlags: 0
@@ -409,8 +417,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ad84a2fa37c1a45e5ab5b945a799e4fa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  normal_texture: {fileID: 0}
+  disabled_texture: {fileID: 0}
+  held_texture: {fileID: 0}
   tapped: 0
   held: 0
+  released: 0
 --- !u!1 &939352965
 GameObject:
   m_ObjectHideFlags: 0
@@ -439,8 +451,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ad84a2fa37c1a45e5ab5b945a799e4fa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  normal_texture: {fileID: 0}
+  disabled_texture: {fileID: 0}
+  held_texture: {fileID: 0}
   tapped: 0
   held: 0
+  released: 0
 --- !u!131 &939352967
 GUITexture:
   m_ObjectHideFlags: 0
@@ -529,8 +545,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ad84a2fa37c1a45e5ab5b945a799e4fa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  normal_texture: {fileID: 0}
+  disabled_texture: {fileID: 0}
+  held_texture: {fileID: 0}
   tapped: 0
   held: 0
+  released: 0
 --- !u!1 &1365754755
 GameObject:
   m_ObjectHideFlags: 0

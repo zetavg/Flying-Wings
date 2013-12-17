@@ -15,18 +15,6 @@ var training : TapButton;
 var profile : TapButton;
 var menu_group : GameObject;
 
-//Textures...
-var hold_texture : Texture2D;//for testing
-
-var quit_texture : Texture2D;
-var yes_texture : Texture2D;
-var no_texture : Texture2D;
-
-var quit_texture_hold : Texture2D;
-var yes_texture_hold : Texture2D;
-var no_texture_hold : Texture2D;
-
-
 dialog_group = GameObject.Find("dialog_group");
 
 
@@ -60,17 +48,15 @@ function Update ()
 		menu_group.SetActive(true);
 	}
 
-	if (yes.held == false || no.held == false || quit.held == false)
+	var controlButtons : GameObject[];
+	controlButtons = GameObject.FindGameObjectsWithTag("ControlButton");
+
+	for (var each in controlButtons)
 	{
-		quit.guiTexture.texture = quit_texture;
-		yes.guiTexture.texture = yes_texture;
-		no.guiTexture.texture = no_texture;		
+		var tb = each.GetComponent(TapButton);
+		if (tb.released || !tb.held) tb.guiTexture.texture = tb.normal_texture;
+		if (tb.held) tb.guiTexture.texture = tb.held_texture;
 	}
-
-	if (quit.held) quit.guiTexture.texture = hold_texture;
-	if (yes.held) yes.guiTexture.texture = hold_texture;
-	if (no.held) no.guiTexture.texture = hold_texture;
-
 }
 
 function Awake() {
@@ -78,7 +64,7 @@ function Awake() {
 }
 
 function Delay1sAndInactive() {
-	yield WaitForSeconds(1);
+	yield WaitForSeconds(1.5);
 	dialog_group.SetActive(false);
 }
 

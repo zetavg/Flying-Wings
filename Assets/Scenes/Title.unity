@@ -132,7 +132,7 @@ GameObject:
   - 114: {fileID: 597932385}
   m_Layer: 0
   m_Name: profile
-  m_TagString: Untagged
+  m_TagString: ControlButton
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -155,13 +155,13 @@ GUITexture:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 597932382}
   m_Enabled: 1
-  m_Texture: {fileID: 2800000, guid: 20c5792876702482cabd086295e56d04, type: 3}
+  m_Texture: {fileID: 2800000, guid: 455c09d11b7d3482aa0e09433eb0dbb2, type: 3}
   m_Color: {r: .5, g: .5, b: .5, a: .5}
   m_PixelInset:
     serializedVersion: 2
-    x: 416.200012
+    x: 416.899994
     y: 118.199997
-    width: 235
+    width: 275.399994
     height: 55
   m_LeftBorder: 0
   m_RightBorder: 0
@@ -178,8 +178,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ad84a2fa37c1a45e5ab5b945a799e4fa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  normal_texture: {fileID: 2800000, guid: 455c09d11b7d3482aa0e09433eb0dbb2, type: 3}
+  disabled_texture: {fileID: 0}
+  held_texture: {fileID: 2800000, guid: 899c3ffa09f724cd8a016c2f123c052a, type: 3}
   tapped: 0
   held: 0
+  released: 0
 --- !u!1 &605295648
 GameObject:
   m_ObjectHideFlags: 0
@@ -192,7 +196,7 @@ GameObject:
   - 114: {fileID: 605295651}
   m_Layer: 0
   m_Name: quit
-  m_TagString: Untagged
+  m_TagString: ControlButton
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -204,13 +208,13 @@ GUITexture:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 605295648}
   m_Enabled: 1
-  m_Texture: {fileID: 2800000, guid: 2b9613cc7c73044739d9a3a13273c165, type: 3}
+  m_Texture: {fileID: 2800000, guid: dc1d0e82f842148a8ba8bc3389ea7df4, type: 3}
   m_Color: {r: .5, g: .5, b: .5, a: .5}
   m_PixelInset:
     serializedVersion: 2
-    x: 17.7000008
+    x: -43.2999992
     y: -.5
-    width: 100
+    width: 229.600006
     height: 50
   m_LeftBorder: 0
   m_RightBorder: 0
@@ -238,8 +242,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ad84a2fa37c1a45e5ab5b945a799e4fa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  normal_texture: {fileID: 2800000, guid: dc1d0e82f842148a8ba8bc3389ea7df4, type: 3}
+  disabled_texture: {fileID: 0}
+  held_texture: {fileID: 2800000, guid: 4068721c8057c448ba8efcce38d60d70, type: 3}
   tapped: 0
   held: 0
+  released: 0
 --- !u!1 &772153398
 GameObject:
   m_ObjectHideFlags: 0
@@ -252,7 +260,7 @@ GameObject:
   - 114: {fileID: 772153401}
   m_Layer: 0
   m_Name: setting
-  m_TagString: Untagged
+  m_TagString: ControlButton
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -264,13 +272,13 @@ GUITexture:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 772153398}
   m_Enabled: 1
-  m_Texture: {fileID: 2800000, guid: c218b3d3c130640bab880447e52f4296, type: 3}
+  m_Texture: {fileID: 2800000, guid: 48d894b5678b9420ea580d5382aa6ed3, type: 3}
   m_Color: {r: .5, g: .5, b: .5, a: .5}
   m_PixelInset:
     serializedVersion: 2
-    x: 440.799988
-    y: 7.48000002
-    width: 201.199997
+    x: 390.700012
+    y: 4.0999999
+    width: 321.600006
     height: 55
   m_LeftBorder: 0
   m_RightBorder: 0
@@ -298,8 +306,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ad84a2fa37c1a45e5ab5b945a799e4fa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  normal_texture: {fileID: 2800000, guid: 48d894b5678b9420ea580d5382aa6ed3, type: 3}
+  disabled_texture: {fileID: 0}
+  held_texture: {fileID: 2800000, guid: 926b8ef58ce474f5ab2ae3d37cc85bc9, type: 3}
   tapped: 0
   held: 0
+  released: 0
 --- !u!1 &832930104
 GameObject:
   m_ObjectHideFlags: 0
@@ -518,13 +530,6 @@ MonoBehaviour:
   training: {fileID: 1127514005}
   profile: {fileID: 597932385}
   menu_group: {fileID: 1707630619}
-  hold_texture: {fileID: 2800000, guid: 3e09c053321f54a16ba432f8175c68aa, type: 3}
-  quit_texture: {fileID: 2800000, guid: 2b9613cc7c73044739d9a3a13273c165, type: 3}
-  yes_texture: {fileID: 2800000, guid: d666fadefe08b43e88d49cc4570ba1a1, type: 3}
-  no_texture: {fileID: 2800000, guid: 383445a347fe0437691f063507a99d35, type: 3}
-  quit_texture_hold: {fileID: 0}
-  yes_texture_hold: {fileID: 0}
-  no_texture_hold: {fileID: 0}
 --- !u!1 &1127514002
 GameObject:
   m_ObjectHideFlags: 0
@@ -537,7 +542,7 @@ GameObject:
   - 114: {fileID: 1127514005}
   m_Layer: 0
   m_Name: training
-  m_TagString: Untagged
+  m_TagString: ControlButton
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -560,13 +565,13 @@ GUITexture:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1127514002}
   m_Enabled: 1
-  m_Texture: {fileID: 2800000, guid: a176c7b4d4f9d47a09c920e329d1d158, type: 3}
+  m_Texture: {fileID: 2800000, guid: 6e3ac95ab9124496085894e53bda7513, type: 3}
   m_Color: {r: .5, g: .5, b: .5, a: .5}
   m_PixelInset:
     serializedVersion: 2
-    x: 410.700012
-    y: 63.9000015
-    width: 235
+    x: 412.600006
+    y: 53.5
+    width: 284.299988
     height: 55
   m_LeftBorder: 0
   m_RightBorder: 0
@@ -583,8 +588,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ad84a2fa37c1a45e5ab5b945a799e4fa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  normal_texture: {fileID: 2800000, guid: 6e3ac95ab9124496085894e53bda7513, type: 3}
+  disabled_texture: {fileID: 0}
+  held_texture: {fileID: 2800000, guid: 38e26091c06c04f78a0406ee6aadd991, type: 3}
   tapped: 0
   held: 0
+  released: 0
 --- !u!1 &1128133662
 GameObject:
   m_ObjectHideFlags: 0
@@ -645,7 +654,7 @@ GameObject:
   - 114: {fileID: 1575020657}
   m_Layer: 0
   m_Name: NO
-  m_TagString: Untagged
+  m_TagString: ControlButton
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -706,8 +715,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ad84a2fa37c1a45e5ab5b945a799e4fa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  normal_texture: {fileID: 2800000, guid: 383445a347fe0437691f063507a99d35, type: 3}
+  disabled_texture: {fileID: 0}
+  held_texture: {fileID: 2800000, guid: 3e09c053321f54a16ba432f8175c68aa, type: 3}
   tapped: 0
   held: 0
+  released: 0
 --- !u!1 &1707630619
 GameObject:
   m_ObjectHideFlags: 0
@@ -751,7 +764,7 @@ GameObject:
   - 114: {fileID: 2022679338}
   m_Layer: 0
   m_Name: YES
-  m_TagString: Untagged
+  m_TagString: ControlButton
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -812,8 +825,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ad84a2fa37c1a45e5ab5b945a799e4fa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  normal_texture: {fileID: 2800000, guid: d666fadefe08b43e88d49cc4570ba1a1, type: 3}
+  disabled_texture: {fileID: 0}
+  held_texture: {fileID: 2800000, guid: 3e09c053321f54a16ba432f8175c68aa, type: 3}
   tapped: 0
   held: 0
+  released: 0
 --- !u!1 &2060512004
 GameObject:
   m_ObjectHideFlags: 0
@@ -826,7 +843,7 @@ GameObject:
   - 114: {fileID: 2060512007}
   m_Layer: 0
   m_Name: play
-  m_TagString: Untagged
+  m_TagString: ControlButton
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -849,13 +866,13 @@ GUITexture:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 2060512004}
   m_Enabled: 1
-  m_Texture: {fileID: 2800000, guid: 1bfd00f0b66d04b2cb2506d4073bdb92, type: 3}
+  m_Texture: {fileID: 2800000, guid: a32e31253f219404687f3dc120a8f6f1, type: 3}
   m_Color: {r: .5, g: .5, b: .5, a: .5}
   m_PixelInset:
     serializedVersion: 2
-    x: 463.899994
+    x: 402.299988
     y: 176.800003
-    width: 127.099998
+    width: 290.299988
     height: 55
   m_LeftBorder: 0
   m_RightBorder: 0
@@ -872,5 +889,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ad84a2fa37c1a45e5ab5b945a799e4fa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  normal_texture: {fileID: 2800000, guid: a32e31253f219404687f3dc120a8f6f1, type: 3}
+  disabled_texture: {fileID: 0}
+  held_texture: {fileID: 2800000, guid: a04bbc856289c40f4b843999189b158c, type: 3}
   tapped: 0
   held: 0
+  released: 0
