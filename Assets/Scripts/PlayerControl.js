@@ -548,8 +548,8 @@ function FixedUpdate () {
 	var MainCam_behind_ray_hit : RaycastHit;
 	Physics.Raycast(MainCam_behind_ray, MainCam_behind_ray_hit);
 	var MainCam_behind_distance = (MainCamW.transform.position+MainCamW.transform.up - MainCam_behind_ray_hit.point).magnitude;
-	if (MainCam_behind_distance < 3.05) {
-		MainCam.transform.localPosition.z = -MainCam_behind_distance+0.05;
+	if (MainCam_behind_distance < -MainCam.transform.localPosition.z+0.1) {
+		MainCam.transform.localPosition.z = -MainCam_behind_distance+0.1;
 	}
 
 	// Debug //
