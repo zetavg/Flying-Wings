@@ -196,29 +196,29 @@ function FixedUpdate () {
 	// Y (left & right)
 	var input_rotate_y = GetInputAngle_y();
 
-	if (input_rotate_y > 0.4) input_rotate_y = 0.4;
-	else if (input_rotate_y < -0.4) input_rotate_y = -0.4;
+	if (input_rotate_y > 0.25) input_rotate_y = 0.25;  // limit
+	else if (input_rotate_y < -0.25) input_rotate_y = -0.25;
 
-	TargetW.transform.localRotation.y = input_rotate_y;
-	MainCamW.transform.localRotation.y += (input_rotate_y/3-MainCamW.transform.localRotation.y)/10;
+	TargetW.transform.localRotation.eulerAngles.y = input_rotate_y*160;
+	MainCamW.transform.localRotation.eulerAngles.y = input_rotate_y*80;
 	if (input_rotate_y > 0.1) {
-		transform.Rotate(Vector3.up, (TargetW.transform.localRotation.y-0.1)*5);
+		transform.Rotate(Vector3.up, (TargetW.transform.localRotation.y-0.1)*30);
 	} else if (input_rotate_y < -0.1) {
-		transform.Rotate(Vector3.up, (TargetW.transform.localRotation.y+0.1)*5);
+		transform.Rotate(Vector3.up, (TargetW.transform.localRotation.y+0.1)*30);
 	}
 
 	// X (up & down)
 	var input_rotate_x = GetInputAngle_x();
 
-	// print(input_rotate_x+ " " + input_rotate_y);
+	if (input_rotate_x > 0.25) input_rotate_x = 0.25;  // limit
+	else if (input_rotate_x < -0.25) input_rotate_x = -0.25;
+	//if (input_rotate_x > 0.34) input_rotate_x += (input_rotate_x-0.34)*3;
 
-	// Limit
-	if (input_rotate_x > 0.4) input_rotate_x = 0.4;
-	else if (input_rotate_x < -0.4) input_rotate_x = -0.4;
-	if (input_rotate_x > 0.34) input_rotate_x += (input_rotate_x-0.34)*3;
+	TargetW.transform.localRotation.eulerAngles.x = -input_rotate_x*160;
+	MainCamW.transform.localRotation.eulerAngles.x = -input_rotate_x*80;
 
-	TargetW.transform.localRotation.x = input_rotate_x;
-	MainCamW.transform.localRotation.x += (input_rotate_x/3-MainCamW.transform.localRotation.x)/10;
+	// Camera
+	MainCam.transform.LookAt(Target.transform.position);
 
 	// Debug
 	print("x " + input_rotate_x + " y " + input_rotate_y);

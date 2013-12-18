@@ -16451,6 +16451,10 @@ Prefab:
       propertyPath: m_LocalPosition.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 400078, guid: 29aa22aed289b4bc2899a5f8c3757c9a, type: 2}
+      propertyPath: m_LocalPosition.y
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 29aa22aed289b4bc2899a5f8c3757c9a, type: 2}
   m_RootGameObject: {fileID: 1392255719}
@@ -19052,7 +19056,7 @@ Transform:
   m_PrefabInternal: {fileID: 1022705943}
   m_GameObject: {fileID: 1155245603}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1.08042669, z: -3}
+  m_LocalPosition: {x: 0, y: 1, z: -3}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 2003370679}
@@ -22966,6 +22970,7 @@ MonoBehaviour:
   prev_y: 0
   prev_velocity: {x: 0, y: 0, z: 0}
   fire_start_time: 0
+  gravitySensitivity: 1
 --- !u!54 &1392255723
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -25320,6 +25325,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_EditorClassIdentifier: 
   m_EditorClassIdentifier: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1526328317
 GameObject:
   m_ObjectHideFlags: 0
@@ -27271,6 +27277,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_EditorClassIdentifier: 
   m_EditorClassIdentifier: 
+  m_EditorClassIdentifier: 
 --- !u!114 &1666304348
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -27282,6 +27289,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5023b47652ca9b34d807476a6f7fddbb, type: 3}
   m_Name: 
+  m_EditorClassIdentifier: 
   m_EditorClassIdentifier: 
   m_EditorClassIdentifier: 
   m_EditorClassIdentifier: 
