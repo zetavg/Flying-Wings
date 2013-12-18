@@ -186,8 +186,13 @@ function Start () {
 
 function FixedUpdate () {
 
+	// Variables
+	//////////////////////////////////////////////////////////////////
+
+	var forward_speed = transform.InverseTransformDirection(rigidbody.velocity).z;
+
 	// Basic Controls and Controls SFX
-	//////////////////////////////////////////////////////////////////////
+	//////////////////////////////////////////////////////////////////
 
 	var TDMG_Gear_sound = 0;
 
@@ -199,12 +204,12 @@ function FixedUpdate () {
 	if (input_rotate_y > 0.25) input_rotate_y = 0.25;  // limit
 	else if (input_rotate_y < -0.25) input_rotate_y = -0.25;
 
-	TargetW.transform.localRotation.eulerAngles.y = input_rotate_y*160;
-	MainCamW.transform.localRotation.eulerAngles.y = input_rotate_y*80;
+	TargetW.transform.localRotation.eulerAngles.y = input_rotate_y*200;
+	MainCamW.transform.localRotation.eulerAngles.y = input_rotate_y*100;
 	if (input_rotate_y > 0.1) {
-		transform.Rotate(Vector3.up, (TargetW.transform.localRotation.y-0.1)*30);
+		transform.Rotate(Vector3.up, (input_rotate_y-0.1)*20);
 	} else if (input_rotate_y < -0.1) {
-		transform.Rotate(Vector3.up, (TargetW.transform.localRotation.y+0.1)*30);
+		transform.Rotate(Vector3.up, (input_rotate_y+0.1)*20);
 	}
 
 	// X (up & down)
@@ -214,14 +219,14 @@ function FixedUpdate () {
 	else if (input_rotate_x < -0.25) input_rotate_x = -0.25;
 	//if (input_rotate_x > 0.34) input_rotate_x += (input_rotate_x-0.34)*3;
 
-	TargetW.transform.localRotation.eulerAngles.x = -input_rotate_x*160;
-	MainCamW.transform.localRotation.eulerAngles.x = -input_rotate_x*80;
+	TargetW.transform.localRotation.eulerAngles.x = -input_rotate_x*200;
+	MainCamW.transform.localRotation.eulerAngles.x = -input_rotate_x*100;
 
 	// Camera
-	MainCam.transform.LookAt(Target.transform.position);
+	//MainCam.transform.LookAt(Target.transform.position);
 
 	// Debug
-	print("x " + input_rotate_x + " y " + input_rotate_y);
+	//print("x " + input_rotate_x + " y " + input_rotate_y);
 
 
 
@@ -250,7 +255,7 @@ function FixedUpdate () {
 
 
 	// Wire
-	//////////////////////////////////////////////////////////////////////
+	//////////////////////////////////////////////////////////////////
 
 	// 總體狀態，及 GUI 反應 //
 	var FireBotton_status;  // 0: Fire, 1: Pull, 2: Disabled.
@@ -471,7 +476,7 @@ function FixedUpdate () {
 	//print(TDMG_Attacher.transform.position);
 
 	// Kill
-	//////////////////////////////////////////////////////////////////////
+	//////////////////////////////////////////////////////////////////
 
 	if (kill_mode == 2) {
 		audio.PlayOneShot(Kill_sound, 1);
@@ -479,7 +484,7 @@ function FixedUpdate () {
 
 
 	// Moving Animation
-	//////////////////////////////////////////////////////////////////////
+	//////////////////////////////////////////////////////////////////
 
 	// Decide speed state
 	if (speed_state == 0 && rigidbody.velocity.magnitude > 0.01)  // 0 to 1
@@ -533,8 +538,31 @@ function FixedUpdate () {
 	}
 
 
+	// Camera
+	//////////////////////////////////////////////////////////////////
+
+	//MainCam.camera.fieldOfView += ((72 + forward_speed*2 - 8) - MainCam.camera.fieldOfView)/10;
+	MainCam.transform.localPosition.z += ((-3 - forward_speed/4 + 1) - MainCam.transform.localPosition.z)/10;
+
+	var MainCam_behind_ray : Ray = Ray(MainCamW.transform.position+MainCamW.transform.up, -MainCamW.transform.forward);
+	var MainCam_behind_ray_hit : RaycastHit;
+	Physics.Raycast(MainCam_behind_ray, MainCam_behind_ray_hit);
+	var MainCam_behind_distance = (MainCamW.transform.position+MainCamW.transform.up - MainCam_behind_ray_hit.point).magnitude;
+	if (MainCam_behind_distance < 3.05) {
+		MainCam.transform.localPosition.z = -MainCam_behind_distance+0.05;
+	}
+
+	// Debug //
+	//print("MCFieldOfView " + MainCam.camera.fieldOfView);
+	Debug.DrawLine(MainCamW.transform.position+MainCamW.transform.up, MainCam_behind_ray_hit.point);
+	//Debug.DrawLine(MainCamW.transform.position+MainCamW.transform.up+MainCam.transform.forward, MainCamW.transform.position+MainCamW.transform.up);
+	//print("MainCam_behind_distance " + MainCam_behind_distance);
+	//print("MainCam.transform.forward " + MainCam.transform.forward);
+	print("MainCam.transform.forward " + MainCam.transform.forward);
+
+
 	// Update var
-	//////////////////////////////////////////////////////////////////////
+	//////////////////////////////////////////////////////////////////
 
 	update_buffer_c++;
 	if (update_buffer_c >= control_buffer_rate) update_buffer_c = 0;
