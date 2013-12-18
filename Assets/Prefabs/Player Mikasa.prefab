@@ -672,7 +672,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!1 &100086
 GameObject:
   m_ObjectHideFlags: 0
@@ -1355,7 +1355,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 100082}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1, z: 5}
+  m_LocalPosition: {x: 0, y: 0, z: 1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 400084}
@@ -2000,6 +2000,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 606ea067949ea4fa38cb383d26589b3a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  rotate_cam: 0
+  max_speed: 30
   PlayerControlsGUI: {fileID: 100074}
   Gear: {fileID: 0}
   Joystick: {fileID: 0}
@@ -2030,8 +2032,9 @@ MonoBehaviour:
   TDMG_Attacher_R: {fileID: 0}
   on_ground: 0
   prev_y: 0
+  prev_velocity: {x: 0, y: 0, z: 0}
   fire_start_time: 0
-  t001a: 0
+  gravitySensitivity: 1
 --- !u!114 &11400002
 MonoBehaviour:
   m_ObjectHideFlags: 1

@@ -97,7 +97,9 @@ private var TDMG_Wire_max_distance = 2/0.02;
 // Gravity //
 
 public var gravitySensitivity = 1.0;
-private var gravity_buffer_rate = 100;  // 緩衝區大小
+private var gc_speed_up_range = 0.3;
+private var gc_no_rotate_range = 0.1;
+private var gravity_buffer_rate = 12;  // 緩衝區大小
 private var gravity_buffer_i_x = 0;  // 緩衝區計數器
 private var gravity_buffer_i_y = 0;  // 緩衝區計數器
 private var InputAngle_x_buffer = new float[gravity_buffer_rate];  // 緩衝區
@@ -112,7 +114,7 @@ for (i=0 ; i<gravity_buffer_rate ; i++) {  // 緩衝區歸零
  *
  * @return {boolean}.
  */
-function GetInputAngle_x() {
+function GetInputAngle_y() {
 	if (++gravity_buffer_i_x >= gravity_buffer_rate) gravity_buffer_i_x = 0;
 	var input_acceleration_x = Input.acceleration.x;
 	if (input_acceleration_x > 1) input_acceleration_x = 1;
@@ -131,7 +133,7 @@ function GetInputAngle_x() {
  *
  * @return {boolean}.
  */
-function GetInputAngle_y() {
+function GetInputAngle_x() {
 	if (++gravity_buffer_i_y >= gravity_buffer_rate) gravity_buffer_i_y = 0;
 	var input_acceleration_y = Input.acceleration.y;
 	if (input_acceleration_y > 1) input_acceleration_y = 1;
@@ -194,31 +196,31 @@ function FixedUpdate () {
 	// Rotation (Gravity) //
 
 	// Y (left & right)
-	var input_rotate_y = GetInputAngle_x();
+	var input_rotate_y = GetInputAngle_y();
 
-	if (input_rotate_y > 0.4) input_rotate_y = 0.4;
+	if (input_rotate_y > 0.4) input_rotate_y = 0.4;  // limit
 	else if (input_rotate_y < -0.4) input_rotate_y = -0.4;
 
-	TargetW.transform.localRotation.y = input_rotate_y;
-	MainCamW.transform.localRotation.y += (input_rotate_y/3-MainCamW.transform.localRotation.y)/10;
+	TargetW.transform.localRotation.eulerAngles.y = input_rotate_y*input_rotate_y*100;
+/*	MainCamW.transform.localRotation.y += (input_rotate_y/3-MainCamW.transform.localRotation.y)/10;
 	if (input_rotate_y > 0.1) {
 		transform.Rotate(Vector3.up, (TargetW.transform.localRotation.y-0.1)*5);
 	} else if (input_rotate_y < -0.1) {
 		transform.Rotate(Vector3.up, (TargetW.transform.localRotation.y+0.1)*5);
-	}
+	}*/
 
 	// X (up & down)
-	var input_rotate_x = GetInputAngle_y();
+	var input_rotate_x = GetInputAngle_x();
 
 	// print(input_rotate_x+ " " + input_rotate_y);
 
 	// Limit
 	if (input_rotate_x > 0.4) input_rotate_x = 0.4;
 	else if (input_rotate_x < -0.4) input_rotate_x = -0.4;
-	if (input_rotate_x > 0.34) input_rotate_x += (input_rotate_x-0.34)*3;
+	//if (input_rotate_x > 0.34) input_rotate_x += (input_rotate_x-0.34)*3;
 
-	TargetW.transform.localRotation.x = input_rotate_x;
-	MainCamW.transform.localRotation.x += (input_rotate_x/3-MainCamW.transform.localRotation.x)/10;
+	TargetW.transform.localRotation.eulerAngles.x = -input_rotate_x*input_rotate_x*100;
+/*	MainCamW.transform.localRotation.x += (input_rotate_x/3-MainCamW.transform.localRotation.x)/10;*/
 
 	// Debug
 	print("x " + input_rotate_x + " y " + input_rotate_y);
@@ -232,7 +234,7 @@ function FixedUpdate () {
 		forward += buffer_forward[i];
 	forward /= control_buffer_rate;
 	if (forward < 1) forward = 0;
-	if (on_ground) {  // 地上走
+/*	if (on_ground) {  // 地上走
 		if (forward < 1 && Mathf.Abs(input_rotate_y) > 0.15) {  // 禁止在地面定點旋轉，若要旋轉，則強制加力前進
 			forward = 0.9 + Mathf.Abs(input_rotate_y)*2;
 		}
@@ -246,7 +248,7 @@ function FixedUpdate () {
 		if (!hit_thing) rigidbody.AddForce(transform.up * forward/2, ForceMode.Acceleration);
 
 		TDMG_Jet.GetComponent(AudioSource).volume += (forward/100 - TDMG_Jet.GetComponent(AudioSource).volume)/10;
-	}
+	}*/
 
 
 	// Wire
@@ -301,6 +303,7 @@ function FixedUpdate () {
 			if (is_fire_hit) {
 				TDMG.audio.PlayOneShot(TDMG_Fire_sound, 1);
 				Debug.DrawLine(fire_ray.origin, fire_hit.point);
+				Debug.DrawLine(TargetW.transform.position, Target.transform.position);
 	//			TDMG_Attacher.transform.position = fire_hit.point;  // 將 TDMG_Attacher 移至擊中點
 	//			TDMG_Attacher.transform.parent = fire_hit.transform;  // 將 TDMG_Attacher 的 parent 設為被擊中物件，等同將 TDMG_Attacher attach 到被擊中物件上
 
