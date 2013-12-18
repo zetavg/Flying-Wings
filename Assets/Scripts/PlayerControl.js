@@ -95,43 +95,51 @@ private var TDMG_Wire_max_distance = 2/0.02;
 
 
 // Gravity //
-private var gravity_buffer_rate = 8;  // 緩衝區大小
+
+public var gravitySensitivity = 1.0;
+private var gravity_buffer_rate = 100;  // 緩衝區大小
 private var gravity_buffer_i_x = 0;  // 緩衝區計數器
 private var gravity_buffer_i_y = 0;  // 緩衝區計數器
-private var InputAcceleration_x_buffer = new float[gravity_buffer_rate];  // 緩衝區
-private var InputAcceleration_y_buffer = new float[gravity_buffer_rate];  // 緩衝區
+private var InputAngle_x_buffer = new float[gravity_buffer_rate];  // 緩衝區
+private var InputAngle_y_buffer = new float[gravity_buffer_rate];  // 緩衝區
 for (i=0 ; i<gravity_buffer_rate ; i++) {  // 緩衝區歸零
-	InputAcceleration_x_buffer[i] = 0;
-	InputAcceleration_y_buffer[i] = 0;
+	InputAngle_x_buffer[i] = 0;
+	InputAngle_y_buffer[i] = 0;
 }
 
 /**
- * Returns the stabilized InputAcceleration_x.
+ * Returns the stabilized InputAngle_x.
  *
  * @return {boolean}.
  */
-function GetInputAcceleration_x() {
+function GetInputAngle_x() {
 	if (++gravity_buffer_i_x >= gravity_buffer_rate) gravity_buffer_i_x = 0;
-	InputAcceleration_x_buffer[gravity_buffer_i_x] = Input.acceleration.x;
+	var input_acceleration_x = Input.acceleration.x;
+	if (input_acceleration_x > 1) input_acceleration_x = 1;
+	else if (input_acceleration_x < -1) input_acceleration_x = -1;
+	InputAngle_x_buffer[gravity_buffer_i_x] = (Mathf.Asin(input_acceleration_x)/(Mathf.PI)-0)*gravitySensitivity;
 	var sum = 0.0;
 	for (i=0 ; i < gravity_buffer_rate ; i++) {
-		sum += InputAcceleration_x_buffer[i];
+		sum += InputAngle_x_buffer[i];
 	}
 	var avg = sum/gravity_buffer_rate;
 	return avg;
 }
 
 /**
- * Returns the stabilized InputAcceleration_y.
+ * Returns the stabilized InputAngle_y.
  *
  * @return {boolean}.
  */
-function GetInputAcceleration_y() {
+function GetInputAngle_y() {
 	if (++gravity_buffer_i_y >= gravity_buffer_rate) gravity_buffer_i_y = 0;
-	InputAcceleration_y_buffer[gravity_buffer_i_y] = Input.acceleration.y;
+	var input_acceleration_y = Input.acceleration.y;
+	if (input_acceleration_y > 1) input_acceleration_y = 1;
+	else if (input_acceleration_y < -1) input_acceleration_y = -1;
+	InputAngle_y_buffer[gravity_buffer_i_y] = (Mathf.Asin(-input_acceleration_y)/(Mathf.PI)-0.2)*2*gravitySensitivity;  // 導正
 	var sum = 0.0;
 	for (i=0 ; i < gravity_buffer_rate ; i++) {
-		sum += InputAcceleration_y_buffer[i];
+		sum += InputAngle_y_buffer[i];
 	}
 	var avg = sum/gravity_buffer_rate;
 	return avg;
@@ -186,7 +194,7 @@ function FixedUpdate () {
 	// Rotation (Gravity) //
 
 	// Y (left & right)
-	var input_rotate_y = GetInputAcceleration_x();
+	var input_rotate_y = GetInputAngle_x();
 
 	if (input_rotate_y > 0.4) input_rotate_y = 0.4;
 	else if (input_rotate_y < -0.4) input_rotate_y = -0.4;
@@ -200,14 +208,20 @@ function FixedUpdate () {
 	}
 
 	// X (up & down)
-	var input_rotate_x = GetInputAcceleration_y();
+	var input_rotate_x = GetInputAngle_y();
 
+	// print(input_rotate_x+ " " + input_rotate_y);
+
+	// Limit
 	if (input_rotate_x > 0.4) input_rotate_x = 0.4;
 	else if (input_rotate_x < -0.4) input_rotate_x = -0.4;
 	if (input_rotate_x > 0.34) input_rotate_x += (input_rotate_x-0.34)*3;
 
 	TargetW.transform.localRotation.x = input_rotate_x;
 	MainCamW.transform.localRotation.x += (input_rotate_x/3-MainCamW.transform.localRotation.x)/10;
+
+	// Debug
+	print("x " + input_rotate_x + " y " + input_rotate_y);
 
 
 
@@ -368,8 +382,6 @@ function FixedUpdate () {
 					pull_y_cd = 10;
 					pull_y_count++;
 				}
-				print(transform.position.y+" oo "+pull_target.y+ ' 0 '+ ((pre_position.y-pull_target.y) -(transform.position.y - ((TDMG_Hook_LC.transform.position + TDMG_Hook_RC.transform.position)/2).y)));
-				print('pyc '+pull_y_count);
 				if (pull_y_count < 2) {
 					if (!pull_y_cd) {
 						rigidbody.AddForce((pull_target - (TDMG_Hook_LC.transform.position + TDMG_Hook_RC.transform.position)/2).normalized * wire_speed, ForceMode.VelocityChange);  // 向繩索方向加力
@@ -382,7 +394,6 @@ function FixedUpdate () {
 					var yfa = (pull_target.y - ((TDMG_Hook_LC.transform.position + TDMG_Hook_RC.transform.position)/2).y)/3;
 					yfa -= rigidbody.velocity.y/12;
 					rigidbody.AddForce(transform.up*(yfa), ForceMode.VelocityChange);
-					print("yy " +yfa);
 				}
 
 				TDMG_Gear.GetComponent(AudioSource).volume += ((Vector3.Project(rigidbody.velocity, (pull_target - transform.position).normalized).magnitude) - (TDMG_Gear.GetComponent(AudioSource).volume))/10;
