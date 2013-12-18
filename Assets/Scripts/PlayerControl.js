@@ -97,7 +97,7 @@ private var TDMG_Wire_max_distance = 2/0.02;
 // Gravity //
 
 public var gravitySensitivity = 1.0;
-private var gravity_buffer_rate = 100;  // 緩衝區大小
+private var gravity_buffer_rate = 12;  // 緩衝區大小
 private var gravity_buffer_i_x = 0;  // 緩衝區計數器
 private var gravity_buffer_i_y = 0;  // 緩衝區計數器
 private var InputAngle_x_buffer = new float[gravity_buffer_rate];  // 緩衝區
@@ -108,11 +108,11 @@ for (i=0 ; i<gravity_buffer_rate ; i++) {  // 緩衝區歸零
 }
 
 /**
- * Returns the stabilized InputAngle_x.
+ * Returns the stabilized InputAngle_y.
  *
  * @return {boolean}.
  */
-function GetInputAngle_x() {
+function GetInputAngle_y() {
 	if (++gravity_buffer_i_x >= gravity_buffer_rate) gravity_buffer_i_x = 0;
 	var input_acceleration_x = Input.acceleration.x;
 	if (input_acceleration_x > 1) input_acceleration_x = 1;
@@ -127,11 +127,11 @@ function GetInputAngle_x() {
 }
 
 /**
- * Returns the stabilized InputAngle_y.
+ * Returns the stabilized InputAngle_x.
  *
  * @return {boolean}.
  */
-function GetInputAngle_y() {
+function GetInputAngle_x() {
 	if (++gravity_buffer_i_y >= gravity_buffer_rate) gravity_buffer_i_y = 0;
 	var input_acceleration_y = Input.acceleration.y;
 	if (input_acceleration_y > 1) input_acceleration_y = 1;
@@ -194,7 +194,7 @@ function FixedUpdate () {
 	// Rotation (Gravity) //
 
 	// Y (left & right)
-	var input_rotate_y = GetInputAngle_x();
+	var input_rotate_y = GetInputAngle_y();
 
 	if (input_rotate_y > 0.4) input_rotate_y = 0.4;
 	else if (input_rotate_y < -0.4) input_rotate_y = -0.4;
@@ -208,7 +208,7 @@ function FixedUpdate () {
 	}
 
 	// X (up & down)
-	var input_rotate_x = GetInputAngle_y();
+	var input_rotate_x = GetInputAngle_x();
 
 	// print(input_rotate_x+ " " + input_rotate_y);
 
