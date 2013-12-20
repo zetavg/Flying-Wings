@@ -17,42 +17,29 @@ private var j : int;
 private var t : int;
 
 
-//
+// Constants
+//////////////////////////////////////////////////////////////////////
+
+public var MAX_SPEED = 30.0;  // 玩家在場景中的最大速度, 避免失速
+public var MIN_HEIGHT = -10.0;  // 玩家在場景中的最小高度, 避免墜落
+
+
+// General Settings
 //////////////////////////////////////////////////////////////////////
 
 public var rotate_cam = false;  // 是否旋轉視角, 用於左右旋轉畫面平衡
-public var max_speed = 30.0;  // 玩家在場景中的最大速度, 避免失速
-public var PlayerControlsGUI : GameObject;  // 控制界面
-public var Gear : GameObject;
-public var Joystick : Joystick;
-public var FireBotton : TapButton;
-public var ReleaseBotton : TapButton;
-public var Aim : GameObject;
-public var FireBotton_texture : Texture;
-public var FireBotton_texture_disabled : Texture;
-public var FireBotton_texture_pull : Texture;
-public var FireBotton_texture_pull_pulled : Texture;
-public var ReleaseBotton_texture : Texture;
-public var ReleaseBotton_texture_disabled : Texture;
-public var ReleaseBotton_texture_released : Texture;
-public var Aim_texture : Texture;
-public var Aim_aim_texture : Texture;
-public var TDMG_Fire_sound : AudioClip;  // 射出 hook 的音效
-public var TDMG_Hooked_sound : AudioClip;  // hook 釘住的音效
-public var TDMG_Withdraw_sound : AudioClip;  // 收回 hook 音效
-public var Land_sound : AudioClip;  // 落地音效
-public var Kill_sound : AudioClip;  // 揮刀音效
-
-public var TDMG_Attacher_L : GameObject;
-public var TDMG_Attacher_R : GameObject;
+public var playerName = "Player";
+/* 和控制有關的設定歸類在後面 Controls 部分 */
 
 
 // Character Ability
 //////////////////////////////////////////////////////////////////////
+
 public var characterSpeed = 1.0;  // 角色速度, 地面空中拉繩速度加乘參數
 public var characterFlexibility = 1.0;  // 角色靈活度, 旋轉速度加乘參數
 
-// Self
+
+// Self Body Objects
 //////////////////////////////////////////////////////////////////////
 
 private var MainCamW : GameObject;  // Cam 的容器
@@ -66,6 +53,34 @@ private var TDMG_Hook_RC : GameObject;
 private var TDMG_Hook_L : GameObject;
 private var TDMG_Hook_R : GameObject;
 private var TDMG_Jet : GameObject;
+
+// 3DMG Wire Helpers //
+
+public var TDMG_Aimer : GameObject;
+public var TDMG_Attacher_L : GameObject;
+public var TDMG_Attacher_R : GameObject;
+
+
+// GUI
+//////////////////////////////////////////////////////////////////////
+
+public var PlayerControlGUI : GameObject;  // 控制界面
+public var Joystick : Joystick;
+public var FireBotton : TapButton;
+public var ReleaseBotton : TapButton;
+public var FireBotton_texture : Texture;
+public var FireBotton_texture_disabled : Texture;
+public var FireBotton_texture_pull : Texture;
+public var FireBotton_texture_pull_pulled : Texture;
+public var ReleaseBotton_texture : Texture;
+public var ReleaseBotton_texture_disabled : Texture;
+public var ReleaseBotton_texture_released : Texture;
+public var Aim_texture : Texture;
+public var Aim_aim_texture : Texture;
+
+
+public var Gear : GameObject;
+public var Aim : GameObject;
 
 
 // Status
@@ -91,13 +106,7 @@ private var kill_cd = 0;
 // Controls
 //////////////////////////////////////////////////////////////////////
 
-private var control_buffer_rate = 7;
-private var update_buffer_c = 0;
-private var buffer_forward = new float[control_buffer_rate];
-private var buffer_input_rotate_y = new float[control_buffer_rate];
-private var buffer_input_rotate_x = new float[control_buffer_rate];
 private var TDMG_Wire_max_distance = 2/0.02;
-
 
 // Gravity //
 
@@ -151,18 +160,23 @@ function GetInputAngle_x() {
 }
 
 
-
 // Animatiom
 //////////////////////////////////////////////////////////////////////
 
 private var speed_state : int;  // 0 靜止，1 走，2 跑
 
 
+// Audio
+//////////////////////////////////////////////////////////////////////
+
+public var TDMG_Fire_sound : AudioClip;  // 射出 hook 的音效
+public var TDMG_Hooked_sound : AudioClip;  // hook 釘住的音效
+public var TDMG_Withdraw_sound : AudioClip;  // 收回 hook 音效
+public var Land_sound : AudioClip;  // 落地音效
+public var Kill_sound : AudioClip;  // 揮刀音效
 
 
-
-
-// Init
+// Initialize
 //////////////////////////////////////////////////////////////////////
 
 function Start () {
@@ -253,7 +267,7 @@ function FixedUpdate () {
 	print("v " + transform.InverseTransformDirection(rigidbody.velocity).z);
 
 
-	// Wire
+	// 3DMG Wire
 	//////////////////////////////////////////////////////////////////
 
 	// 總體狀態，及 GUI 反應 //
@@ -565,8 +579,6 @@ function FixedUpdate () {
 	// Update var
 	//////////////////////////////////////////////////////////////////
 
-	update_buffer_c++;
-	if (update_buffer_c >= control_buffer_rate) update_buffer_c = 0;
 	prev_y = transform.position.y;
 	prev_velocity = rigidbody.velocity;
 	if (kill_cd) kill_cd--;
@@ -577,11 +589,11 @@ function FixedUpdate () {
 	hit_thing = false;
 
 	// 被動避免失速
-	if(rigidbody.velocity.magnitude > max_speed) {
-		rigidbody.velocity = rigidbody.velocity.normalized * max_speed;
+	if(rigidbody.velocity.magnitude > MAX_SPEED) {
+		rigidbody.velocity = rigidbody.velocity.normalized * MAX_SPEED;
 	}
-	if(rigidbody.velocity.y > max_speed/3) {
-		rigidbody.velocity.y = max_speed/3;
+	if(rigidbody.velocity.y > MAX_SPEED/3) {
+		rigidbody.velocity.y = MAX_SPEED/3;
 	}
 }
 

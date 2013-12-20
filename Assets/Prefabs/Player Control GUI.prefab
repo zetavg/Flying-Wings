@@ -294,8 +294,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ad84a2fa37c1a45e5ab5b945a799e4fa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  normal_texture: []
+  disabled_texture: []
+  held_texture: []
   tapped: 0
   held: 0
+  released: 0
+  effects:
+    sunkenWhenPressed: 1
+    sunkenRate: .879999995
+    sunkenAnimation: 1
+    sunkenAnimationInitialVelocity: .0199999996
+    sunkenAnimationVelocityAcceleration: .0199999996
+    sunkenAnimationMinScale: .860000014
+    sunkenAnimationMaxScale: 1.00999999
+    sunkenAnimationTime: 0
+    tapSFX: {fileID: 0}
 --- !u!114 &11400004
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -329,8 +343,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ad84a2fa37c1a45e5ab5b945a799e4fa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  normal_texture: []
+  disabled_texture: []
+  held_texture: []
   tapped: 0
   held: 0
+  released: 0
+  effects:
+    sunkenWhenPressed: 1
+    sunkenRate: .879999995
+    sunkenAnimation: 1
+    sunkenAnimationInitialVelocity: .0199999996
+    sunkenAnimationVelocityAcceleration: .0199999996
+    sunkenAnimationMinScale: .860000014
+    sunkenAnimationMaxScale: 1.00999999
+    sunkenAnimationTime: 0
+    tapSFX: {fileID: 0}
 --- !u!114 &11400008
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -375,8 +403,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ad84a2fa37c1a45e5ab5b945a799e4fa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  normal_texture: []
+  disabled_texture: []
+  held_texture: []
   tapped: 0
   held: 0
+  released: 0
+  effects:
+    sunkenWhenPressed: 0
+    sunkenRate: .879999995
+    sunkenAnimation: 0
+    sunkenAnimationInitialVelocity: 0
+    sunkenAnimationVelocityAcceleration: .0199999996
+    sunkenAnimationMinScale: .860000014
+    sunkenAnimationMaxScale: 1.00999999
+    sunkenAnimationTime: 0
+    tapSFX: {fileID: 0}
 --- !u!114 &11400016
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -399,8 +441,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ad84a2fa37c1a45e5ab5b945a799e4fa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  normal_texture: []
+  disabled_texture: []
+  held_texture: []
   tapped: 0
   held: 0
+  released: 0
+  effects:
+    sunkenWhenPressed: 0
+    sunkenRate: .879999995
+    sunkenAnimation: 0
+    sunkenAnimationInitialVelocity: 0
+    sunkenAnimationVelocityAcceleration: .0199999996
+    sunkenAnimationMinScale: .860000014
+    sunkenAnimationMaxScale: 1.00999999
+    sunkenAnimationTime: 0
+    tapSFX: {fileID: 0}
 --- !u!114 &11400020
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -445,8 +501,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ad84a2fa37c1a45e5ab5b945a799e4fa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  normal_texture: []
+  disabled_texture: []
+  held_texture: []
   tapped: 0
   held: 0
+  released: 0
+  effects:
+    sunkenWhenPressed: 1
+    sunkenRate: .879999995
+    sunkenAnimation: 1
+    sunkenAnimationInitialVelocity: .0199999996
+    sunkenAnimationVelocityAcceleration: .0199999996
+    sunkenAnimationMinScale: .860000014
+    sunkenAnimationMaxScale: 1.00999999
+    sunkenAnimationTime: 0
+    tapSFX: {fileID: 0}
 --- !u!114 &11400028
 MonoBehaviour:
   m_ObjectHideFlags: 1
