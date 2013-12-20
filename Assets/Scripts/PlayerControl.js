@@ -96,7 +96,7 @@ private var TDMG_Wire_max_distance = 2/0.02;
 
 // Gravity //
 
-public var gravitySensitivity = 1.0;
+public var gravitySensitivity = 1;
 private var gravity_buffer_rate = 12;  // 緩衝區大小
 private var gravity_buffer_i_x = 0;  // 緩衝區計數器
 private var gravity_buffer_i_y = 0;  // 緩衝區計數器
@@ -190,11 +190,10 @@ function FixedUpdate () {
 	//////////////////////////////////////////////////////////////////
 
 	var forward_speed = transform.InverseTransformDirection(rigidbody.velocity).z;
+	var TDMG_Gear_sound = 0;
 
 	// Basic Controls and Controls SFX
 	//////////////////////////////////////////////////////////////////
-
-	var TDMG_Gear_sound = 0;
 
 	// Rotation (Gravity) //
 
@@ -206,10 +205,11 @@ function FixedUpdate () {
 
 	TargetW.transform.localRotation.eulerAngles.y = input_rotate_y*200;
 	MainCamW.transform.localRotation.eulerAngles.y = input_rotate_y*100;
-	if (input_rotate_y > 0.1) {
-		transform.Rotate(Vector3.up, (input_rotate_y-0.1)*20);
-	} else if (input_rotate_y < -0.1) {
-		transform.Rotate(Vector3.up, (input_rotate_y+0.1)*20);
+	MainCam.transform.localRotation.eulerAngles.y = input_rotate_y*-50;
+	if (input_rotate_y > 0.12) {
+		transform.Rotate(Vector3.up, (input_rotate_y-0.12)*20);
+	} else if (input_rotate_y < -0.12) {
+		transform.Rotate(Vector3.up, (input_rotate_y+0.12)*20);
 	}
 
 	// X (up & down)
@@ -217,40 +217,30 @@ function FixedUpdate () {
 
 	if (input_rotate_x > 0.25) input_rotate_x = 0.25;  // limit
 	else if (input_rotate_x < -0.25) input_rotate_x = -0.25;
-	//if (input_rotate_x > 0.34) input_rotate_x += (input_rotate_x-0.34)*3;
 
 	TargetW.transform.localRotation.eulerAngles.x = -input_rotate_x*200;
 	MainCamW.transform.localRotation.eulerAngles.x = -input_rotate_x*100;
 
-	// Camera
-	//MainCam.transform.LookAt(Target.transform.position);
-
 	// Debug
 	//print("x " + input_rotate_x + " y " + input_rotate_y);
 
-
-
 	// Forward (Joystick:Thrust Lever) //
-	buffer_forward[update_buffer_c] = (Joystick.position.y+1)*4;  // 0~8
-	var forward = 0.0;
-	for (i=0; i<control_buffer_rate; i++)
-		forward += buffer_forward[i];
-	forward /= control_buffer_rate;
-	if (forward < 1) forward = 0;
+	var input_forward = (Joystick.position.y+1)*4;  // 0~8
+	if (input_forward < 1) input_forward = 0;
 	if (on_ground) {  // 地上走
-		if (forward < 1 && Mathf.Abs(input_rotate_y) > 0.15) {  // 禁止在地面定點旋轉，若要旋轉，則強制加力前進
-			forward = 0.9 + Mathf.Abs(input_rotate_y)*2;
+		if (input_forward == 0 && Mathf.Abs(input_rotate_y) > 0.12) {  // 禁止在地面定點旋轉，若要旋轉，則強制加力前進
+			input_forward = 0.9 + Mathf.Abs(input_rotate_y)*2;
 		}
-		rigidbody.AddForce(transform.forward * (forward-transform.InverseTransformDirection(rigidbody.velocity).z), ForceMode.VelocityChange);
-		rigidbody.AddForce((-1) * transform.right * (transform.InverseTransformDirection(rigidbody.velocity).x), ForceMode.VelocityChange);
-		if (!pre_on_ground) audio.PlayOneShot(Land_sound, 1);
-		if (TDMG_Jet.GetComponent(AudioSource).volume > 0) TDMG_Jet.GetComponent(AudioSource).volume -= 0.05;
+		rigidbody.AddForce(transform.forward * (input_forward-transform.InverseTransformDirection(rigidbody.velocity).z), ForceMode.VelocityChange);  // 前進
+		rigidbody.AddForce((-1) * transform.right * (transform.InverseTransformDirection(rigidbody.velocity).x), ForceMode.VelocityChange);  // 消除左右滑動
+		if (!pre_on_ground) audio.PlayOneShot(Land_sound, 1);  // 落地音效
+		if (TDMG_Jet.GetComponent(AudioSource).volume > 0) TDMG_Jet.GetComponent(AudioSource).volume -= 0.05;  // 關閉噴氣音效
 	} else {  // 天上飛
-		rigidbody.AddForce(transform.forward * (forward*1.2-transform.InverseTransformDirection(rigidbody.velocity).z), ForceMode.VelocityChange);
-		rigidbody.AddForce((-1) * transform.right * (transform.InverseTransformDirection(rigidbody.velocity).x), ForceMode.VelocityChange);
-		if (!hit_thing) rigidbody.AddForce(transform.up * forward/2, ForceMode.Acceleration);
+		rigidbody.AddForce(transform.forward * (input_forward*1.2-transform.InverseTransformDirection(rigidbody.velocity).z) / 2, ForceMode.VelocityChange);  // 前進, x1.2 /2
+		rigidbody.AddForce((-1) * transform.right * (transform.InverseTransformDirection(rigidbody.velocity).x), ForceMode.VelocityChange);  // 消除左右移動
+		if (!hit_thing) rigidbody.AddForce(transform.up * input_forward/2, ForceMode.Acceleration);
 
-		TDMG_Jet.GetComponent(AudioSource).volume += (forward/100 - TDMG_Jet.GetComponent(AudioSource).volume)/10;
+		TDMG_Jet.GetComponent(AudioSource).volume += (input_forward/100 - TDMG_Jet.GetComponent(AudioSource).volume)/10;
 	}
 
 
@@ -508,7 +498,7 @@ function FixedUpdate () {
 			animation.CrossFade("Stand", 0.2);
 		}
 	} else {  //Flying
-		var TDMG_jet_air_amount = Mathf.Sqrt(forward)*2.828;
+		var TDMG_jet_air_amount = Mathf.Sqrt(input_forward)*2.828;
 		TDMG_Jet.particleEmitter.enabled = true;
 		TDMG_Jet.particleEmitter.localVelocity = Vector3(0, -(TDMG_jet_air_amount));
 		TDMG_Jet.particleEmitter.minEmission = TDMG_jet_air_amount*100;
@@ -516,10 +506,10 @@ function FixedUpdate () {
 		TDMG_Jet.particleEmitter.minEnergy = TDMG_jet_air_amount*0.001;
 		TDMG_Jet.particleEmitter.maxEnergy = TDMG_jet_air_amount*0.1;
 		TDMG_Jet.particleEmitter.rndVelocity = Vector3(TDMG_jet_air_amount*0.1, TDMG_jet_air_amount*0.1, TDMG_jet_air_amount*0.1);
-		if (Random.Range(8,0.1) <= forward) {  // 氣體噴出量，(forward) = 8(全速) ~ 0(stop)
+		if (Random.Range(8,0.1) <= input_forward) {  // 氣體噴出量，(input_forward) = 8(全速) ~ 0(stop)
 			//var TDMG_Gas_s = Instantiate(TDMG_Gas);
 			//TDMG_Gas_s.transform.position = TDMG_Jet.transform.position;
-			//TDMG_Gas_s.rigidbody.AddForce(TDMG_Jet.transform.forward);
+			//TDMG_Gas_s.rigidbody.AddForce(TDMG_Jet.transform.input_forward);
 		}
 
 		if (!kill_cd) {
@@ -558,7 +548,7 @@ function FixedUpdate () {
 	//Debug.DrawLine(MainCamW.transform.position+MainCamW.transform.up+MainCam.transform.forward, MainCamW.transform.position+MainCamW.transform.up);
 	//print("MainCam_behind_distance " + MainCam_behind_distance);
 	//print("MainCam.transform.forward " + MainCam.transform.forward);
-	print("MainCam.transform.forward " + MainCam.transform.forward);
+	//print("MainCam.transform.forward " + MainCam.transform.forward);
 
 
 	// Update var
