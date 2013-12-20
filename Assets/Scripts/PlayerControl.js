@@ -47,6 +47,11 @@ public var TDMG_Attacher_L : GameObject;
 public var TDMG_Attacher_R : GameObject;
 
 
+// Character Ability
+//////////////////////////////////////////////////////////////////////
+public var characterSpeed = 1.0;  // 角色速度, 地面空中拉繩速度加乘參數
+public var characterFlexibility = 1.0;  // 角色靈活度, 旋轉速度加乘參數
+
 // Self
 //////////////////////////////////////////////////////////////////////
 
@@ -192,6 +197,7 @@ function FixedUpdate () {
 	var forward_speed = transform.InverseTransformDirection(rigidbody.velocity).z;
 	var TDMG_Gear_sound = 0;
 
+
 	// Basic Controls and Controls SFX
 	//////////////////////////////////////////////////////////////////
 
@@ -206,10 +212,10 @@ function FixedUpdate () {
 	TargetW.transform.localRotation.eulerAngles.y = input_rotate_y*200;
 	MainCamW.transform.localRotation.eulerAngles.y = input_rotate_y*100;
 	MainCam.transform.localRotation.eulerAngles.y = input_rotate_y*-50;
-	if (input_rotate_y > 0.12) {
-		transform.Rotate(Vector3.up, (input_rotate_y-0.12)*20);
-	} else if (input_rotate_y < -0.12) {
-		transform.Rotate(Vector3.up, (input_rotate_y+0.12)*20);
+	if (input_rotate_y > 0.10) {
+		transform.Rotate(Vector3.up, ((input_rotate_y*characterFlexibility)-0.10)*20);
+	} else if (input_rotate_y < -0.10) {
+		transform.Rotate(Vector3.up, ((input_rotate_y*characterFlexibility)+0.10)*20);
 	}
 
 	// X (up & down)
@@ -228,20 +234,23 @@ function FixedUpdate () {
 	var input_forward = (Joystick.position.y+1)*4;  // 0~8
 	if (input_forward < 1) input_forward = 0;
 	if (on_ground) {  // 地上走
-		if (input_forward == 0 && Mathf.Abs(input_rotate_y) > 0.12) {  // 禁止在地面定點旋轉，若要旋轉，則強制加力前進
+		if (input_forward == 0 && Mathf.Abs(input_rotate_y) > 0.10) {  // 禁止在地面定點旋轉，若要旋轉，則強制加力前進
 			input_forward = 0.9 + Mathf.Abs(input_rotate_y)*2;
 		}
-		rigidbody.AddForce(transform.forward * (input_forward-transform.InverseTransformDirection(rigidbody.velocity).z), ForceMode.VelocityChange);  // 前進
+		rigidbody.AddForce(transform.forward * ((input_forward*characterSpeed)-transform.InverseTransformDirection(rigidbody.velocity).z), ForceMode.VelocityChange);  // 前進
 		rigidbody.AddForce((-1) * transform.right * (transform.InverseTransformDirection(rigidbody.velocity).x), ForceMode.VelocityChange);  // 消除左右滑動
 		if (!pre_on_ground) audio.PlayOneShot(Land_sound, 1);  // 落地音效
 		if (TDMG_Jet.GetComponent(AudioSource).volume > 0) TDMG_Jet.GetComponent(AudioSource).volume -= 0.05;  // 關閉噴氣音效
 	} else {  // 天上飛
-		rigidbody.AddForce(transform.forward * (input_forward*1.2-transform.InverseTransformDirection(rigidbody.velocity).z) / 2, ForceMode.VelocityChange);  // 前進, x1.2 /2
-		rigidbody.AddForce((-1) * transform.right * (transform.InverseTransformDirection(rigidbody.velocity).x), ForceMode.VelocityChange);  // 消除左右移動
+		rigidbody.AddForce(transform.forward * ((input_forward*characterSpeed)*1.4-transform.InverseTransformDirection(rigidbody.velocity).z) /16, ForceMode.VelocityChange);  // 前進, x1.4 /16
+		rigidbody.AddForce((-1) * transform.right * (transform.InverseTransformDirection(rigidbody.velocity).x) /16, ForceMode.VelocityChange);  // 消除左右移動, /16
 		if (!hit_thing) rigidbody.AddForce(transform.up * input_forward/2, ForceMode.Acceleration);
 
 		TDMG_Jet.GetComponent(AudioSource).volume += (input_forward/100 - TDMG_Jet.GetComponent(AudioSource).volume)/10;
 	}
+
+	// Debug
+	print("v " + transform.InverseTransformDirection(rigidbody.velocity).z);
 
 
 	// Wire
@@ -532,7 +541,9 @@ function FixedUpdate () {
 	//////////////////////////////////////////////////////////////////
 
 	//MainCam.camera.fieldOfView += ((72 + forward_speed*2 - 8) - MainCam.camera.fieldOfView)/10;
-	MainCam.transform.localPosition.z += ((-3 - forward_speed/4 + 1) - MainCam.transform.localPosition.z)/10;
+	var cam_dist = (-3 - forward_speed/4 + 1);
+	if (cam_dist > -2) cam_dist = -2;
+	MainCam.transform.localPosition.z += (cam_dist - MainCam.transform.localPosition.z)/10;
 
 	var MainCam_behind_ray : Ray = Ray(MainCamW.transform.position+MainCamW.transform.up, -MainCamW.transform.forward);
 	var MainCam_behind_ray_hit : RaycastHit;

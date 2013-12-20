@@ -2030,6 +2030,8 @@ MonoBehaviour:
   Kill_sound: {fileID: 8300000, guid: 13e20783f20354a08ab913ed90d4309b, type: 3}
   TDMG_Attacher_L: {fileID: 0}
   TDMG_Attacher_R: {fileID: 0}
+  characterSpeed: 1
+  characterFlexibility: 1
   on_ground: 0
   prev_y: 0
   prev_velocity: {x: 0, y: 0, z: 0}
@@ -2365,8 +2367,8 @@ LineRenderer:
   - {x: 0, y: 0, z: 0}
   - {x: 0, y: 0, z: 1}
   m_Parameters:
-    startWidth: .00999999978
-    endWidth: .00999999978
+    startWidth: .0299999993
+    endWidth: .0299999993
     m_StartColor:
       serializedVersion: 2
       rgba: 4294967295
