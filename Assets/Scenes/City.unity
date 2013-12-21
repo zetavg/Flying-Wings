@@ -525,7 +525,7 @@ GameObject:
   - 114: {fileID: 25639680}
   - 114: {fileID: 25639682}
   m_Layer: 0
-  m_Name: Target_aim
+  m_Name: T_C
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -11435,6 +11435,10 @@ Prefab:
     - target: {fileID: 100008, guid: 28b07ed0cf57b437ab601a3d671c8e37, type: 2}
       propertyPath: m_Name
       value: TL_BG
+      objectReference: {fileID: 0}
+    - target: {fileID: 100002, guid: 28b07ed0cf57b437ab601a3d671c8e37, type: 2}
+      propertyPath: m_Name
+      value: T_C
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 28b07ed0cf57b437ab601a3d671c8e37, type: 2}
@@ -22927,23 +22931,8 @@ MonoBehaviour:
   TDMG_Attacher_R: {fileID: 939488924}
   PlayerControlGUI: {fileID: 0}
   ThrustLever: {fileID: 0}
-  FireBotton: {fileID: 926442158}
+  MBotton: {fileID: 0}
   ReleaseBotton: {fileID: 1776277314}
-  FireBotton_texture: {fileID: 2800000, guid: c7ad93ab0562449468b28f58067d3eaf, type: 3}
-  FireBotton_texture_disabled: {fileID: 2800000, guid: 7a7ed0b93a1e44695b242d8b28785c3b,
-    type: 3}
-  FireBotton_texture_pull: {fileID: 2800000, guid: 034ff87b0056441838a82e73b4fea558,
-    type: 3}
-  FireBotton_texture_pull_pulled: {fileID: 2800000, guid: fc9594f90a1bd4e6585089c296301f14,
-    type: 3}
-  ReleaseBotton_texture: {fileID: 2800000, guid: 7936215f531e04ba3870d5d92e4b76ae,
-    type: 3}
-  ReleaseBotton_texture_disabled: {fileID: 2800000, guid: 5621e94699b054d059ab142984dc8385,
-    type: 3}
-  ReleaseBotton_texture_released: {fileID: 2800000, guid: 3f120b68d80e34300905db17c0311a66,
-    type: 3}
-  Aim_texture: {fileID: 2800000, guid: b75eca0864f6c476fa47fbc511378a0e, type: 3}
-  Aim_aim_texture: {fileID: 2800000, guid: fcb92126444314e7bba581552d4b2c23, type: 3}
   Gear: {fileID: 1184505939}
   Aim: {fileID: 25639677}
   on_ground: 0
@@ -25285,6 +25274,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_EditorClassIdentifier: 
   m_EditorClassIdentifier: 
+  m_EditorClassIdentifier: 
+  m_EditorClassIdentifier: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1526328317
 GameObject:
   m_ObjectHideFlags: 0
@@ -27211,6 +27203,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_EditorClassIdentifier: 
   m_EditorClassIdentifier: 
+  m_EditorClassIdentifier: 
+  m_EditorClassIdentifier: 
+  m_EditorClassIdentifier: 
 --- !u!114 &1666304348
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -27222,6 +27217,9 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5023b47652ca9b34d807476a6f7fddbb, type: 3}
   m_Name: 
+  m_EditorClassIdentifier: 
+  m_EditorClassIdentifier: 
+  m_EditorClassIdentifier: 
   m_EditorClassIdentifier: 
   m_EditorClassIdentifier: 
   m_EditorClassIdentifier: 
