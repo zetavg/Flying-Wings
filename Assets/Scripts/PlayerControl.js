@@ -65,18 +65,9 @@ public var TDMG_Attacher_R : GameObject;
 //////////////////////////////////////////////////////////////////////
 
 public var PlayerControlGUI : GameObject;  // 控制界面
-public var Joystick : Joystick;
-public var FireBotton : TapButton;
+public var ThrustLever : Joystick;
+public var MBotton : TapButton;
 public var ReleaseBotton : TapButton;
-public var FireBotton_texture : Texture;
-public var FireBotton_texture_disabled : Texture;
-public var FireBotton_texture_pull : Texture;
-public var FireBotton_texture_pull_pulled : Texture;
-public var ReleaseBotton_texture : Texture;
-public var ReleaseBotton_texture_disabled : Texture;
-public var ReleaseBotton_texture_released : Texture;
-public var Aim_texture : Texture;
-public var Aim_aim_texture : Texture;
 
 
 public var Gear : GameObject;
@@ -160,7 +151,7 @@ function GetInputAngle_x() {
 }
 
 
-// Animatiom
+// Character Animatiom
 //////////////////////////////////////////////////////////////////////
 
 private var speed_state : int;  // 0 靜止，1 走，2 跑
@@ -197,6 +188,17 @@ function Start () {
 	TDMG_Hook_L = transform.Find("TDMG/TDMG_Hook_L_Container/TDMG_Hook").gameObject;
 	TDMG_Hook_R = transform.Find("TDMG/TDMG_Hook_R_Container/TDMG_Hook").gameObject;
 	TDMG_Jet = transform.Find("TDMG/TDMG_Jet").gameObject;
+
+	PlayerControlGUI = transform.Find("/Player Control GUI").gameObject;
+	MBotton = PlayerControlGUI.transform.Find("B_M").GetComponent("TapButton");
+	ThrustLever = PlayerControlGUI.transform.Find("TL").GetComponent("Joystick");
+	ReleaseBotton = PlayerControlGUI.transform.Find("B_R").GetComponent("TapButton");
+
+	// Initialize GameObjects //
+
+	ReleaseBotton.Disable();
+	MBotton.UseSet(1);
+
 }
 
 
@@ -245,7 +247,7 @@ function FixedUpdate () {
 	//print("x " + input_rotate_x + " y " + input_rotate_y);
 
 	// Forward (Joystick:Thrust Lever) //
-	var input_forward = (Joystick.position.y+1)*4;  // 0~8
+	var input_forward = (ThrustLever.position.y+1)*4;  // 0~8
 	if (input_forward < 1) input_forward = 0;
 	if (on_ground) {  // 地上走
 		if (input_forward == 0 && Mathf.Abs(input_rotate_y) > 0.10) {  // 禁止在地面定點旋轉，若要旋轉，則強制加力前進
@@ -271,16 +273,16 @@ function FixedUpdate () {
 	//////////////////////////////////////////////////////////////////
 
 	// 總體狀態，及 GUI 反應 //
-	var FireBotton_status;  // 0: Fire, 1: Pull, 2: Disabled.
+	var MBotton_status;  // 0: Fire, 1: Pull, 2: Disabled.
 	var ReleaseBotton_status = 1;  // 0: Release, 1: Releaseing, 2: Disabled
 
 	if (TDMG_Hook_L_state + TDMG_Hook_R_state <= 1 ) {  // 有可用的 TDMG Hook，且皆已收回或收回中
-		FireBotton_status = 0;
+		MBotton_status = 0;
 		ReleaseBotton_status = 2;
 		//TDMG_Attacher.GetComponent(ConfigurableJoint).linearLimit.limit = Mathf.Infinity;
 
 	} else if (TDMG_Hook_L_state == 2 || TDMG_Hook_R_state == 2) {  // 有已 attach 的 TDMG Hook
-		FireBotton_status = 1;
+		MBotton_status = 1;
 		//if ((transform.position - TDMG_Attacher.transform.position).magnitude > 2) {  // 最短兩公尺
 			//TDMG_Attacher.GetComponent(ConfigurableJoint).linearLimit.limit = (transform.position - TDMG_Attacher.transform.position).magnitude;  // 限制繩長，拉回不再放
 		//}
@@ -288,7 +290,7 @@ function FixedUpdate () {
 		ReleaseBotton_status = 0;
 
 	} else if (TDMG_Hook_L_state == 3 || TDMG_Hook_R_state == 3) {  // 有射出中的 TDMG Hook
-		FireBotton_status = 2;
+		MBotton_status = 2;
 		ReleaseBotton_status = 2;
 		//TDMG_Attacher.GetComponent(ConfigurableJoint).linearLimit.limit = Mathf.Infinity;
 	}
@@ -305,16 +307,16 @@ function FixedUpdate () {
 		Debug.DrawLine(fire_ray.origin, fire_hit.point);
 		if ((transform.position - fire_hit.point).magnitude < TDMG_Wire_max_distance) {
 			is_fire_hit = true;
-			Aim.guiTexture.texture = Aim_aim_texture;
+			// Aim.guiTexture.texture = Aim_aim_texture;
 		} else {
-			Aim.guiTexture.texture = Aim_texture;
+			// Aim.guiTexture.texture = Aim_texture;
 		}
 	}
 
-	if (FireBotton_status == 0) {  // Fire
-		FireBotton.guiTexture.texture = FireBotton_texture;
+	if (MBotton_status == 0) {  // Fire
+		// MBotton.guiTexture.texture = MBotton_texture;
 
-		if (FireBotton.tapped == true) {  // Fire TDMG Hook
+		if (MBotton.tapped == true) {  // Fire TDMG Hook
 
 			if (is_fire_hit) {
 				TDMG.audio.PlayOneShot(TDMG_Fire_sound, 1);
@@ -380,10 +382,10 @@ function FixedUpdate () {
 		}
 
 
-	} else if (FireBotton_status == 1) {  // Pull
-		FireBotton.guiTexture.texture = FireBotton_texture_pull;
+	} else if (MBotton_status == 1) {  // Pull
+		// MBotton.guiTexture.texture = MBotton_texture_pull;
 
-		if (FireBotton.held == true) {
+		if (MBotton.held == true) {
 			var pull_target : Vector3;
 			if (TDMG_Hook_L_state == 2 && TDMG_Hook_R_state == 2) {
 				pull_target = (TDMG_Attacher_L.transform.position + TDMG_Attacher_R.transform.position) / 2;
@@ -393,7 +395,7 @@ function FixedUpdate () {
 				pull_target = TDMG_Attacher_R.transform.position;
 			}
 			if ((transform.position - pull_target).magnitude > 0.1) {
-				FireBotton.guiTexture.texture = FireBotton_texture_pull_pulled;
+				// MBotton.guiTexture.texture = MBotton_texture_pull_pulled;
 				var wire_speed = (12 - Vector3.Project(rigidbody.velocity, (pull_target - transform.position).normalized).magnitude);
 				if (wire_speed < 0) wire_speed = 0;
 				if (((pre_position.y-pull_target.y) > (transform.position.y - ((TDMG_Hook_LC.transform.position + TDMG_Hook_RC.transform.position)/2).y) && (transform.position.y-pull_target.y) < (transform.position.y - ((TDMG_Hook_LC.transform.position + TDMG_Hook_RC.transform.position)/2).y)) || ((pre_position.y-pull_target.y) < (transform.position.y - ((TDMG_Hook_LC.transform.position + TDMG_Hook_RC.transform.position)/2).y) && (transform.position.y-pull_target.y) > (transform.position.y - ((TDMG_Hook_LC.transform.position + TDMG_Hook_RC.transform.position)/2).y)) || ((pull_target - (TDMG_Hook_LC.transform.position + TDMG_Hook_RC.transform.position)/2).magnitude < 0.1)) {
@@ -417,25 +419,25 @@ function FixedUpdate () {
 				TDMG_Gear.GetComponent(AudioSource).volume += ((Vector3.Project(rigidbody.velocity, (pull_target - transform.position).normalized).magnitude) - (TDMG_Gear.GetComponent(AudioSource).volume))/10;
 			}
 		} else {
-			FireBotton.guiTexture.texture = FireBotton_texture_pull;
+			// MBotton.guiTexture.texture = MBotton_texture_pull;
 			pull_y_cd = 0;
 			pull_y_count = 0;
 		}
 
 	} else {
-		FireBotton.guiTexture.texture = FireBotton_texture_disabled;
+		// MBotton.guiTexture.texture = MBotton_texture_disabled;
 	}
 
 	if (ReleaseBotton_status == 0) {  // 可用
-		ReleaseBotton.guiTexture.texture = ReleaseBotton_texture;
+		// ReleaseBotton.guiTexture.texture = ReleaseBotton_texture;
 		if (ReleaseBotton.tapped == true) {
 			if (TDMG_Hook_L_state == 2) TDMG_Hook_L_state = 1;
 			if (TDMG_Hook_R_state == 2) TDMG_Hook_R_state = 1;
 		}
 	} else if (ReleaseBotton_status == 1) {  // 已按
-		ReleaseBotton.guiTexture.texture = ReleaseBotton_texture_released;
+		// ReleaseBotton.guiTexture.texture = ReleaseBotton_texture_released;
 	} else {
-		ReleaseBotton.guiTexture.texture = ReleaseBotton_texture_disabled;
+		// ReleaseBotton.guiTexture.texture = ReleaseBotton_texture_disabled;
 	}
 
 	// Hook 物理行為，依 Status 依序定義 //
