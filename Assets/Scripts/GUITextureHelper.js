@@ -29,7 +29,6 @@ function Start() {
 
 
 function FixedUpdate() {
-	LRotateV(1.9);
 }
 
 
@@ -42,18 +41,6 @@ function UseTexture(n : int) {  // 使用某 texture
 	}
 }
 
-/*
-function Scale(p : float) {  // Scale the GUITexture to a specified percentage, maintaining the center location.
-
-	var new_width = pixelInset_org.width*p;
-	var new_height = pixelInset_org.height*p;
-	var new_x = pixelInset_org.x-(new_width-pixelInset_org.width)/2;
-	var new_y = pixelInset_org.y-(new_height-pixelInset_org.height)/2;
-
-	guiTexture.pixelInset = new Rect(new_x, new_y, new_width, new_height);
-
-	scale = p;
-}*/
 
 function OnGUI() {
 
