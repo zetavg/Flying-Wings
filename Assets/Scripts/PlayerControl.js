@@ -314,12 +314,38 @@ function FixedUpdate () {
 	     (TDMG.transform.position - tdmg_target_hit.point).magnitude < TDMG_WIRE_MAX_DISTANCE ) {  // Case normal hit
 		TDMG_Aimer_L.transform.position = tdmg_target_hit.point;
 		TDMG_Aimer_R.transform.position = tdmg_target_hit.point;
-		tdmg_target_hit_in_range = true;
-		tdmg_is_aimed = true;
 		tdmg_aimed_trans_l = tdmg_target_hit.transform;
 		tdmg_aimed_trans_r = tdmg_target_hit.transform;
+		tdmg_target_hit_in_range = true;
+		tdmg_is_aimed = true;
 		if (!TDMG_Hook_R_state && (input_rotate_y > 0 || TDMG_Hook_L_state)) tdmg_use_hook_r = true;
 		else tdmg_use_hook_l = true;
+
+		if ( tdmg_target_hit.collider.gameObject.tag != "Titan" &&
+		     TDMG_Hook_L_state == 0 && TDMG_Hook_L_state == 0 &&
+		     (TDMG.transform.position - tdmg_target_hit.point).magnitude < 20 ) {  // Consider to use both hooks
+			var tdmg_target_ray_L : Ray = Ray(MainCam.transform.position-transform.right, Target.transform.position - MainCam.transform.position - transform.right);
+			var tdmg_target_hit_L : RaycastHit;
+			var tdmg_target_ray_R : Ray = Ray(MainCam.transform.position+transform.right, Target.transform.position - MainCam.transform.position + transform.right);
+			var tdmg_target_hit_R : RaycastHit;
+
+			if ( Physics.Raycast(tdmg_target_ray_L, tdmg_target_hit_L) &&
+			     Physics.Raycast(tdmg_target_ray_R, tdmg_target_hit_R) ) {
+				if ( (tdmg_target_hit.point - tdmg_target_hit_L.point).magnitude < 10.5 &&
+				     (tdmg_target_hit.point - tdmg_target_hit_R.point).magnitude < 10.5 ) {
+					TDMG_Aimer_L.transform.position = tdmg_target_hit_L.point;
+					TDMG_Aimer_R.transform.position = tdmg_target_hit_R.point;
+					tdmg_aimed_trans_l = tdmg_target_hit_L.transform;
+					tdmg_aimed_trans_r = tdmg_target_hit_R.transform;
+					tdmg_use_hook_r = true;
+					tdmg_use_hook_l = true;
+
+				}
+
+			}
+
+		}
+
 	} else if (1 == -2) {  // Case sides
 
 	} else {
@@ -330,9 +356,13 @@ function FixedUpdate () {
 
 	TargetCrosshair.transform.position = Camera.main.WorldToViewportPoint(Target.transform.position);
 	if (tdmg_is_aimed) {
-		AimCrosshairL.transform.position = Camera.main.WorldToViewportPoint(TDMG_Aimer_L.transform.position);
-		AimCrosshairL.GetComponent(GUITextureHelper).Show();
-		if (tdmg_use_hook_l && tdmg_use_hook_r) {
+		if (tdmg_use_hook_l) {
+			AimCrosshairL.transform.position = Camera.main.WorldToViewportPoint(TDMG_Aimer_L.transform.position);
+			AimCrosshairL.GetComponent(GUITextureHelper).Show();
+		} else {
+			AimCrosshairL.GetComponent(GUITextureHelper).Hide();
+		}
+		if (tdmg_use_hook_r) {
 			AimCrosshairR.transform.position = Camera.main.WorldToViewportPoint(TDMG_Aimer_R.transform.position);
 			AimCrosshairR.GetComponent(GUITextureHelper).Show();
 		} else {
@@ -391,6 +421,12 @@ function FixedUpdate () {
 		}
 	}
 
+	if (MButton_status == 2) {
+		GUIAnimateGear.GetComponent(GUITextureHelper).LRotateV( -10 );
+	} else if (MButton_status == 3) {
+		GUIAnimateGear.GetComponent(GUITextureHelper).LRotateV( 10 );
+	}
+
 	if (MButton_status == 0 && MButton.tapped) {  // Fire!
 		TDMG.audio.PlayOneShot(TDMG_Fire_sound, 1);
 		TDMG_fire_start_time = Time.time;
@@ -419,6 +455,9 @@ function FixedUpdate () {
 			TDMG_pull_target = TDMG_Attacher_R.transform.position;
 		}
 
+		// Var
+		var tdmg_pull_to_v = (Vector3.Project(rigidbody.velocity, (TDMG_pull_target - transform.position).normalized).magnitude);
+
 		// Pull
 		if ((transform.position - TDMG_pull_target).magnitude > 0.1) {
 			var tdmg_wire_speed = (12 - Vector3.Project(rigidbody.velocity, (TDMG_pull_target - transform.position).normalized).magnitude);
@@ -441,7 +480,8 @@ function FixedUpdate () {
 				rigidbody.AddForce(transform.up*(yfa), ForceMode.VelocityChange);
 			}
 
-			TDMG_Gear.GetComponent(AudioSource).volume += ((Vector3.Project(rigidbody.velocity, (TDMG_pull_target - transform.position).normalized).magnitude) - (TDMG_Gear.GetComponent(AudioSource).volume))/10;  // 音效
+			TDMG_Gear.GetComponent(AudioSource).volume += (tdmg_pull_to_v - (TDMG_Gear.GetComponent(AudioSource).volume))/10;  // 音效
+			GUIAnimateGear.GetComponent(GUITextureHelper).LRotateV( tdmg_pull_to_v/2 );
 		}
 	} else {
 		TDMG_pull_y_cd = 0;
@@ -456,10 +496,52 @@ function FixedUpdate () {
 
 
 	// Hook Behavior //
+	if (TDMG_Hook_L_state == 3) {  // 若射出中
+		TDMG_Hook_L.transform.position += (TDMG_Attacher_L.transform.position - TDMG_Hook_L.transform.position).normalized;
+		TDMG_Gear_sound = 1;
+		if (Time.time - TDMG_fire_start_time > 2) {  // 超時
+			TDMG_Hook_L_state = 1;  // 收回
+		} else if ((TDMG_Attacher_L.transform.position - TDMG_Hook_L.transform.position).magnitude < 0.8) {  // 中
+			TDMG_Hook_L_state = 2;
+			TDMG_Attacher_L.audio.PlayOneShot(TDMG_Hooked_sound, 1);
+		}
+	} else if (TDMG_Hook_L_state == 2) {
+		TDMG_Hook_L.transform.position = TDMG_Attacher_L.transform.position;
+	} else if (TDMG_Hook_L_state == 1) {
+		TDMG_Hook_L.transform.position += (TDMG_Hook_LC.transform.position - TDMG_Hook_L.transform.position).normalized;
+		TDMG_Gear_sound = 1;
+		if ((TDMG_Hook_LC.transform.position - TDMG_Hook_L.transform.position).magnitude < 0.8) {
+			TDMG_Hook_L.transform.position = TDMG_Hook_LC.transform.position;  // 完成回收
+			TDMG_Hook_L_state = 0;
+			TDMG.audio.PlayOneShot(TDMG_Withdraw_sound, 1);
+		}
+	}
+
+	if (TDMG_Hook_R_state == 3) {  // 若射出中
+		TDMG_Hook_R.transform.position += (TDMG_Attacher_R.transform.position - TDMG_Hook_R.transform.position).normalized;
+		TDMG_Gear_sound = 1;
+		if (Time.time - TDMG_fire_start_time > 2) {  // 超時
+			TDMG_Hook_R_state = 1;  // 收回
+		} else if ((TDMG_Attacher_R.transform.position - TDMG_Hook_R.transform.position).magnitude < 0.8) {  // 中
+			TDMG_Hook_R_state = 2;
+			TDMG_Attacher_R.audio.PlayOneShot(TDMG_Hooked_sound, 1);
+			//TDMG_Attacher.GetComponent(ConfigurableJoint).linearLimit.limit = (transform.position - TDMG_Attacher_R.transform.position).magnitude;
+		}
+	} else if (TDMG_Hook_R_state == 2) {
+		TDMG_Hook_R.transform.position = TDMG_Attacher_R.transform.position;
+	} else if (TDMG_Hook_R_state == 1) {
+		TDMG_Hook_R.transform.position += (TDMG_Hook_RC.transform.position - TDMG_Hook_R.transform.position).normalized;
+		TDMG_Gear_sound = 1;
+		if ((TDMG_Hook_RC.transform.position - TDMG_Hook_R.transform.position).magnitude < 0.8) {
+			TDMG_Hook_R.transform.position = TDMG_Hook_RC.transform.position;  // 完成回收
+			TDMG_Hook_R_state = 0;
+			TDMG.audio.PlayOneShot(TDMG_Withdraw_sound, 1);
+		}
+	}
 
 	// 總體狀態，及 GUI 反應 //
 
-	var ReleaseButton_status = 1;  // 0: Release, 1: Releaseing, 2: Disabled
+	//var ReleaseButton_status = 1;  // 0: Release, 1: Releaseing, 2: Disabled
 /*
 	if (TDMG_Hook_L_state + TDMG_Hook_R_state <= 1 ) {  // 有可用的 TDMG Hook，且皆已收回或收回中
 		MButton_status = 0;
@@ -480,7 +562,7 @@ function FixedUpdate () {
 		//TDMG_Attacher.GetComponent(ConfigurableJoint).linearLimit.limit = Mathf.Infinity;
 	}
 */
-	// 按鍵行為 //
+/*	// 按鍵行為 //
 	var is_fire_hit = false;
 	var heading = MainCam.transform.position - Target.transform.position;  // 取得瞄準方向
 	var fire_ray : Ray = Ray(MainCam.transform.position, -1*heading);
@@ -495,7 +577,7 @@ function FixedUpdate () {
 		} else {
 			// Aim.guiTexture.texture = Aim_texture;
 		}
-	}
+	}*/
 /*
 	if (MButton_status == 0) {  // Fire
 		// MButton.guiTexture.texture = MButton_texture;
@@ -615,7 +697,7 @@ function FixedUpdate () {
 		// MButton.guiTexture.texture = MButton_texture_disabled;
 	}
 */
-	if (ReleaseButton_status == 0) {  // 可用
+/*	if (ReleaseButton_status == 0) {  // 可用
 		// ReleaseButton.guiTexture.texture = ReleaseButton_texture;
 		if (ReleaseButton.tapped == true) {
 			if (TDMG_Hook_L_state == 2) TDMG_Hook_L_state = 1;
@@ -625,52 +707,10 @@ function FixedUpdate () {
 		// ReleaseButton.guiTexture.texture = ReleaseButton_texture_released;
 	} else {
 		// ReleaseButton.guiTexture.texture = ReleaseButton_texture_disabled;
-	}
+	}*/
 
 	// Hook 物理行為，依 Status 依序定義 //
-	if (TDMG_Hook_L_state == 3) {  // 若射出中
-		TDMG_Hook_L.transform.position += (TDMG_Attacher_L.transform.position - TDMG_Hook_L.transform.position).normalized;
-		TDMG_Gear_sound = 1;
-		if (Time.time - TDMG_fire_start_time > 2) {  // 超時
-			TDMG_Hook_L_state = 1;  // 收回
-		} else if ((TDMG_Attacher_L.transform.position - TDMG_Hook_L.transform.position).magnitude < 0.8) {  // 中
-			TDMG_Hook_L_state = 2;
-			TDMG_Attacher_L.audio.PlayOneShot(TDMG_Hooked_sound, 1);
-			//TDMG_Attacher.GetComponent(ConfigurableJoint).linearLimit.limit = (transform.position - TDMG_Attacher.transform.position).magnitude;
-		}
-	} else if (TDMG_Hook_L_state == 2) {
-		TDMG_Hook_L.transform.position = TDMG_Attacher_L.transform.position;
-	} else if (TDMG_Hook_L_state == 1) {
-		TDMG_Hook_L.transform.position += (TDMG_Hook_LC.transform.position - TDMG_Hook_L.transform.position).normalized;
-		TDMG_Gear_sound = 1;
-		if ((TDMG_Hook_LC.transform.position - TDMG_Hook_L.transform.position).magnitude < 0.8) {
-			TDMG_Hook_L.transform.position = TDMG_Hook_LC.transform.position;  // 完成回收
-			TDMG_Hook_L_state = 0;
-			TDMG.audio.PlayOneShot(TDMG_Withdraw_sound, 1);
-		}
-	}
-
-	if (TDMG_Hook_R_state == 3) {  // 若射出中
-		TDMG_Hook_R.transform.position += (TDMG_Attacher_R.transform.position - TDMG_Hook_R.transform.position).normalized;
-		TDMG_Gear_sound = 1;
-		if (Time.time - TDMG_fire_start_time > 2) {  // 超時
-			TDMG_Hook_R_state = 1;  // 收回
-		} else if ((TDMG_Attacher_R.transform.position - TDMG_Hook_R.transform.position).magnitude < 0.8) {  // 中
-			TDMG_Hook_R_state = 2;
-			TDMG_Attacher_R.audio.PlayOneShot(TDMG_Hooked_sound, 1);
-			//TDMG_Attacher.GetComponent(ConfigurableJoint).linearLimit.limit = (transform.position - TDMG_Attacher_R.transform.position).magnitude;
-		}
-	} else if (TDMG_Hook_R_state == 2) {
-		TDMG_Hook_R.transform.position = TDMG_Attacher_R.transform.position;
-	} else if (TDMG_Hook_R_state == 1) {
-		TDMG_Hook_R.transform.position += (TDMG_Hook_RC.transform.position - TDMG_Hook_R.transform.position).normalized;
-		TDMG_Gear_sound = 1;
-		if ((TDMG_Hook_RC.transform.position - TDMG_Hook_R.transform.position).magnitude < 0.8) {
-			TDMG_Hook_R.transform.position = TDMG_Hook_RC.transform.position;  // 完成回收
-			TDMG_Hook_R_state = 0;
-			TDMG.audio.PlayOneShot(TDMG_Withdraw_sound, 1);
-		}
-	}
+	/////...
 
 
 	// input_rotate_x
