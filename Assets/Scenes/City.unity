@@ -14143,7 +14143,7 @@ MonoBehaviour:
   - {fileID: 2800000, guid: c7ad93ab0562449468b28f58067d3eaf, type: 3}
   - {fileID: 2800000, guid: 034ff87b0056441838a82e73b4fea558, type: 3}
   disabled_texture:
-  - {fileID: 0}
+  - {fileID: 2800000, guid: c7ad93ab0562449468b28f58067d3eaf, type: 3}
   - {fileID: 0}
   - {fileID: 0}
   held_texture:
@@ -25021,6 +25021,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_EditorClassIdentifier: 
   m_EditorClassIdentifier: 
+  m_EditorClassIdentifier: 
+  m_EditorClassIdentifier: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1526328317
 GameObject:
   m_ObjectHideFlags: 0
@@ -26959,6 +26962,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_EditorClassIdentifier: 
   m_EditorClassIdentifier: 
+  m_EditorClassIdentifier: 
+  m_EditorClassIdentifier: 
+  m_EditorClassIdentifier: 
 --- !u!114 &1666304348
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -26970,6 +26976,9 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5023b47652ca9b34d807476a6f7fddbb, type: 3}
   m_Name: 
+  m_EditorClassIdentifier: 
+  m_EditorClassIdentifier: 
+  m_EditorClassIdentifier: 
   m_EditorClassIdentifier: 
   m_EditorClassIdentifier: 
   m_EditorClassIdentifier: 
@@ -28617,10 +28626,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   normal_texture:
-  - {fileID: 2800000, guid: c6b91c3fc25c74a4c98ea5c450099c27, type: 3}
+  - {fileID: 2800000, guid: 7936215f531e04ba3870d5d92e4b76ae, type: 3}
+  - {fileID: 2800000, guid: 158a301a4b53846ec976fb81df500457, type: 3}
   disabled_texture:
   - {fileID: 2800000, guid: 5621e94699b054d059ab142984dc8385, type: 3}
+  - {fileID: 2800000, guid: 158a301a4b53846ec976fb81df500457, type: 3}
   held_texture:
+  - {fileID: 0}
   - {fileID: 0}
   tapped: 0
   held: 0
@@ -32956,6 +32968,18 @@ Prefab:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 11400026, guid: 28b07ed0cf57b437ab601a3d671c8e37, type: 2}
+      propertyPath: held_texture.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400026, guid: 28b07ed0cf57b437ab601a3d671c8e37, type: 2}
+      propertyPath: normal_texture.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400026, guid: 28b07ed0cf57b437ab601a3d671c8e37, type: 2}
+      propertyPath: disabled_texture.Array.size
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 28b07ed0cf57b437ab601a3d671c8e37, type: 2}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -32996,6 +33020,22 @@ Prefab:
       propertyPath: target
       value: 
       objectReference: {fileID: 110640813}
+    - target: {fileID: 11400006, guid: 28b07ed0cf57b437ab601a3d671c8e37, type: 2}
+      propertyPath: disabled_texture.Array.data[0]
+      value: 
+      objectReference: {fileID: 2800000, guid: c7ad93ab0562449468b28f58067d3eaf, type: 3}
+    - target: {fileID: 11400026, guid: 28b07ed0cf57b437ab601a3d671c8e37, type: 2}
+      propertyPath: normal_texture.Array.data[1]
+      value: 
+      objectReference: {fileID: 2800000, guid: 158a301a4b53846ec976fb81df500457, type: 3}
+    - target: {fileID: 11400026, guid: 28b07ed0cf57b437ab601a3d671c8e37, type: 2}
+      propertyPath: disabled_texture.Array.data[1]
+      value: 
+      objectReference: {fileID: 2800000, guid: 158a301a4b53846ec976fb81df500457, type: 3}
+    - target: {fileID: 11400026, guid: 28b07ed0cf57b437ab601a3d671c8e37, type: 2}
+      propertyPath: normal_texture.Array.data[0]
+      value: 
+      objectReference: {fileID: 2800000, guid: 7936215f531e04ba3870d5d92e4b76ae, type: 3}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 28b07ed0cf57b437ab601a3d671c8e37, type: 2}
   m_RootGameObject: {fileID: 1235452750}
