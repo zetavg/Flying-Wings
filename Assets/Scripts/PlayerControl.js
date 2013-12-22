@@ -243,12 +243,12 @@ function FixedUpdate () {
 
 	var forward_speed = transform.InverseTransformDirection(rigidbody.velocity).z;
 	var TDMG_Gear_sound = 0;
-
+/*
 	MainCam.transform.localPosition.x = 0;
 	MainCam.transform.localPosition.y = 1;
 	MainCam.transform.localPosition.z = -3;
 
-
+*/
 
 	// Basic Controls and Controls SFX
 	//////////////////////////////////////////////////////////////////
