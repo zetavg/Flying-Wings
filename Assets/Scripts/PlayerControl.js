@@ -89,6 +89,7 @@ private var kill_mode = 0;  // 0: not killing, 1: prepare killing, 2: kill
 private var hit_thing = false;  // 是否有接觸到物體?
 public var prev_y = 00.0;
 public var prev_velocity : Vector3;
+private var TDMG_pull_target : Vector3;
 public var TDMG_fire_start_time = 00.0;
 private var TDMG_Hook_L_state = 0;
 private var TDMG_Hook_R_state = 0;  // 0 已收回，1 收回中，2 attach，3 射出
@@ -170,6 +171,22 @@ public var Land_sound : AudioClip;  // 落地音效
 public var Kill_sound : AudioClip;  // 揮刀音效
 
 
+// Helper Functions
+//////////////////////////////////////////////////////////////////////
+
+function SetGUITPixelInsetToPosition(myGUTTexture : GameObject, toHere : Vector3, steps : float) {
+	var pixelInset_x = Screen.width*(toHere.x - myGUTTexture.transform.position.x) - myGUTTexture.guiTexture.pixelInset.width/2;
+	var pixelInset_y = Screen.height*(toHere.y - myGUTTexture.transform.position.y) - myGUTTexture.guiTexture.pixelInset.height/2;
+	myGUTTexture.guiTexture.pixelInset.x += (pixelInset_x - myGUTTexture.guiTexture.pixelInset.x)/steps;
+	myGUTTexture.guiTexture.pixelInset.y += (pixelInset_y - myGUTTexture.guiTexture.pixelInset.y)/steps;
+}
+
+function SetGUITPixelInsetToCenter(myGUTTexture : GameObject, steps : float) {
+	myGUTTexture.guiTexture.pixelInset.x += (-myGUTTexture.guiTexture.pixelInset.width/2 - myGUTTexture.guiTexture.pixelInset.x)/steps;
+	myGUTTexture.guiTexture.pixelInset.y += (-myGUTTexture.guiTexture.pixelInset.height/2 - myGUTTexture.guiTexture.pixelInset.y)/steps;
+}
+
+
 // Initialize
 //////////////////////////////////////////////////////////////////////
 
@@ -226,6 +243,11 @@ function FixedUpdate () {
 
 	var forward_speed = transform.InverseTransformDirection(rigidbody.velocity).z;
 	var TDMG_Gear_sound = 0;
+
+	MainCam.transform.localPosition.x = 0;
+	MainCam.transform.localPosition.y = 1;
+	MainCam.transform.localPosition.z = -3;
+
 
 
 	// Basic Controls and Controls SFX
@@ -298,6 +320,14 @@ function FixedUpdate () {
 	if (TDMG_Hook_L_state) TDMG_aval_hooks--;
 	if (TDMG_Hook_R_state) TDMG_aval_hooks--;
 
+	if (TDMG_Hook_L_state == 2 && TDMG_Hook_R_state == 2) {
+		TDMG_pull_target = (TDMG_Attacher_L.transform.position + TDMG_Attacher_R.transform.position) / 2;
+	} else if (TDMG_Hook_L_state == 2) {
+		TDMG_pull_target = TDMG_Attacher_L.transform.position;
+	} else if (TDMG_Hook_R_state == 2) {
+		TDMG_pull_target = TDMG_Attacher_R.transform.position;
+	}
+
 	// Aim //
 
 	var tdmg_target_ray : Ray = Ray(MainCam.transform.position, Target.transform.position - MainCam.transform.position);
@@ -322,8 +352,8 @@ function FixedUpdate () {
 		else tdmg_use_hook_l = true;
 
 		if ( tdmg_target_hit.collider.gameObject.tag != "Titan" &&
-		     TDMG_Hook_L_state == 0 && TDMG_Hook_L_state == 0 &&
-		     (TDMG.transform.position - tdmg_target_hit.point).magnitude < 20 ) {  // Consider to use both hooks
+		     ((TDMG_Hook_L_state == 0 && TDMG_Hook_L_state == 0) || ((TDMG_Hook_L_state != 1 && TDMG_Hook_L_state != 1) && (TDMG_pull_target - TDMG.transform.position).magnitude < 40)) &&
+		     (TDMG.transform.position - tdmg_target_hit.point).magnitude < 40 ) {  // Consider to use both hooks
 			var tdmg_target_ray_L : Ray = Ray(MainCam.transform.position-transform.right, Target.transform.position - MainCam.transform.position - transform.right);
 			var tdmg_target_hit_L : RaycastHit;
 			var tdmg_target_ray_R : Ray = Ray(MainCam.transform.position+transform.right, Target.transform.position - MainCam.transform.position + transform.right);
@@ -332,18 +362,17 @@ function FixedUpdate () {
 			if ( Physics.Raycast(tdmg_target_ray_L, tdmg_target_hit_L) &&
 			     Physics.Raycast(tdmg_target_ray_R, tdmg_target_hit_R) ) {
 				if ( (tdmg_target_hit.point - tdmg_target_hit_L.point).magnitude < 10.5 &&
-				     (tdmg_target_hit.point - tdmg_target_hit_R.point).magnitude < 10.5 ) {
+				     (tdmg_target_hit.point - tdmg_target_hit_R.point).magnitude < 10.5 &&
+				     TDMG.transform.InverseTransformPoint(tdmg_target_hit_L.point).z > 0 &&
+				     TDMG.transform.InverseTransformPoint(tdmg_target_hit_R.point).z > 0 ) {
 					TDMG_Aimer_L.transform.position = tdmg_target_hit_L.point;
 					TDMG_Aimer_R.transform.position = tdmg_target_hit_R.point;
 					tdmg_aimed_trans_l = tdmg_target_hit_L.transform;
 					tdmg_aimed_trans_r = tdmg_target_hit_R.transform;
 					tdmg_use_hook_r = true;
 					tdmg_use_hook_l = true;
-
 				}
-
 			}
-
 		}
 
 	} else if (1 == -2) {  // Case sides
@@ -357,19 +386,25 @@ function FixedUpdate () {
 	TargetCrosshair.transform.position = Camera.main.WorldToViewportPoint(Target.transform.position);
 	if (tdmg_is_aimed) {
 		if (tdmg_use_hook_l) {
-			AimCrosshairL.transform.position = Camera.main.WorldToViewportPoint(TDMG_Aimer_L.transform.position);
+			AimCrosshairL.transform.position = Camera.main.WorldToViewportPoint(Target.transform.position);
+			SetGUITPixelInsetToPosition(AimCrosshairL, Camera.main.WorldToViewportPoint(TDMG_Aimer_L.transform.position), 8);
 			AimCrosshairL.GetComponent(GUITextureHelper).Show();
 		} else {
+			SetGUITPixelInsetToCenter(AimCrosshairL, 1);
 			AimCrosshairL.GetComponent(GUITextureHelper).Hide();
 		}
 		if (tdmg_use_hook_r) {
-			AimCrosshairR.transform.position = Camera.main.WorldToViewportPoint(TDMG_Aimer_R.transform.position);
+			AimCrosshairR.transform.position = Camera.main.WorldToViewportPoint(Target.transform.position);
+			SetGUITPixelInsetToPosition(AimCrosshairR, Camera.main.WorldToViewportPoint(TDMG_Aimer_R.transform.position), 8);
 			AimCrosshairR.GetComponent(GUITextureHelper).Show();
 		} else {
+			SetGUITPixelInsetToCenter(AimCrosshairR, 1);
 			AimCrosshairR.GetComponent(GUITextureHelper).Hide();
 		}
 	} else {
+		SetGUITPixelInsetToCenter(AimCrosshairL, 1);
 		AimCrosshairL.GetComponent(GUITextureHelper).Hide();
+		SetGUITPixelInsetToCenter(AimCrosshairR, 1);
 		AimCrosshairR.GetComponent(GUITextureHelper).Hide();
 	}
 
@@ -445,15 +480,6 @@ function FixedUpdate () {
 	}
 
 	if (MButton_status == 1 && MButton.held) {  // Pull!
-		// Get pull target
-		var TDMG_pull_target : Vector3;
-		if (TDMG_Hook_L_state == 2 && TDMG_Hook_R_state == 2) {
-			TDMG_pull_target = (TDMG_Attacher_L.transform.position + TDMG_Attacher_R.transform.position) / 2;
-		} else if (TDMG_Hook_L_state == 2) {
-			TDMG_pull_target = TDMG_Attacher_L.transform.position;
-		} else if (TDMG_Hook_R_state == 2) {
-			TDMG_pull_target = TDMG_Attacher_R.transform.position;
-		}
 
 		// Var
 		var tdmg_pull_to_v = (Vector3.Project(rigidbody.velocity, (TDMG_pull_target - transform.position).normalized).magnitude);
@@ -494,12 +520,12 @@ function FixedUpdate () {
 		if (TDMG_Hook_R_state == 2) TDMG_Hook_R_state = 1;
 	}
 
-
 	// Hook Behavior //
+
 	if (TDMG_Hook_L_state == 3) {  // 若射出中
 		TDMG_Hook_L.transform.position += (TDMG_Attacher_L.transform.position - TDMG_Hook_L.transform.position).normalized;
 		TDMG_Gear_sound = 1;
-		if (Time.time - TDMG_fire_start_time > 2) {  // 超時
+		if (Time.time - TDMG_fire_start_time > 2.5) {  // 超時
 			TDMG_Hook_L_state = 1;  // 收回
 		} else if ((TDMG_Attacher_L.transform.position - TDMG_Hook_L.transform.position).magnitude < 0.8) {  // 中
 			TDMG_Hook_L_state = 2;
@@ -798,7 +824,7 @@ function FixedUpdate () {
 
 	// Debug //
 	//print("MCFieldOfView " + MainCam.camera.fieldOfView);
-	Debug.DrawLine(MainCamW.transform.position+MainCamW.transform.up, MainCam_behind_ray_hit.point);
+	// Debug.DrawLine(MainCamW.transform.position+MainCamW.transform.up, MainCam_behind_ray_hit.point);
 	//Debug.DrawLine(MainCamW.transform.position+MainCamW.transform.up+MainCam.transform.forward, MainCamW.transform.position+MainCamW.transform.up);
 	//print("MainCam_behind_distance " + MainCam_behind_distance);
 	//print("MainCam.transform.forward " + MainCam.transform.forward);
