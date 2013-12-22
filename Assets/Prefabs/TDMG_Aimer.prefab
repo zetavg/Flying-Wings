@@ -14,7 +14,7 @@ GameObject:
   - 33: {fileID: 3300000}
   - 82: {fileID: 8200000}
   m_Layer: 2
-  m_Name: TDMG_Attacher
+  m_Name: TDMG_Aimer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

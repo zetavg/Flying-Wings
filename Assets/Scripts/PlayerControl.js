@@ -22,6 +22,7 @@ private var t : int;
 
 public var MAX_SPEED = 30.0;  // 玩家在場景中的最大速度, 避免失速
 public var MIN_HEIGHT = -10.0;  // 玩家在場景中的最小高度, 避免墜落
+private var TDMG_WIRE_MAX_DISTANCE = 100;
 
 
 // General Settings
@@ -56,22 +57,25 @@ private var TDMG_Jet : GameObject;
 
 // 3DMG Wire Helpers //
 
-public var TDMG_Aimer : GameObject;
-public var TDMG_Attacher_L : GameObject;
-public var TDMG_Attacher_R : GameObject;
+private var TDMG_Aimer_L : GameObject;
+private var TDMG_Aimer_R : GameObject;
+private var TDMG_Attacher_L : GameObject;
+private var TDMG_Attacher_R : GameObject;
 
 
 // GUI
 //////////////////////////////////////////////////////////////////////
 
-public var PlayerControlGUI : GameObject;  // 控制界面
-public var ThrustLever : Joystick;
-public var MBotton : TapButton;
-public var ReleaseBotton : TapButton;
+private var PlayerControlGUI : GameObject;  // 控制界面
+private var ThrustLever : Joystick;
+private var MBotton : TapButton;
+private var ReleaseBotton : TapButton;
 
 
-public var Gear : GameObject;
-public var Aim : GameObject;
+private var GUIAnimateGear : GameObject;
+private var TargetCrosshair : GameObject;
+private var AimCrosshairL : GameObject;
+private var AimCrosshairR : GameObject;
 
 
 // Status
@@ -96,8 +100,6 @@ private var kill_cd = 0;
 
 // Controls
 //////////////////////////////////////////////////////////////////////
-
-private var TDMG_Wire_max_distance = 2/0.02;
 
 // Gravity //
 
@@ -189,10 +191,21 @@ function Start () {
 	TDMG_Hook_R = transform.Find("TDMG/TDMG_Hook_R_Container/TDMG_Hook").gameObject;
 	TDMG_Jet = transform.Find("TDMG/TDMG_Jet").gameObject;
 
+
+	TDMG_Aimer_L = transform.Find("/TDMG_Aimer_L").gameObject;
+	TDMG_Aimer_R = transform.Find("/TDMG_Aimer_R").gameObject;
+	TDMG_Attacher_L = transform.Find("/TDMG_Attacher_L").gameObject;
+	TDMG_Attacher_R = transform.Find("/TDMG_Attacher_R").gameObject;
+
+
 	PlayerControlGUI = transform.Find("/Player Control GUI").gameObject;
 	MBotton = PlayerControlGUI.transform.Find("B_M").GetComponent("TapButton");
 	ThrustLever = PlayerControlGUI.transform.Find("TL").GetComponent("Joystick");
 	ReleaseBotton = PlayerControlGUI.transform.Find("B_R").GetComponent("TapButton");
+	TargetCrosshair = PlayerControlGUI.transform.Find("T_C").gameObject;
+	AimCrosshairL = PlayerControlGUI.transform.Find("A_C_L").gameObject;
+	AimCrosshairR = PlayerControlGUI.transform.Find("A_C_R").gameObject;
+	GUIAnimateGear = PlayerControlGUI.transform.Find("B_M_BG2").gameObject;
 
 	// Initialize GameObjects //
 
@@ -266,14 +279,76 @@ function FixedUpdate () {
 	}
 
 	// Debug
-	print("v " + transform.InverseTransformDirection(rigidbody.velocity).z);
+	// print("v " + transform.InverseTransformDirection(rigidbody.velocity).z);
 
 
 	// 3DMG Wire
 	//////////////////////////////////////////////////////////////////
 
+
+	// Status //
+	var MBotton_status;  // 0: Fire, 1: Pull, 2: Firing/Releasing, 3: NoTarget.
+	var TDMG_has_attached = false;  // 是否有 Attached?
+	var TDMG_is_firing = false;  // 是否有 Attached?
+	var TDMG_aval_hooks = 2;  // 可用 hook 數
+	if (TDMG_Hook_L_state == 2 || TDMG_Hook_R_state == 2) TDMG_has_attached = true;
+	if (TDMG_Hook_L_state == 3 || TDMG_Hook_R_state == 3) TDMG_is_firing = true;
+	if (TDMG_Hook_L_state) TDMG_aval_hooks--;
+	if (TDMG_Hook_R_state) TDMG_aval_hooks--;
+
+
+	// Aim //
+
+	var tdmg_target_ray : Ray = Ray(MainCam.transform.position, Target.transform.position - MainCam.transform.position);
+	var tdmg_target_hit : RaycastHit;
+	var tdmg_target_hit_in_range = false;
+	var tdmg_can_side_hit = false;
+	var tdmg_is_aimed = false;
+	var tdmg_use_both_hook = false;
+
+	if ( Physics.Raycast(tdmg_target_ray, tdmg_target_hit) &&
+	     (TDMG.transform.position - tdmg_target_hit.point).magnitude < TDMG_WIRE_MAX_DISTANCE ) {  // Case normal hit
+		TDMG_Aimer_L.transform.position = tdmg_target_hit.point;
+		TDMG_Aimer_R.transform.position = tdmg_target_hit.point;
+		tdmg_target_hit_in_range = true;
+		tdmg_is_aimed = true;
+	} else if (1 == -2) {  // Case sides
+
+	} else {
+
+	}
+
+
+	// GUI //
+	TargetCrosshair.transform.position = Camera.main.WorldToViewportPoint(Target.transform.position);
+	if (tdmg_is_aimed) {
+		AimCrosshairL.transform.position = Camera.main.WorldToViewportPoint(TDMG_Aimer_L.transform.position);
+		AimCrosshairL.GetComponent(GUITextureHelper).Show();
+		if (tdmg_use_both_hook) {
+			AimCrosshairR.transform.position = Camera.main.WorldToViewportPoint(TDMG_Aimer_R.transform.position);
+			AimCrosshairR.GetComponent(GUITextureHelper).Show();
+		} else {
+			AimCrosshairR.GetComponent(GUITextureHelper).Hide();
+		}
+	} else {
+		AimCrosshairL.GetComponent(GUITextureHelper).Hide();
+		AimCrosshairR.GetComponent(GUITextureHelper).Hide();
+	}
+
+
+	if (TDMG_has_attached) {
+		MBotton_status = 1;
+	} else if (TDMG_aval_hooks > 0) {
+		MBotton_status = 0;
+		if (!tdmg_is_aimed) {
+			MBotton_status = 3;
+		}
+	} else {
+		MBotton_status = 2;
+	}
+
 	// 總體狀態，及 GUI 反應 //
-	var MBotton_status;  // 0: Fire, 1: Pull, 2: Disabled.
+
 	var ReleaseBotton_status = 1;  // 0: Release, 1: Releaseing, 2: Disabled
 
 	if (TDMG_Hook_L_state + TDMG_Hook_R_state <= 1 ) {  // 有可用的 TDMG Hook，且皆已收回或收回中
@@ -305,7 +380,7 @@ function FixedUpdate () {
 	var fire_hit_p_R : Vector3;
 	if (Physics.Raycast(fire_ray, fire_hit)) {  // 取得擊中點 (fire_hit.point)
 		Debug.DrawLine(fire_ray.origin, fire_hit.point);
-		if ((transform.position - fire_hit.point).magnitude < TDMG_Wire_max_distance) {
+		if ((transform.position - fire_hit.point).magnitude < TDMG_WIRE_MAX_DISTANCE) {
 			is_fire_hit = true;
 			// Aim.guiTexture.texture = Aim_aim_texture;
 		} else {
