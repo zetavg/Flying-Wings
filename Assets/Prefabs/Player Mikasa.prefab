@@ -1401,7 +1401,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 100090}
   m_LocalRotation: {x: .398625165, y: 0, z: 0, w: .917114019}
-  m_LocalPosition: {x: 0, y: 1.41589499, z: .437110901}
+  m_LocalPosition: {x: 0, y: .531118929, z: .437110901}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 400104}
@@ -1435,7 +1435,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 100096}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: .141012326, y: .884776115, z: 0}
+  m_LocalPosition: {x: .141012326, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 400098}
@@ -1459,7 +1459,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 100100}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -.141011998, y: .884776115, z: 0}
+  m_LocalPosition: {x: -.141011998, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 400094}
@@ -1482,7 +1482,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 100104}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: .884776115, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 400100}
@@ -2000,43 +2000,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 606ea067949ea4fa38cb383d26589b3a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  MAX_SPEED: 30
+  MIN_HEIGHT: -10
   rotate_cam: 0
-  max_speed: 30
-  PlayerControlsGUI: {fileID: 100074}
-  Gear: {fileID: 0}
-  Joystick: {fileID: 0}
-  FireBotton: {fileID: 0}
-  ReleaseBotton: {fileID: 0}
-  Aim: {fileID: 0}
-  FireBotton_texture: {fileID: 2800000, guid: c7ad93ab0562449468b28f58067d3eaf, type: 3}
-  FireBotton_texture_disabled: {fileID: 2800000, guid: 7a7ed0b93a1e44695b242d8b28785c3b,
-    type: 3}
-  FireBotton_texture_pull: {fileID: 2800000, guid: 034ff87b0056441838a82e73b4fea558,
-    type: 3}
-  FireBotton_texture_pull_pulled: {fileID: 2800000, guid: fc9594f90a1bd4e6585089c296301f14,
-    type: 3}
-  ReleaseBotton_texture: {fileID: 2800000, guid: 7936215f531e04ba3870d5d92e4b76ae,
-    type: 3}
-  ReleaseBotton_texture_disabled: {fileID: 2800000, guid: 5621e94699b054d059ab142984dc8385,
-    type: 3}
-  ReleaseBotton_texture_released: {fileID: 2800000, guid: 3f120b68d80e34300905db17c0311a66,
-    type: 3}
-  Aim_texture: {fileID: 2800000, guid: b75eca0864f6c476fa47fbc511378a0e, type: 3}
-  Aim_aim_texture: {fileID: 2800000, guid: fcb92126444314e7bba581552d4b2c23, type: 3}
-  TDMG_Fire_sound: {fileID: 8300000, guid: 208fd5c2510a24fb99458441f94b45ea, type: 3}
-  TDMG_Hooked_sound: {fileID: 8300000, guid: feacf5aac7ff34bf8b187213f28a09d4, type: 3}
-  TDMG_Withdraw_sound: {fileID: 8300000, guid: 5bcab7953e6bf465a97942bbe7158673, type: 3}
-  Land_sound: {fileID: 8300000, guid: 50c843564e0eb4104947a4609e6e9f81, type: 3}
-  Kill_sound: {fileID: 8300000, guid: 13e20783f20354a08ab913ed90d4309b, type: 3}
-  TDMG_Attacher_L: {fileID: 0}
-  TDMG_Attacher_R: {fileID: 0}
+  playerName: 
   characterSpeed: 1
   characterFlexibility: 1
   on_ground: 0
   prev_y: 0
   prev_velocity: {x: 0, y: 0, z: 0}
-  fire_start_time: 0
+  TDMG_fire_start_time: 0
   gravitySensitivity: 1
+  TDMG_Fire_sound: {fileID: 8300000, guid: 208fd5c2510a24fb99458441f94b45ea, type: 3}
+  TDMG_Hooked_sound: {fileID: 8300000, guid: feacf5aac7ff34bf8b187213f28a09d4, type: 3}
+  TDMG_Withdraw_sound: {fileID: 8300000, guid: 5bcab7953e6bf465a97942bbe7158673, type: 3}
+  Land_sound: {fileID: 8300000, guid: 50c843564e0eb4104947a4609e6e9f81, type: 3}
+  Kill_sound: {fileID: 8300000, guid: 13e20783f20354a08ab913ed90d4309b, type: 3}
 --- !u!114 &11400002
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2418,7 +2397,7 @@ CapsuleCollider:
   m_Material: {fileID: 13400000, guid: 877b570fbc8ee43b29b3561d2e46a6fd, type: 2}
   m_IsTrigger: 0
   m_Enabled: 1
-  m_Radius: .400000006
+  m_Radius: .600000024
   m_Height: 1.70000005
   m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}

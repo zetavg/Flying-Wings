@@ -359,9 +359,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ad84a2fa37c1a45e5ab5b945a799e4fa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  normal_texture: []
-  disabled_texture: []
-  held_texture: []
+  normal_texture:
+  - {fileID: 2800000, guid: b9cc6ddbc71a14b3cb1dc0be26061aa3, type: 3}
+  - {fileID: 0}
+  disabled_texture:
+  - {fileID: 2800000, guid: 47094ae7eefc749e59de3297becc32cb, type: 3}
+  - {fileID: 0}
+  held_texture:
+  - {fileID: 0}
+  - {fileID: 0}
   tapped: 0
   held: 0
   released: 0
@@ -371,7 +377,7 @@ MonoBehaviour:
     sunkenAnimation: 1
     sunkenAnimationInitialVelocity: .0199999996
     sunkenAnimationVelocityAcceleration: .0199999996
-    sunkenAnimationMinScale: .860000014
+    sunkenAnimationMinScale: .879999995
     sunkenAnimationMaxScale: 1.00999999
     sunkenAnimationTime: 0
     tapSFX: {fileID: 0}
@@ -429,7 +435,7 @@ MonoBehaviour:
     sunkenAnimation: 1
     sunkenAnimationInitialVelocity: .0199999996
     sunkenAnimationVelocityAcceleration: .0199999996
-    sunkenAnimationMinScale: .860000014
+    sunkenAnimationMinScale: .99000001
     sunkenAnimationMaxScale: 1.00999999
     sunkenAnimationTime: 0
     tapSFX: {fileID: 0}
