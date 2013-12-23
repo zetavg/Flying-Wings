@@ -544,9 +544,7 @@ function FixedUpdate () {
 	}
 	if (HoldButton.held) {  // Hold!
 		if ((TDMG.transform.position - TDMG_pull_target).magnitude > TDMG_hold_dist) {
-			//var tdmg_d_position = (TDMG.transform.position - TDMG_pull_target).normalized * TDMG_hold_dist + TDMG_pull_target;
-			//transform.position = tdmg_d_position - TDMG.transform.localPosition;
-			rigidbody.AddForce(Vector3.Project(-rigidbody.velocity, (TDMG.transform.position - TDMG_pull_target).normalized), ForceMode.VelocityChange);
+			rigidbody.AddForce(Vector3.Project(-rigidbody.velocity, (TDMG.transform.position - TDMG_pull_target).normalized) + (TDMG.transform.position - TDMG_pull_target).normalized*-1, ForceMode.VelocityChange);
 		}
 	}
 
