@@ -24,8 +24,6 @@ GameObject:
   m_Component:
   - 4: {fileID: 400002}
   - 131: {fileID: 13100000}
-  - 132: {fileID: 13200000}
-  - 114: {fileID: 11400000}
   - 114: {fileID: 11400008}
   - 114: {fileID: 11400030}
   m_Layer: 0
@@ -189,8 +187,6 @@ GameObject:
   m_Component:
   - 4: {fileID: 400020}
   - 131: {fileID: 13100018}
-  - 132: {fileID: 13200004}
-  - 114: {fileID: 11400042}
   - 114: {fileID: 11400040}
   - 114: {fileID: 11400038}
   m_Layer: 0
@@ -331,23 +327,6 @@ Transform:
   m_LocalScale: {x: 0, y: 0, z: 0}
   m_Children: []
   m_Father: {fileID: 400000}
---- !u!114 &11400000
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 100002}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c1a3d013a316749e881f1d60659cd1da, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  target: {fileID: 0}
-  offset: {x: 0, y: 1, z: 0}
-  clampToScreen: 0
-  clampBorderSize: .0500000007
-  useMainCamera: 1
-  cameraToUse: {fileID: 0}
 --- !u!114 &11400002
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -626,8 +605,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   textures:
-  - {fileID: 0}
   - {fileID: 2800000, guid: 0928923f6a7bf424fb43a3364de7b8c7, type: 3}
+  - {fileID: 2800000, guid: 9603f4a86cb5c404ba33ef5146df79fa, type: 3}
   - {fileID: 2800000, guid: fd05bc7fd105d48f5873d8d6fa3a55c3, type: 3}
   displayAsLable: 0
   l_rotate: 0
@@ -685,8 +664,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   textures:
-  - {fileID: 0}
   - {fileID: 2800000, guid: 0928923f6a7bf424fb43a3364de7b8c7, type: 3}
+  - {fileID: 2800000, guid: 9603f4a86cb5c404ba33ef5146df79fa, type: 3}
   - {fileID: 2800000, guid: fd05bc7fd105d48f5873d8d6fa3a55c3, type: 3}
   displayAsLable: 0
   l_rotate: 0
@@ -701,23 +680,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 28d7a969833ca4a57ac2667795a56930, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &11400042
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 100020}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c1a3d013a316749e881f1d60659cd1da, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  target: {fileID: 0}
-  offset: {x: 0, y: 1, z: 0}
-  clampToScreen: 0
-  clampBorderSize: .0500000007
-  useMainCamera: 1
-  cameraToUse: {fileID: 0}
 --- !u!131 &13100000
 GUITexture:
   m_ObjectHideFlags: 1
@@ -877,7 +839,7 @@ GUITexture:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 100018}
   m_Enabled: 1
-  m_Texture: {fileID: 2800000, guid: b75eca0864f6c476fa47fbc511378a0e, type: 3}
+  m_Texture: {fileID: 2800000, guid: 7f518f23335a140ebaff126483a8f324, type: 3}
   m_Color: {r: .5, g: .5, b: .5, a: .5}
   m_PixelInset:
     serializedVersion: 2
@@ -908,29 +870,6 @@ GUITexture:
   m_RightBorder: 0
   m_TopBorder: 0
   m_BottomBorder: 0
---- !u!132 &13200000
-GUIText:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 100002}
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Text: 
-  m_Anchor: 0
-  m_Alignment: 0
-  m_PixelOffset: {x: 0, y: 0}
-  m_LineSpacing: 1
-  m_TabSize: 4
-  m_Font: {fileID: 0}
-  m_Material: {fileID: 0}
-  m_FontSize: 0
-  m_FontStyle: 0
-  m_Color:
-    serializedVersion: 2
-    rgba: 4294967295
-  m_PixelCorrect: 1
-  m_RichText: 1
 --- !u!132 &13200002
 GUIText:
   m_ObjectHideFlags: 1
@@ -945,30 +884,7 @@ GUIText:
   m_PixelOffset: {x: 0, y: 0}
   m_LineSpacing: 1
   m_TabSize: 4
-  m_Font: {fileID: 0}
-  m_Material: {fileID: 0}
-  m_FontSize: 0
-  m_FontStyle: 0
-  m_Color:
-    serializedVersion: 2
-    rgba: 4294967295
-  m_PixelCorrect: 1
-  m_RichText: 1
---- !u!132 &13200004
-GUIText:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 100020}
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Text: 
-  m_Anchor: 0
-  m_Alignment: 0
-  m_PixelOffset: {x: 0, y: 0}
-  m_LineSpacing: 1
-  m_TabSize: 4
-  m_Font: {fileID: 0}
+  m_Font: {fileID: 12800000, guid: 38d2e5f011552469b8fe544236c61de3, type: 3}
   m_Material: {fileID: 0}
   m_FontSize: 0
   m_FontStyle: 0

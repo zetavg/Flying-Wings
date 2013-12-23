@@ -261,6 +261,9 @@ function FixedUpdate () {
 
 	// Y (left & right)
 	var input_rotate_y = GetInputAngle_y();
+	var rotate_dead_zone = 0.0;
+	if (on_ground) rotate_dead_zone = 0.1;
+	else rotate_dead_zone = 0.04;
 
 	if (input_rotate_y > 0.25) input_rotate_y = 0.25;  // limit
 	else if (input_rotate_y < -0.25) input_rotate_y = -0.25;
@@ -268,10 +271,10 @@ function FixedUpdate () {
 	TargetW.transform.localRotation.eulerAngles.y = input_rotate_y*200;
 	MainCamW.transform.localRotation.eulerAngles.y = input_rotate_y*100;
 	MainCam.transform.localRotation.eulerAngles.y = input_rotate_y*-50;
-	if (input_rotate_y > 0.10) {
-		transform.Rotate(Vector3.up, ((input_rotate_y*characterFlexibility)-0.10)*20);
-	} else if (input_rotate_y < -0.10) {
-		transform.Rotate(Vector3.up, ((input_rotate_y*characterFlexibility)+0.10)*20);
+	if (input_rotate_y > rotate_dead_zone) {
+		transform.Rotate(Vector3.up, ((input_rotate_y*characterFlexibility)-rotate_dead_zone)*20);
+	} else if (input_rotate_y < -rotate_dead_zone) {
+		transform.Rotate(Vector3.up, ((input_rotate_y*characterFlexibility)+rotate_dead_zone)*20);
 	}
 
 	// X (up & down)
@@ -311,7 +314,6 @@ function FixedUpdate () {
 
 	// 3DMG Wire
 	//////////////////////////////////////////////////////////////////
-
 
 	// Status //
 
@@ -390,6 +392,15 @@ function FixedUpdate () {
 	// GUI //
 
 	TargetCrosshair.transform.position = Camera.main.WorldToViewportPoint(Target.transform.position);
+
+	if (tdmg_use_hook_l && tdmg_use_hook_r) {
+		AimCrosshairL.GetComponent(GUITextureHelper).UseTexture(1);
+		AimCrosshairR.GetComponent(GUITextureHelper).UseTexture(1);
+	} else {
+		AimCrosshairL.GetComponent(GUITextureHelper).UseTexture(0);
+		AimCrosshairR.GetComponent(GUITextureHelper).UseTexture(0);
+	}
+
 	if (tdmg_is_aimed) {
 		if (tdmg_use_hook_l) {
 			AimCrosshairL.transform.position = Camera.main.WorldToViewportPoint(Target.transform.position);
@@ -533,8 +544,9 @@ function FixedUpdate () {
 	}
 	if (HoldButton.held) {  // Hold!
 		if ((TDMG.transform.position - TDMG_pull_target).magnitude > TDMG_hold_dist) {
-			var tdmg_d_position = (TDMG.transform.position - TDMG_pull_target).normalized * TDMG_hold_dist + TDMG_pull_target;
-			transform.position = tdmg_d_position - TDMG.transform.localPosition;
+			//var tdmg_d_position = (TDMG.transform.position - TDMG_pull_target).normalized * TDMG_hold_dist + TDMG_pull_target;
+			//transform.position = tdmg_d_position - TDMG.transform.localPosition;
+			rigidbody.AddForce(Vector3.Project(-rigidbody.velocity, (TDMG.transform.position - TDMG_pull_target).normalized), ForceMode.VelocityChange);
 		}
 	}
 
@@ -544,6 +556,13 @@ function FixedUpdate () {
 	}
 
 	// Hook Behavior //
+
+	if (TDMG_Hook_L_state == 2 || TDMG_Hook_R_state == 2) {
+		if ((TDMG.transform.position - TDMG_pull_target).magnitude > TDMG_WIRE_MAX_DISTANCE) {  // Limit max dist.
+			var tdmg_md_position = (TDMG.transform.position - TDMG_pull_target).normalized * TDMG_WIRE_MAX_DISTANCE + TDMG_pull_target;
+			transform.position = tdmg_md_position - TDMG.transform.localPosition;
+		}
+	}
 
 	if (TDMG_Hook_L_state == 3) {  // 若射出中
 		TDMG_Hook_L.transform.position += (TDMG_Attacher_L.transform.position - TDMG_Hook_L.transform.position).normalized;
@@ -588,10 +607,6 @@ function FixedUpdate () {
 		}
 	}
 
-	if ((TDMG.transform.position - TDMG_pull_target).magnitude > TDMG_WIRE_MAX_DISTANCE) {  // Limit max dist.
-		var tdmg_md_position = (TDMG.transform.position - TDMG_pull_target).normalized * TDMG_WIRE_MAX_DISTANCE + TDMG_pull_target;
-		transform.position = tdmg_md_position - TDMG.transform.localPosition;
-	}
 
 	// 總體狀態，及 GUI 反應 //
 
