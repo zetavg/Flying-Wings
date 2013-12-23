@@ -318,6 +318,7 @@ function FixedUpdate () {
 	var MButton_status;  // 0: Fire, 1: Pull, 2: Firing, 3: Releasing, 4: NoTarget.
 	var TDMG_has_attached = false;  // 是否有 Attached?
 	var tdmg_pull_to_v = (Vector3.Project(rigidbody.velocity, (TDMG_pull_target - transform.position).normalized).magnitude);
+	if  ((transform.position - TDMG_pull_target).magnitude - (pre_position - TDMG_pull_target).magnitude > 0) tdmg_pull_to_v = -tdmg_pull_to_v;
 	var TDMG_is_firing = false;  // 是否有 Attached?
 	var TDMG_aval_hooks = 2;  // 可用 hook 數
 	if (TDMG_Hook_L_state == 2 || TDMG_Hook_R_state == 2) TDMG_has_attached = true;
