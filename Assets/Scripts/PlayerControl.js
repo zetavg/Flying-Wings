@@ -101,6 +101,8 @@ private var TDMG_pull_y_count = 0;
 private var TDMG_hold_dist = 0.0;
 private var kill_cd = 0;
 
+public var disableGUI = false;
+
 
 // Controls
 //////////////////////////////////////////////////////////////////////
@@ -363,7 +365,7 @@ function FixedUpdate () {
 		if (!TDMG_Hook_R_state && (input_rotate_y > 0 || TDMG_Hook_L_state)) tdmg_use_hook_r = true;
 		else tdmg_use_hook_l = true;
 
-		if ( tdmg_target_hit.collider.gameObject.tag != "Titan" &&
+		if ( tdmg_target_hit.collider.gameObject.tag != "Titan" && tdmg_target_hit.collider.gameObject.tag != "AimPoint" &&
 		     ((TDMG_Hook_L_state == 0 && TDMG_Hook_L_state == 0) || ((TDMG_Hook_L_state != 1 && TDMG_Hook_L_state != 1) && (TDMG_pull_target - TDMG.transform.position).magnitude < 40)) &&
 		     (TDMG.transform.position - tdmg_target_hit.point).magnitude < 40 ) {  // Consider to use both hooks
 			var tdmg_target_ray_L : Ray = Ray(MainCam.transform.position-transform.right, Target.transform.position - MainCam.transform.position - transform.right);
@@ -385,6 +387,11 @@ function FixedUpdate () {
 					tdmg_use_hook_l = true;
 				}
 			}
+		}
+
+		if (tdmg_target_hit.collider.gameObject.tag == "AimPoint") {
+			TDMG_Aimer_L.transform.position = tdmg_target_hit.transform.position;
+			TDMG_Aimer_R.transform.position = tdmg_target_hit.transform.position;
 		}
 
 	} else if (1 == -2) {  // Case sides
@@ -466,14 +473,14 @@ function FixedUpdate () {
 				HoldButton.Disable();
 				break;
 			case 3:
-				MButton.Enable();
+				MButton.Disable();
 				MButton.UseSet(0);
 				ReleaseButton.Disable();
 				ReleaseButton.UseSet(1);
 				HoldButton.Disable();
 				break;
 			case 4:
-				MButton.Enable();
+				MButton.Disable();
 				MButton.UseSet(0);
 				ReleaseButton.Disable();
 				ReleaseButton.UseSet(0);
@@ -535,6 +542,18 @@ function FixedUpdate () {
 				rigidbody.AddForce(transform.up*(yfa), ForceMode.VelocityChange);
 			}
 
+			// Hold too
+			if (MButton.tapped) {  // Hold!
+				TDMG_hold_dist = (TDMG.transform.position - TDMG_pull_target).magnitude;
+			}
+			// if ((TDMG.transform.position - TDMG_pull_target).magnitude < TDMG_hold_dist) {
+			// 	TDMG_hold_dist = (TDMG.transform.position - TDMG_pull_target).magnitude;
+			// }
+			// if ((TDMG.transform.position - TDMG_pull_target).magnitude > TDMG_hold_dist) {
+			// 	rigidbody.AddForce(Vector3.Project(-rigidbody.velocity, (TDMG.transform.position - TDMG_pull_target).normalized) + (TDMG.transform.position - TDMG_pull_target).normalized*-1, ForceMode.VelocityChange);
+			// }
+
+
 			TDMG_Gear.GetComponent(AudioSource).volume += (tdmg_pull_to_v - (TDMG_Gear.GetComponent(AudioSource).volume))/10;  // 音效
 		}
 	} else {
@@ -561,8 +580,7 @@ function FixedUpdate () {
 
 	if (TDMG_Hook_L_state == 2 || TDMG_Hook_R_state == 2) {
 		if ((TDMG.transform.position - TDMG_pull_target).magnitude > TDMG_WIRE_MAX_DISTANCE) {  // Limit max dist.
-			var tdmg_md_position = (TDMG.transform.position - TDMG_pull_target).normalized * TDMG_WIRE_MAX_DISTANCE + TDMG_pull_target;
-			transform.position = tdmg_md_position - TDMG.transform.localPosition;
+			rigidbody.AddForce(Vector3.Project(-rigidbody.velocity, (TDMG.transform.position - TDMG_pull_target).normalized) + (TDMG.transform.position - TDMG_pull_target).normalized*-1, ForceMode.VelocityChange);
 		}
 	}
 
