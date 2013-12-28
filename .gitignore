@@ -10,6 +10,7 @@
 # Compass
 css/*
 .sass-cache/*
+tmp/*
 
 # OSX
 .DS_Store
