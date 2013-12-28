@@ -7,8 +7,9 @@ Material:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_Name: House0[12]_map
-  m_Shader: {fileID: 7, guid: 0000000000000000f000000000000000, type: 0}
+  m_Shader: {fileID: 4800000, guid: 5baab583450424889aad7f3f40e9fba5, type: 3}
   m_ShaderKeywords: []
+  m_CustomRenderQueue: -1
   m_SavedProperties:
     serializedVersion: 2
     m_TexEnvs:
@@ -17,6 +18,34 @@ Material:
           name: _MainTex
         second:
           m_Texture: {fileID: 2800000, guid: 8b1acb324e4cb4a978d541a005c5fe29, type: 3}
+          m_Scale: {x: 1, y: 1}
+          m_Offset: {x: 0, y: 0}
+      data:
+        first:
+          name: _BumpMap
+        second:
+          m_Texture: {fileID: 0}
+          m_Scale: {x: 1, y: 1}
+          m_Offset: {x: 0, y: 0}
+      data:
+        first:
+          name: _Detail
+        second:
+          m_Texture: {fileID: 0}
+          m_Scale: {x: 1, y: 1}
+          m_Offset: {x: 0, y: 0}
+      data:
+        first:
+          name: _LightMap
+        second:
+          m_Texture: {fileID: 0}
+          m_Scale: {x: 1, y: 1}
+          m_Offset: {x: 0, y: 0}
+      data:
+        first:
+          name: _Reflect
+        second:
+          m_Texture: {fileID: 0}
           m_Scale: {x: 1, y: 1}
           m_Offset: {x: 0, y: 0}
     m_Floats: {}

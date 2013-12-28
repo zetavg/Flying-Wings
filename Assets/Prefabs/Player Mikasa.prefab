@@ -1574,8 +1574,8 @@ Camera:
     y: 0
     width: 1
     height: 1
-  near clip plane: .100000001
-  far clip plane: 1000
+  near clip plane: .119999997
+  far clip plane: 720
   field of view: 72
   orthographic: 0
   orthographic size: 100
@@ -1586,6 +1586,7 @@ Camera:
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 0}
   m_HDR: 0
+  m_OcclusionCulling: 1
 --- !u!23 &2300000
 Renderer:
   m_ObjectHideFlags: 1
@@ -1604,6 +1605,9 @@ Renderer:
   m_UseLightProbes: 0
   m_LightProbeAnchor: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_SortingLayerID: 0
 --- !u!23 &2300002
 Renderer:
   m_ObjectHideFlags: 1
@@ -1622,6 +1626,9 @@ Renderer:
   m_UseLightProbes: 0
   m_LightProbeAnchor: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_SortingLayerID: 0
 --- !u!23 &2300004
 Renderer:
   m_ObjectHideFlags: 1
@@ -1640,6 +1647,9 @@ Renderer:
   m_UseLightProbes: 0
   m_LightProbeAnchor: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_SortingLayerID: 0
 --- !u!26 &2600000
 ParticleRenderer:
   m_ObjectHideFlags: 1
@@ -1658,6 +1668,9 @@ ParticleRenderer:
   m_UseLightProbes: 0
   m_LightProbeAnchor: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_SortingLayerID: 0
   serializedVersion: 2
   m_CameraVelocityScale: 0
   m_StretchParticles: 0
@@ -1986,9 +1999,6 @@ Animation:
   m_PlayAutomatically: 1
   m_AnimatePhysics: 0
   m_CullingType: 0
-  m_UserAABB:
-    m_Center: {x: 0, y: 0, z: 0}
-    m_Extent: {x: 0, y: 0, z: 0}
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2061,7 +2071,7 @@ MonoBehaviour:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 100078}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 301eca71255100647bb9bad1d5641921, type: 3}
   m_Name: 
@@ -2112,7 +2122,7 @@ MonoBehaviour:
   focalZStartCurve: 1
   focalZEndCurve: 1
   objectFocus: {fileID: 0}
-  focalSize: 192
+  focalSize: 6.9000001
   bluriness: 2
   maxBlurSpread: 1.75
   foregroundBlurExtrude: 1.14999998
@@ -2239,7 +2249,7 @@ MonoBehaviour:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 100078}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b0923359e9e352a4b9b11c7b7161ad67, type: 3}
   m_Name: 
@@ -2311,6 +2321,9 @@ LineRenderer:
   m_UseLightProbes: 0
   m_LightProbeAnchor: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_SortingLayerID: 0
   m_Positions:
   - {x: 0, y: 0, z: 0}
   - {x: 0, y: 0, z: 1}
@@ -2342,6 +2355,9 @@ LineRenderer:
   m_UseLightProbes: 0
   m_LightProbeAnchor: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_SortingLayerID: 0
   m_Positions:
   - {x: 0, y: 0, z: 0}
   - {x: 0, y: 0, z: 1}
@@ -2445,6 +2461,9 @@ SkinnedMeshRenderer:
   m_UseLightProbes: 0
   m_LightProbeAnchor: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_SortingLayerID: 0
   serializedVersion: 2
   m_Quality: 0
   m_UpdateWhenOffscreen: 0
@@ -2478,6 +2497,7 @@ SkinnedMeshRenderer:
   - {fileID: 400050}
   - {fileID: 400014}
   - {fileID: 400016}
+  m_BlendShapeWeights: []
   m_RootBone: {fileID: 400072}
   m_AABB:
     m_Center: {x: -.0707392097, y: .0826858282, z: .17829448}

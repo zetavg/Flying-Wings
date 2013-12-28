@@ -271,11 +271,13 @@ function FixedUpdate () {
 	TargetW.transform.localRotation.eulerAngles.y = input_rotate_y*200;
 	MainCamW.transform.localRotation.eulerAngles.y = input_rotate_y*100;
 	MainCam.transform.localRotation.eulerAngles.y = input_rotate_y*-50;
-	if (input_rotate_y > rotate_dead_zone) {
-		transform.Rotate(Vector3.up, ((input_rotate_y*characterFlexibility)-rotate_dead_zone)*20);
-	} else if (input_rotate_y < -rotate_dead_zone) {
-		transform.Rotate(Vector3.up, ((input_rotate_y*characterFlexibility)+rotate_dead_zone)*20);
-	}
+	// if (on_ground || (TDMG_Hook_L_state != 2  && TDMG_Hook_R_state != 2)) {
+		if (input_rotate_y > rotate_dead_zone) {
+			transform.Rotate(Vector3.up, ((input_rotate_y*characterFlexibility)-rotate_dead_zone)*20);
+		} else if (input_rotate_y < -rotate_dead_zone) {
+			transform.Rotate(Vector3.up, ((input_rotate_y*characterFlexibility)+rotate_dead_zone)*20);
+		}
+	// }
 
 	// X (up & down)
 	var input_rotate_x = GetInputAngle_x();
@@ -301,11 +303,13 @@ function FixedUpdate () {
 		if (!pre_on_ground) audio.PlayOneShot(Land_sound, 1);  // 落地音效
 		if (TDMG_Jet.GetComponent(AudioSource).volume > 0) TDMG_Jet.GetComponent(AudioSource).volume -= 0.05;  // 關閉噴氣音效
 	} else {  // 天上飛
-		rigidbody.AddForce(transform.forward * ((input_forward*characterSpeed)*1.4-transform.InverseTransformDirection(rigidbody.velocity).z) /16, ForceMode.VelocityChange);  // 前進, x1.4 /16
-		rigidbody.AddForce((-1) * transform.right * (transform.InverseTransformDirection(rigidbody.velocity).x) /16, ForceMode.VelocityChange);  // 消除左右移動, /16
-		if (!hit_thing) rigidbody.AddForce(transform.up * input_forward/2, ForceMode.Acceleration);
+		if (input_forward) {
+			rigidbody.AddForce(transform.forward * ((input_forward*characterSpeed)*1.4-transform.InverseTransformDirection(rigidbody.velocity).z) /16, ForceMode.VelocityChange);  // 前進, x1.4 /16
+			rigidbody.AddForce((-1) * transform.right * (transform.InverseTransformDirection(rigidbody.velocity).x) /16, ForceMode.VelocityChange);  // 消除左右移動, /16
+			if (!hit_thing) rigidbody.AddForce(transform.up * input_forward/2, ForceMode.Acceleration);
 
-		TDMG_Jet.GetComponent(AudioSource).volume += (input_forward/100 - TDMG_Jet.GetComponent(AudioSource).volume)/10;
+			TDMG_Jet.GetComponent(AudioSource).volume += (input_forward/100 - TDMG_Jet.GetComponent(AudioSource).volume)/10;
+		}
 	}
 
 	// Debug
@@ -514,7 +518,7 @@ function FixedUpdate () {
 			var tdmg_wire_speed = (12 - Vector3.Project(rigidbody.velocity, (TDMG_pull_target - transform.position).normalized).magnitude);
 			if (tdmg_wire_speed < 0) tdmg_wire_speed = 0;
 			if (((pre_position.y-TDMG_pull_target.y) > (transform.position.y - ((TDMG_Hook_LC.transform.position + TDMG_Hook_RC.transform.position)/2).y) && (transform.position.y-TDMG_pull_target.y) < (transform.position.y - ((TDMG_Hook_LC.transform.position + TDMG_Hook_RC.transform.position)/2).y)) || ((pre_position.y-TDMG_pull_target.y) < (transform.position.y - ((TDMG_Hook_LC.transform.position + TDMG_Hook_RC.transform.position)/2).y) && (transform.position.y-TDMG_pull_target.y) > (transform.position.y - ((TDMG_Hook_LC.transform.position + TDMG_Hook_RC.transform.position)/2).y)) || ((TDMG_pull_target - (TDMG_Hook_LC.transform.position + TDMG_Hook_RC.transform.position)/2).magnitude < 0.1)) {
-				TDMG_pull_y_cd = 10;
+				TDMG_pull_y_cd = 40;
 				TDMG_pull_y_count++;
 			}
 			if (TDMG_pull_y_count < 2) {
@@ -891,6 +895,12 @@ function FixedUpdate () {
 	}
 	if(rigidbody.velocity.y > MAX_SPEED/3) {
 		rigidbody.velocity.y = MAX_SPEED/3;
+	}
+
+	// 避免墜落深淵
+	if (transform.position.y < MIN_HEIGHT) {
+		transform.position.y = -MIN_HEIGHT*2;
+		rigidbody.velocity = Vector3.zero;
 	}
 }
 

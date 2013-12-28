@@ -380,6 +380,9 @@ MonoBehaviour:
     height: 0
   deadZone: {x: 0, y: 0}
   normalize: 0
+  lockX: 1
+  lockY: 0
+  doNotReset: 0
   position: {x: 0, y: 0}
   tapCount: 0
 --- !u!114 &11400006
