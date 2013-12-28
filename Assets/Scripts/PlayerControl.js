@@ -13,6 +13,7 @@
 //////////////////////////////////////////////////////////////////////
 
 private var i : int;
+private var i2 : int;
 private var j : int;
 private var t : int;
 
@@ -354,7 +355,7 @@ function FixedUpdate () {
 	var tdmg_use_hook_l = false;
 	var tdmg_use_hook_r = false;
 
-	if ( Physics.Raycast(tdmg_target_ray, tdmg_target_hit) &&
+	if ( Physics.Raycast(tdmg_target_ray, tdmg_target_hit) && 1 == 2 &&
 	     (TDMG.transform.position - tdmg_target_hit.point).magnitude < TDMG_WIRE_MAX_DISTANCE ) {  // Case normal hit
 		TDMG_Aimer_L.transform.position = tdmg_target_hit.point;
 		TDMG_Aimer_R.transform.position = tdmg_target_hit.point;
@@ -394,7 +395,108 @@ function FixedUpdate () {
 			TDMG_Aimer_R.transform.position = tdmg_target_hit.transform.position;
 		}
 
-	} else if (1 == -2) {  // Case sides
+	} else if ((TDMG_Hook_L_state != 1 && TDMG_Hook_L_state != 1)) {  // Case sides
+		var TDMG_aim_scan_ray_org_a : Vector3;
+		var TDMG_aim_scan_ray_org_b : Vector3;
+		var TDMG_aim_scan_aimpoint_min_dist = 0.0;
+		var TDMG_aim_scan_aimpoint_min_dist_inl_a = 0.0;
+		var TDMG_aim_scan_aimpoint_min_dist_inl_b = 0.0;
+		var TDMG_aim_scan_hit_a : RaycastHit[];
+		var TDMG_aim_scan_hit_b : RaycastHit[];
+		var TDMG_aim_scan_tmphit : RaycastHit;
+		var TDMG_aim_scan_aimpoint_l_tmp : Vector3;
+		var TDMG_aim_scan_aimpoint_r_tmp : Vector3;
+		var TDMG_aim_scan_aimpoint_l_tmp_obj : GameObject;
+		var TDMG_aim_scan_aimpoint_r_tmp_obj : GameObject;
+		var TDMG_aim_scan_aimpoint_l_tmp_avl = false;
+		var TDMG_aim_scan_aimpoint_r_tmp_avl = false;
+		var TDMG_aim_scan_aimpoint_l : Vector3;
+		var TDMG_aim_scan_aimpoint_r : Vector3;
+		var TDMG_aim_scan_aimpoint_l_obj : GameObject;
+		var TDMG_aim_scan_aimpoint_r_obj : GameObject;
+		var TDMG_aim_scan_aimpoint_avl = false;
+		var TDMG_aim_scan_ray_dist = 0.0;
+		for (i=10; i<20; i+=200) {  // 掃描圈半徑, 0.1 m
+			for (j=90; j < 180; j+=100) {  // 掃描光束, 度
+				TDMG_aim_scan_aimpoint_l_tmp_avl = false;
+				TDMG_aim_scan_aimpoint_r_tmp_avl = false;
+				TDMG_aim_scan_ray_org_a = TargetW.transform.position;
+				TDMG_aim_scan_ray_org_b = TargetW.transform.position;
+				TDMG_aim_scan_ray_org_a -= TargetW.transform.right*i*Mathf.Sin((Mathf.PI / 180) * j);
+				TDMG_aim_scan_ray_org_a -= TargetW.transform.up*i*Mathf.Cos((Mathf.PI / 180) * j);
+				TDMG_aim_scan_ray_org_b += TargetW.transform.right*i*Mathf.Sin((Mathf.PI / 180) * j);
+				TDMG_aim_scan_ray_org_b += TargetW.transform.up*i*Mathf.Cos((Mathf.PI / 180) * j);
+				TDMG_aim_scan_ray_org_a += TargetW.transform.forward*8;
+				TDMG_aim_scan_ray_org_b += TargetW.transform.forward*8;
+				TDMG_aim_scan_ray_dist = Mathf.Sqrt(TDMG_WIRE_MAX_DISTANCE*TDMG_WIRE_MAX_DISTANCE - i*i);
+				TDMG_aim_scan_hit_a = Physics.RaycastAll(TDMG_aim_scan_ray_org_a, TargetW.transform.forward, TDMG_aim_scan_ray_dist);
+				TDMG_aim_scan_hit_b = Physics.RaycastAll(TDMG_aim_scan_ray_org_b, TargetW.transform.forward, TDMG_aim_scan_ray_dist);
+				TDMG_aim_scan_aimpoint_min_dist_inl_a = TDMG_aim_scan_aimpoint_min_dist;
+				TDMG_aim_scan_aimpoint_min_dist_inl_b = TDMG_aim_scan_aimpoint_min_dist;
+
+				// Debug
+				Debug.DrawLine(TDMG_aim_scan_ray_org_a, TDMG_aim_scan_ray_org_a + TargetW.transform.forward*TDMG_aim_scan_ray_dist);
+				Debug.DrawLine(TDMG_aim_scan_ray_org_b, TDMG_aim_scan_ray_org_b + TargetW.transform.forward*TDMG_aim_scan_ray_dist);
+				// print("hits " + TDMG_aim_scan_hit_a.length + " " + TDMG_aim_scan_hit_b.length);
+				// /Debug
+
+				for (i2=0; i2<TDMG_aim_scan_hit_a.length; i2++) {
+					if ((TDMG_aim_scan_hit_a[i2].point - TDMG.transform.position).magnitude > TDMG_aim_scan_aimpoint_min_dist_inl_a) {  // if this point is farther
+						if (Physics.Raycast(TDMG.transform.position, (TDMG_aim_scan_hit_a[i2].point-TDMG.transform.position), TDMG_aim_scan_tmphit)) {  // if I can see the hit point
+							if ((TDMG_aim_scan_tmphit.point-TDMG_aim_scan_hit_a[i2].point).magnitude < 0.1) {
+								TDMG_aim_scan_aimpoint_min_dist_inl_a = (TDMG_aim_scan_hit_a[i2].point - TDMG.transform.position).magnitude;
+								TDMG_aim_scan_aimpoint_l_tmp_avl = true;
+								TDMG_aim_scan_aimpoint_l_tmp = TDMG_aim_scan_hit_a[i2].point;
+								TDMG_aim_scan_aimpoint_l_tmp_obj = TDMG_aim_scan_hit_a[i2].collider.gameObject;
+							}
+
+						}
+					}
+				}
+
+				for (i2=0; i2<TDMG_aim_scan_hit_b.length; i2++) {
+					if ((TDMG_aim_scan_hit_b[i2].point - TDMG.transform.position).magnitude > TDMG_aim_scan_aimpoint_min_dist_inl_b) {  // if this point is farther
+						if (Physics.Raycast(TDMG.transform.position, (TDMG_aim_scan_hit_b[i2].point-TDMG.transform.position), TDMG_aim_scan_tmphit)) {  // if I can see the hit point
+							if ((TDMG_aim_scan_tmphit.point-TDMG_aim_scan_hit_b[i2].point).magnitude < 0.1) {
+								TDMG_aim_scan_aimpoint_min_dist_inl_a = (TDMG_aim_scan_hit_b[i2].point - TDMG.transform.position).magnitude;
+								TDMG_aim_scan_aimpoint_r_tmp_avl = true;
+								TDMG_aim_scan_aimpoint_r_tmp = TDMG_aim_scan_hit_b[i2].point;
+								TDMG_aim_scan_aimpoint_r_tmp_obj = TDMG_aim_scan_hit_b[i2].collider.gameObject;
+							}
+
+						}
+					}
+				}
+
+				if (TDMG_aim_scan_aimpoint_l_tmp_avl && TDMG_aim_scan_aimpoint_l_tmp_avl) {  // use this set
+					if (TDMG_aim_scan_aimpoint_min_dist_inl_a < TDMG_aim_scan_aimpoint_min_dist_inl_b) {
+						TDMG_aim_scan_aimpoint_min_dist = TDMG_aim_scan_aimpoint_min_dist_inl_a;
+					} else {
+						TDMG_aim_scan_aimpoint_min_dist = TDMG_aim_scan_aimpoint_min_dist_inl_b;
+					}
+					TDMG_aim_scan_aimpoint_l = TDMG_aim_scan_aimpoint_l_tmp;
+					TDMG_aim_scan_aimpoint_r = TDMG_aim_scan_aimpoint_r_tmp;
+					TDMG_aim_scan_aimpoint_l_obj = TDMG_aim_scan_aimpoint_l_tmp_obj;
+					TDMG_aim_scan_aimpoint_r_obj = TDMG_aim_scan_aimpoint_r_tmp_obj;
+					TDMG_aim_scan_aimpoint_avl = true;
+				}
+			}
+		}
+
+		if (TDMG_aim_scan_aimpoint_avl) {
+			TDMG_Aimer_L.transform.position = TDMG_aim_scan_aimpoint_l;
+			TDMG_Aimer_R.transform.position = TDMG_aim_scan_aimpoint_r;
+			tdmg_aimed_trans_l = TDMG_aim_scan_aimpoint_l_obj.transform;
+			tdmg_aimed_trans_r = TDMG_aim_scan_aimpoint_r_obj.transform;
+			tdmg_is_aimed = true;
+			tdmg_use_hook_r = true;
+			tdmg_use_hook_l = true;
+		} else {
+			tdmg_is_aimed = false;
+			tdmg_use_hook_r = false;
+			tdmg_use_hook_l = false;
+		}
+
 
 	} else {
 

@@ -131,7 +131,7 @@ function Update()
 	}
 
 	var count = Input.touchCount;
-	gameObject.Find('/Debug_info').guiText.text = count.ToString();
+	//gameObject.Find('/Debug_info').guiText.text = count.ToString();
 
 	// Adjust the tap time window while it still available
 	if ( tapTimeWindow > 0 )
