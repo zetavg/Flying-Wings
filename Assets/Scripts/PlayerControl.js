@@ -23,7 +23,7 @@ private var t : int;
 
 public var MAX_SPEED = 30.0;  // 玩家在場景中的最大速度, 避免失速
 public var MIN_HEIGHT = -10.0;  // 玩家在場景中的最小高度, 避免墜落
-private var TDMG_WIRE_MAX_DISTANCE = 100;
+private var TDMG_WIRE_MAX_DISTANCE = 110;
 
 
 // General Settings
@@ -101,6 +101,16 @@ private var TDMG_pull_y_cd = 0;
 private var TDMG_pull_y_count = 0;
 private var TDMG_hold_dist = 0.0;
 private var kill_cd = 0;
+
+private var TDMG_aim_scan_act = false;
+private var TDMG_aim_scan_preact = false;
+private var TDMG_aim_scan_aimpoint_avl = false;
+private var TDMG_aim_scan_aimpoint_l : Vector3;
+private var TDMG_aim_scan_aimpoint_r : Vector3;
+private var TDMG_aim_scan_aimpoint_l_obj : GameObject;
+private var TDMG_aim_scan_aimpoint_r_obj : GameObject;
+
+private var fixupdate_count = 0;
 
 public var disableGUI = false;
 
@@ -356,7 +366,7 @@ function FixedUpdate () {
 	var tdmg_use_hook_r = false;
 
 	if ( Physics.Raycast(tdmg_target_ray, tdmg_target_hit) &&
-	     (TDMG.transform.position - tdmg_target_hit.point).magnitude < TDMG_WIRE_MAX_DISTANCE ) {  // Case normal hit
+	     (TDMG.transform.position - tdmg_target_hit.point).magnitude < (TDMG_WIRE_MAX_DISTANCE-10) ) {  // Case normal hit
 		TDMG_Aimer_L.transform.position = tdmg_target_hit.point;
 		TDMG_Aimer_R.transform.position = tdmg_target_hit.point;
 		tdmg_aimed_trans_l = tdmg_target_hit.transform;
@@ -396,97 +406,97 @@ function FixedUpdate () {
 		}
 
 	} else if ((TDMG_Hook_L_state != 1 && TDMG_Hook_L_state != 1)) {  // Case sides
-		var TDMG_aim_scan_ray_org_a : Vector3;
-		var TDMG_aim_scan_ray_org_b : Vector3;
-		var TDMG_aim_scan_aimpoint_min_dist = 0.0;
-		var TDMG_aim_scan_aimpoint_min_dist_inl_a = 0.0;
-		var TDMG_aim_scan_aimpoint_min_dist_inl_b = 0.0;
-		var TDMG_aim_scan_hit_a : RaycastHit[];
-		var TDMG_aim_scan_hit_b : RaycastHit[];
-		var TDMG_aim_scan_tmphit : RaycastHit;
-		var TDMG_aim_scan_aimpoint_l_tmp : Vector3;
-		var TDMG_aim_scan_aimpoint_r_tmp : Vector3;
-		var TDMG_aim_scan_aimpoint_l_tmp_obj : GameObject;
-		var TDMG_aim_scan_aimpoint_r_tmp_obj : GameObject;
-		var TDMG_aim_scan_aimpoint_l_tmp_avl = false;
-		var TDMG_aim_scan_aimpoint_r_tmp_avl = false;
-		var TDMG_aim_scan_aimpoint_l : Vector3;
-		var TDMG_aim_scan_aimpoint_r : Vector3;
-		var TDMG_aim_scan_aimpoint_l_obj : GameObject;
-		var TDMG_aim_scan_aimpoint_r_obj : GameObject;
-		var TDMG_aim_scan_aimpoint_avl = false;
-		var TDMG_aim_scan_ray_dist = 0.0;
-		for (i=1; i<24; i+=1.2) {  // 掃描圈半徑, 1 m
-			for (j=70; j < 110; j+=10) {  // 掃描光束, 度
-				TDMG_aim_scan_aimpoint_l_tmp_avl = false;
-				TDMG_aim_scan_aimpoint_r_tmp_avl = false;
-				TDMG_aim_scan_ray_org_a = TargetW.transform.position;
-				TDMG_aim_scan_ray_org_b = TargetW.transform.position;
-				TDMG_aim_scan_ray_org_a -= TargetW.transform.right*i*Mathf.Sin((Mathf.PI / 180) * j);
-				TDMG_aim_scan_ray_org_a -= TargetW.transform.up*i*Mathf.Cos((Mathf.PI / 180) * j);
-				TDMG_aim_scan_ray_org_b += TargetW.transform.right*i*Mathf.Sin((Mathf.PI / 180) * j);
-				TDMG_aim_scan_ray_org_b += TargetW.transform.up*i*Mathf.Cos((Mathf.PI / 180) * j);
-				TDMG_aim_scan_ray_org_a += TargetW.transform.forward*i*2;
-				TDMG_aim_scan_ray_org_b += TargetW.transform.forward*i*2;
-				TDMG_aim_scan_aimpoint_min_dist_inl_a = TDMG_aim_scan_aimpoint_min_dist;
-				TDMG_aim_scan_aimpoint_min_dist_inl_b = TDMG_aim_scan_aimpoint_min_dist;
-				TDMG_aim_scan_ray_dist = Mathf.Sqrt(TDMG_WIRE_MAX_DISTANCE*TDMG_WIRE_MAX_DISTANCE - i*i);
+		TDMG_aim_scan_act = true;
 
-				// Debug
-				Debug.DrawLine(TDMG_aim_scan_ray_org_a, TDMG_aim_scan_ray_org_a + TargetW.transform.forward*TDMG_aim_scan_ray_dist);
-				Debug.DrawLine(TDMG_aim_scan_ray_org_b, TDMG_aim_scan_ray_org_b + TargetW.transform.forward*TDMG_aim_scan_ray_dist);
-				// print("hits " + TDMG_aim_scan_hit_a.length + " " + TDMG_aim_scan_hit_b.length);
-				// /Debug
+		if (fixupdate_count%50 == 0 || !TDMG_aim_scan_preact) {  // do this update every 1 sec or at the first call
+			TDMG_aim_scan_aimpoint_avl = false;
+			var TDMG_aim_scan_ray_org_a : Vector3;
+			var TDMG_aim_scan_ray_org_b : Vector3;
+			var TDMG_aim_scan_aimpoint_min_dist = 0.0;
+			var TDMG_aim_scan_aimpoint_min_dist_inl_a = 0.0;
+			var TDMG_aim_scan_aimpoint_min_dist_inl_b = 0.0;
+			var TDMG_aim_scan_hit_a : RaycastHit[];
+			var TDMG_aim_scan_hit_b : RaycastHit[];
+			var TDMG_aim_scan_tmphit : RaycastHit;
+			var TDMG_aim_scan_aimpoint_l_tmp : Vector3;
+			var TDMG_aim_scan_aimpoint_r_tmp : Vector3;
+			var TDMG_aim_scan_aimpoint_l_tmp_obj : GameObject;
+			var TDMG_aim_scan_aimpoint_r_tmp_obj : GameObject;
+			var TDMG_aim_scan_aimpoint_l_tmp_avl = false;
+			var TDMG_aim_scan_aimpoint_r_tmp_avl = false;
+			var TDMG_aim_scan_ray_dist = 0.0;
+			for (i=2; i<24; i+=2) {  // 掃描圈半徑, 1 m
+				for (j=75; j <= 110; j+=15) {  // 掃描光束, 度
+					TDMG_aim_scan_aimpoint_l_tmp_avl = false;
+					TDMG_aim_scan_aimpoint_r_tmp_avl = false;
+					TDMG_aim_scan_ray_org_a = TargetW.transform.position;
+					TDMG_aim_scan_ray_org_b = TargetW.transform.position;
+					TDMG_aim_scan_ray_org_a -= TargetW.transform.right*i*Mathf.Sin((Mathf.PI / 180) * j);
+					TDMG_aim_scan_ray_org_a -= TargetW.transform.up*i*Mathf.Cos((Mathf.PI / 180) * j);
+					TDMG_aim_scan_ray_org_b += TargetW.transform.right*i*Mathf.Sin((Mathf.PI / 180) * j);
+					TDMG_aim_scan_ray_org_b += TargetW.transform.up*i*Mathf.Cos((Mathf.PI / 180) * j);
+					TDMG_aim_scan_ray_org_a += TargetW.transform.forward*i*2;
+					TDMG_aim_scan_ray_org_b += TargetW.transform.forward*i*2;
+					TDMG_aim_scan_aimpoint_min_dist_inl_a = TDMG_aim_scan_aimpoint_min_dist;
+					TDMG_aim_scan_aimpoint_min_dist_inl_b = TDMG_aim_scan_aimpoint_min_dist;
+					TDMG_aim_scan_ray_dist = Mathf.Sqrt((TDMG_WIRE_MAX_DISTANCE-16)*(TDMG_WIRE_MAX_DISTANCE-16) - i*i);
 
-				for (t=-1; t<3; t+=2) {
-					if (t < 0) {
-						TDMG_aim_scan_hit_a = Physics.RaycastAll(TDMG_aim_scan_ray_org_a, TargetW.transform.forward, TDMG_aim_scan_ray_dist);
-						TDMG_aim_scan_hit_b = Physics.RaycastAll(TDMG_aim_scan_ray_org_b, TargetW.transform.forward, TDMG_aim_scan_ray_dist);
-					} else {  // inverse ray
-						TDMG_aim_scan_hit_a = Physics.RaycastAll(TDMG_aim_scan_ray_org_a + TargetW.transform.forward * TDMG_aim_scan_ray_dist, -TargetW.transform.forward, TDMG_aim_scan_ray_dist);
-						TDMG_aim_scan_hit_b = Physics.RaycastAll(TDMG_aim_scan_ray_org_b + TargetW.transform.forward * TDMG_aim_scan_ray_dist, -TargetW.transform.forward, TDMG_aim_scan_ray_dist);
-					}
+					// Debug
+					Debug.DrawLine(TDMG_aim_scan_ray_org_a, TDMG_aim_scan_ray_org_a + TargetW.transform.forward*TDMG_aim_scan_ray_dist);
+					Debug.DrawLine(TDMG_aim_scan_ray_org_b, TDMG_aim_scan_ray_org_b + TargetW.transform.forward*TDMG_aim_scan_ray_dist);
+					// print("hits " + TDMG_aim_scan_hit_a.length + " " + TDMG_aim_scan_hit_b.length);
+					// /Debug
 
-					for (i2=0; i2<TDMG_aim_scan_hit_a.length; i2++) {
-						if ((TDMG_aim_scan_hit_a[i2].point - TDMG.transform.position).magnitude > TDMG_aim_scan_aimpoint_min_dist_inl_a) {  // if this point is farther
-							if (Physics.Raycast(TDMG.transform.position, (TDMG_aim_scan_hit_a[i2].point-TDMG.transform.position), TDMG_aim_scan_tmphit) && TDMG_aim_scan_tmphit.collider.gameObject.tag != "Titan" && TDMG_aim_scan_tmphit.collider.gameObject.tag != "AimPoint") {  // if I can see the hit point
-								if ((TDMG_aim_scan_tmphit.point-TDMG_aim_scan_hit_a[i2].point).magnitude < 0.1) {
-									TDMG_aim_scan_aimpoint_min_dist_inl_a = (TDMG_aim_scan_hit_a[i2].point - TDMG.transform.position).magnitude;
-									TDMG_aim_scan_aimpoint_l_tmp_avl = true;
-									TDMG_aim_scan_aimpoint_l_tmp = TDMG_aim_scan_hit_a[i2].point;
-									TDMG_aim_scan_aimpoint_l_tmp_obj = TDMG_aim_scan_tmphit.transform.gameObject;
+					for (t=-1; t<3; t+=2) {
+						if (t < 0) {
+							TDMG_aim_scan_hit_a = Physics.RaycastAll(TDMG_aim_scan_ray_org_a, TargetW.transform.forward, TDMG_aim_scan_ray_dist);
+							TDMG_aim_scan_hit_b = Physics.RaycastAll(TDMG_aim_scan_ray_org_b, TargetW.transform.forward, TDMG_aim_scan_ray_dist);
+						} else {  // inverse ray
+							TDMG_aim_scan_hit_a = Physics.RaycastAll(TDMG_aim_scan_ray_org_a + TargetW.transform.forward * TDMG_aim_scan_ray_dist, -TargetW.transform.forward, TDMG_aim_scan_ray_dist);
+							TDMG_aim_scan_hit_b = Physics.RaycastAll(TDMG_aim_scan_ray_org_b + TargetW.transform.forward * TDMG_aim_scan_ray_dist, -TargetW.transform.forward, TDMG_aim_scan_ray_dist);
+						}
+
+						for (i2=0; i2<TDMG_aim_scan_hit_a.length; i2++) {
+							if ((TDMG_aim_scan_hit_a[i2].point - TDMG.transform.position).magnitude > TDMG_aim_scan_aimpoint_min_dist_inl_a) {  // if this point is farther
+								if (Physics.Raycast(TDMG.transform.position, (TDMG_aim_scan_hit_a[i2].point-TDMG.transform.position), TDMG_aim_scan_tmphit) && TDMG_aim_scan_tmphit.collider.gameObject.tag != "Titan" && TDMG_aim_scan_tmphit.collider.gameObject.tag != "AimPoint") {  // if I can see the hit point
+									if ((TDMG_aim_scan_tmphit.point-TDMG_aim_scan_hit_a[i2].point).magnitude < 0.1) {
+										TDMG_aim_scan_aimpoint_min_dist_inl_a = (TDMG_aim_scan_hit_a[i2].point - TDMG.transform.position).magnitude;
+										TDMG_aim_scan_aimpoint_l_tmp_avl = true;
+										TDMG_aim_scan_aimpoint_l_tmp = TDMG_aim_scan_hit_a[i2].point;
+										TDMG_aim_scan_aimpoint_l_tmp_obj = TDMG_aim_scan_tmphit.transform.gameObject;
+									}
+
 								}
+							}
+						}
 
+						for (i2=0; i2<TDMG_aim_scan_hit_b.length; i2++) {
+							if ((TDMG_aim_scan_hit_b[i2].point - TDMG.transform.position).magnitude > TDMG_aim_scan_aimpoint_min_dist_inl_b) {  // if this point is farther
+								if (Physics.Raycast(TDMG.transform.position, (TDMG_aim_scan_hit_b[i2].point-TDMG.transform.position), TDMG_aim_scan_tmphit) && TDMG_aim_scan_tmphit.collider.gameObject.tag != "Titan" && TDMG_aim_scan_tmphit.collider.gameObject.tag != "AimPoint") {  // if I can see the hit point
+									if ((TDMG_aim_scan_tmphit.point-TDMG_aim_scan_hit_b[i2].point).magnitude < 0.1) {
+										TDMG_aim_scan_aimpoint_min_dist_inl_a = (TDMG_aim_scan_hit_b[i2].point - TDMG.transform.position).magnitude;
+										TDMG_aim_scan_aimpoint_r_tmp_avl = true;
+										TDMG_aim_scan_aimpoint_r_tmp = TDMG_aim_scan_hit_b[i2].point;
+										TDMG_aim_scan_aimpoint_r_tmp_obj = TDMG_aim_scan_tmphit.transform.gameObject;
+									}
+
+								}
 							}
 						}
 					}
 
-					for (i2=0; i2<TDMG_aim_scan_hit_b.length; i2++) {
-						if ((TDMG_aim_scan_hit_b[i2].point - TDMG.transform.position).magnitude > TDMG_aim_scan_aimpoint_min_dist_inl_b) {  // if this point is farther
-							if (Physics.Raycast(TDMG.transform.position, (TDMG_aim_scan_hit_b[i2].point-TDMG.transform.position), TDMG_aim_scan_tmphit) && TDMG_aim_scan_tmphit.collider.gameObject.tag != "Titan" && TDMG_aim_scan_tmphit.collider.gameObject.tag != "AimPoint") {  // if I can see the hit point
-								if ((TDMG_aim_scan_tmphit.point-TDMG_aim_scan_hit_b[i2].point).magnitude < 0.1) {
-									TDMG_aim_scan_aimpoint_min_dist_inl_a = (TDMG_aim_scan_hit_b[i2].point - TDMG.transform.position).magnitude;
-									TDMG_aim_scan_aimpoint_r_tmp_avl = true;
-									TDMG_aim_scan_aimpoint_r_tmp = TDMG_aim_scan_hit_b[i2].point;
-									TDMG_aim_scan_aimpoint_r_tmp_obj = TDMG_aim_scan_tmphit.transform.gameObject;
-								}
-
-							}
+					if (TDMG_aim_scan_aimpoint_l_tmp_avl && TDMG_aim_scan_aimpoint_l_tmp_avl) {  // use this set
+						if (TDMG_aim_scan_aimpoint_min_dist_inl_a < TDMG_aim_scan_aimpoint_min_dist_inl_b) {
+							TDMG_aim_scan_aimpoint_min_dist = TDMG_aim_scan_aimpoint_min_dist_inl_a;
+						} else {
+							TDMG_aim_scan_aimpoint_min_dist = TDMG_aim_scan_aimpoint_min_dist_inl_b;
 						}
+						TDMG_aim_scan_aimpoint_l = TDMG_aim_scan_aimpoint_l_tmp;
+						TDMG_aim_scan_aimpoint_r = TDMG_aim_scan_aimpoint_r_tmp;
+						TDMG_aim_scan_aimpoint_l_obj = TDMG_aim_scan_aimpoint_l_tmp_obj;
+						TDMG_aim_scan_aimpoint_r_obj = TDMG_aim_scan_aimpoint_r_tmp_obj;
+						TDMG_aim_scan_aimpoint_avl = true;
 					}
-				}
-
-				if (TDMG_aim_scan_aimpoint_l_tmp_avl && TDMG_aim_scan_aimpoint_l_tmp_avl) {  // use this set
-					if (TDMG_aim_scan_aimpoint_min_dist_inl_a < TDMG_aim_scan_aimpoint_min_dist_inl_b) {
-						TDMG_aim_scan_aimpoint_min_dist = TDMG_aim_scan_aimpoint_min_dist_inl_a;
-					} else {
-						TDMG_aim_scan_aimpoint_min_dist = TDMG_aim_scan_aimpoint_min_dist_inl_b;
-					}
-					TDMG_aim_scan_aimpoint_l = TDMG_aim_scan_aimpoint_l_tmp;
-					TDMG_aim_scan_aimpoint_r = TDMG_aim_scan_aimpoint_r_tmp;
-					TDMG_aim_scan_aimpoint_l_obj = TDMG_aim_scan_aimpoint_l_tmp_obj;
-					TDMG_aim_scan_aimpoint_r_obj = TDMG_aim_scan_aimpoint_r_tmp_obj;
-					TDMG_aim_scan_aimpoint_avl = true;
 				}
 			}
 		}
@@ -1008,9 +1018,16 @@ function FixedUpdate () {
 	// Update var
 	//////////////////////////////////////////////////////////////////
 
+	fixupdate_count++;
+	if (fixupdate_count > 1000) fixupdate_count = 0;
 	prev_y = transform.position.y;
 	prev_velocity = rigidbody.velocity;
 	prev_MButton_status = MButton_status;
+
+	if (TDMG_aim_scan_act) TDMG_aim_scan_preact = true;
+	else TDMG_aim_scan_preact = false;
+	TDMG_aim_scan_act = false;
+
 	if (kill_cd) kill_cd--;
 	if (kill_mode == 2) kill_cd = 50;
 	kill_mode = 0;
