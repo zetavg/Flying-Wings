@@ -13020,7 +13020,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 2300000, guid: 31076e0d955ec44a99cb8660b0340a0e, type: 2}
       propertyPath: m_Enabled
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 31076e0d955ec44a99cb8660b0340a0e, type: 2}
@@ -17391,7 +17391,7 @@ Renderer:
     type: 2}
   m_PrefabInternal: {fileID: 687802279}
   m_GameObject: {fileID: 939488924}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_LightmapIndex: 255
@@ -22707,7 +22707,7 @@ Renderer:
     type: 2}
   m_PrefabInternal: {fileID: 2085472605}
   m_GameObject: {fileID: 1156762640}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_LightmapIndex: 255
@@ -28289,7 +28289,7 @@ Renderer:
     type: 2}
   m_PrefabInternal: {fileID: 1520416358}
   m_GameObject: {fileID: 1431706986}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_LightmapIndex: 255
@@ -29479,7 +29479,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 2300000, guid: 31076e0d955ec44a99cb8660b0340a0e, type: 2}
       propertyPath: m_Enabled
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 31076e0d955ec44a99cb8660b0340a0e, type: 2}
@@ -30860,7 +30860,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 2300000, guid: 1e25ddc78dcc14e808e68ad9cca54801, type: 2}
       propertyPath: m_Enabled
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 1e25ddc78dcc14e808e68ad9cca54801, type: 2}
@@ -32318,7 +32318,7 @@ Renderer:
     type: 2}
   m_PrefabInternal: {fileID: 1608636378}
   m_GameObject: {fileID: 1677294223}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_LightmapIndex: 255
@@ -40120,7 +40120,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 2300000, guid: 1e25ddc78dcc14e808e68ad9cca54801, type: 2}
       propertyPath: m_Enabled
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 1e25ddc78dcc14e808e68ad9cca54801, type: 2}

@@ -355,7 +355,7 @@ function FixedUpdate () {
 	var tdmg_use_hook_l = false;
 	var tdmg_use_hook_r = false;
 
-	if ( Physics.Raycast(tdmg_target_ray, tdmg_target_hit) && 1 == 2 &&
+	if ( Physics.Raycast(tdmg_target_ray, tdmg_target_hit) &&
 	     (TDMG.transform.position - tdmg_target_hit.point).magnitude < TDMG_WIRE_MAX_DISTANCE ) {  // Case normal hit
 		TDMG_Aimer_L.transform.position = tdmg_target_hit.point;
 		TDMG_Aimer_R.transform.position = tdmg_target_hit.point;
@@ -416,8 +416,8 @@ function FixedUpdate () {
 		var TDMG_aim_scan_aimpoint_r_obj : GameObject;
 		var TDMG_aim_scan_aimpoint_avl = false;
 		var TDMG_aim_scan_ray_dist = 0.0;
-		for (i=10; i<20; i+=200) {  // 掃描圈半徑, 0.1 m
-			for (j=90; j < 180; j+=100) {  // 掃描光束, 度
+		for (i=1; i<24; i+=1.2) {  // 掃描圈半徑, 1 m
+			for (j=70; j < 110; j+=10) {  // 掃描光束, 度
 				TDMG_aim_scan_aimpoint_l_tmp_avl = false;
 				TDMG_aim_scan_aimpoint_r_tmp_avl = false;
 				TDMG_aim_scan_ray_org_a = TargetW.transform.position;
@@ -426,13 +426,11 @@ function FixedUpdate () {
 				TDMG_aim_scan_ray_org_a -= TargetW.transform.up*i*Mathf.Cos((Mathf.PI / 180) * j);
 				TDMG_aim_scan_ray_org_b += TargetW.transform.right*i*Mathf.Sin((Mathf.PI / 180) * j);
 				TDMG_aim_scan_ray_org_b += TargetW.transform.up*i*Mathf.Cos((Mathf.PI / 180) * j);
-				TDMG_aim_scan_ray_org_a += TargetW.transform.forward*8;
-				TDMG_aim_scan_ray_org_b += TargetW.transform.forward*8;
-				TDMG_aim_scan_ray_dist = Mathf.Sqrt(TDMG_WIRE_MAX_DISTANCE*TDMG_WIRE_MAX_DISTANCE - i*i);
-				TDMG_aim_scan_hit_a = Physics.RaycastAll(TDMG_aim_scan_ray_org_a, TargetW.transform.forward, TDMG_aim_scan_ray_dist);
-				TDMG_aim_scan_hit_b = Physics.RaycastAll(TDMG_aim_scan_ray_org_b, TargetW.transform.forward, TDMG_aim_scan_ray_dist);
+				TDMG_aim_scan_ray_org_a += TargetW.transform.forward*i*2;
+				TDMG_aim_scan_ray_org_b += TargetW.transform.forward*i*2;
 				TDMG_aim_scan_aimpoint_min_dist_inl_a = TDMG_aim_scan_aimpoint_min_dist;
 				TDMG_aim_scan_aimpoint_min_dist_inl_b = TDMG_aim_scan_aimpoint_min_dist;
+				TDMG_aim_scan_ray_dist = Mathf.Sqrt(TDMG_WIRE_MAX_DISTANCE*TDMG_WIRE_MAX_DISTANCE - i*i);
 
 				// Debug
 				Debug.DrawLine(TDMG_aim_scan_ray_org_a, TDMG_aim_scan_ray_org_a + TargetW.transform.forward*TDMG_aim_scan_ray_dist);
@@ -440,30 +438,40 @@ function FixedUpdate () {
 				// print("hits " + TDMG_aim_scan_hit_a.length + " " + TDMG_aim_scan_hit_b.length);
 				// /Debug
 
-				for (i2=0; i2<TDMG_aim_scan_hit_a.length; i2++) {
-					if ((TDMG_aim_scan_hit_a[i2].point - TDMG.transform.position).magnitude > TDMG_aim_scan_aimpoint_min_dist_inl_a) {  // if this point is farther
-						if (Physics.Raycast(TDMG.transform.position, (TDMG_aim_scan_hit_a[i2].point-TDMG.transform.position), TDMG_aim_scan_tmphit)) {  // if I can see the hit point
-							if ((TDMG_aim_scan_tmphit.point-TDMG_aim_scan_hit_a[i2].point).magnitude < 0.1) {
-								TDMG_aim_scan_aimpoint_min_dist_inl_a = (TDMG_aim_scan_hit_a[i2].point - TDMG.transform.position).magnitude;
-								TDMG_aim_scan_aimpoint_l_tmp_avl = true;
-								TDMG_aim_scan_aimpoint_l_tmp = TDMG_aim_scan_hit_a[i2].point;
-								TDMG_aim_scan_aimpoint_l_tmp_obj = TDMG_aim_scan_hit_a[i2].collider.gameObject;
-							}
+				for (t=-1; t<3; t+=2) {
+					if (t < 0) {
+						TDMG_aim_scan_hit_a = Physics.RaycastAll(TDMG_aim_scan_ray_org_a, TargetW.transform.forward, TDMG_aim_scan_ray_dist);
+						TDMG_aim_scan_hit_b = Physics.RaycastAll(TDMG_aim_scan_ray_org_b, TargetW.transform.forward, TDMG_aim_scan_ray_dist);
+					} else {  // inverse ray
+						TDMG_aim_scan_hit_a = Physics.RaycastAll(TDMG_aim_scan_ray_org_a + TargetW.transform.forward * TDMG_aim_scan_ray_dist, -TargetW.transform.forward, TDMG_aim_scan_ray_dist);
+						TDMG_aim_scan_hit_b = Physics.RaycastAll(TDMG_aim_scan_ray_org_b + TargetW.transform.forward * TDMG_aim_scan_ray_dist, -TargetW.transform.forward, TDMG_aim_scan_ray_dist);
+					}
 
+					for (i2=0; i2<TDMG_aim_scan_hit_a.length; i2++) {
+						if ((TDMG_aim_scan_hit_a[i2].point - TDMG.transform.position).magnitude > TDMG_aim_scan_aimpoint_min_dist_inl_a) {  // if this point is farther
+							if (Physics.Raycast(TDMG.transform.position, (TDMG_aim_scan_hit_a[i2].point-TDMG.transform.position), TDMG_aim_scan_tmphit) && TDMG_aim_scan_tmphit.collider.gameObject.tag != "Titan" && TDMG_aim_scan_tmphit.collider.gameObject.tag != "AimPoint") {  // if I can see the hit point
+								if ((TDMG_aim_scan_tmphit.point-TDMG_aim_scan_hit_a[i2].point).magnitude < 0.1) {
+									TDMG_aim_scan_aimpoint_min_dist_inl_a = (TDMG_aim_scan_hit_a[i2].point - TDMG.transform.position).magnitude;
+									TDMG_aim_scan_aimpoint_l_tmp_avl = true;
+									TDMG_aim_scan_aimpoint_l_tmp = TDMG_aim_scan_hit_a[i2].point;
+									TDMG_aim_scan_aimpoint_l_tmp_obj = TDMG_aim_scan_tmphit.transform.gameObject;
+								}
+
+							}
 						}
 					}
-				}
 
-				for (i2=0; i2<TDMG_aim_scan_hit_b.length; i2++) {
-					if ((TDMG_aim_scan_hit_b[i2].point - TDMG.transform.position).magnitude > TDMG_aim_scan_aimpoint_min_dist_inl_b) {  // if this point is farther
-						if (Physics.Raycast(TDMG.transform.position, (TDMG_aim_scan_hit_b[i2].point-TDMG.transform.position), TDMG_aim_scan_tmphit)) {  // if I can see the hit point
-							if ((TDMG_aim_scan_tmphit.point-TDMG_aim_scan_hit_b[i2].point).magnitude < 0.1) {
-								TDMG_aim_scan_aimpoint_min_dist_inl_a = (TDMG_aim_scan_hit_b[i2].point - TDMG.transform.position).magnitude;
-								TDMG_aim_scan_aimpoint_r_tmp_avl = true;
-								TDMG_aim_scan_aimpoint_r_tmp = TDMG_aim_scan_hit_b[i2].point;
-								TDMG_aim_scan_aimpoint_r_tmp_obj = TDMG_aim_scan_hit_b[i2].collider.gameObject;
+					for (i2=0; i2<TDMG_aim_scan_hit_b.length; i2++) {
+						if ((TDMG_aim_scan_hit_b[i2].point - TDMG.transform.position).magnitude > TDMG_aim_scan_aimpoint_min_dist_inl_b) {  // if this point is farther
+							if (Physics.Raycast(TDMG.transform.position, (TDMG_aim_scan_hit_b[i2].point-TDMG.transform.position), TDMG_aim_scan_tmphit) && TDMG_aim_scan_tmphit.collider.gameObject.tag != "Titan" && TDMG_aim_scan_tmphit.collider.gameObject.tag != "AimPoint") {  // if I can see the hit point
+								if ((TDMG_aim_scan_tmphit.point-TDMG_aim_scan_hit_b[i2].point).magnitude < 0.1) {
+									TDMG_aim_scan_aimpoint_min_dist_inl_a = (TDMG_aim_scan_hit_b[i2].point - TDMG.transform.position).magnitude;
+									TDMG_aim_scan_aimpoint_r_tmp_avl = true;
+									TDMG_aim_scan_aimpoint_r_tmp = TDMG_aim_scan_hit_b[i2].point;
+									TDMG_aim_scan_aimpoint_r_tmp_obj = TDMG_aim_scan_tmphit.transform.gameObject;
+								}
+
 							}
-
 						}
 					}
 				}
@@ -483,11 +491,12 @@ function FixedUpdate () {
 			}
 		}
 
-		if (TDMG_aim_scan_aimpoint_avl) {
+		if (TDMG_aim_scan_aimpoint_avl && TDMG_aim_scan_aimpoint_l != Vector3.zero && TDMG_aim_scan_aimpoint_r != Vector3.zero) {
 			TDMG_Aimer_L.transform.position = TDMG_aim_scan_aimpoint_l;
 			TDMG_Aimer_R.transform.position = TDMG_aim_scan_aimpoint_r;
-			tdmg_aimed_trans_l = TDMG_aim_scan_aimpoint_l_obj.transform;
-			tdmg_aimed_trans_r = TDMG_aim_scan_aimpoint_r_obj.transform;
+			// tdmg_aimed_trans_l = TDMG_aim_scan_aimpoint_l_obj.transform;
+			// tdmg_aimed_trans_r = TDMG_aim_scan_aimpoint_r_obj.transform;
+			// NullReferenceException: Object reference not set to an instance of an object
 			tdmg_is_aimed = true;
 			tdmg_use_hook_r = true;
 			tdmg_use_hook_l = true;
@@ -538,10 +547,10 @@ function FixedUpdate () {
 		AimCrosshairR.GetComponent(GUITextureHelper).Hide();
 	}
 
-	if (TDMG_has_attached) {  // 有已 attach 的 TDMG Hook
-		MButton_status = 1;
-	} else if (TDMG_Hook_L_state == 3 || TDMG_Hook_R_state == 3) {  // 有射出中的 TDMG Hook
+	if (TDMG_Hook_L_state == 3 || TDMG_Hook_R_state == 3) {  // 有射出中的 TDMG Hook
 		MButton_status = 2;
+	} else if (TDMG_has_attached) {  // 有已 attach 的 TDMG Hook
+		MButton_status = 1;
 	} else if (TDMG_aval_hooks > 0) {  // 有可用的 TDMG Hook
 		MButton_status = 0;
 		if (!tdmg_is_aimed) {  // 沒有瞄準點
