@@ -1,51 +1,7 @@
 @import "compass/reset";
 @import "compass/css3";
 @import "bootstrap";
-
-@-webkit-keyframes swinging{
-	0% { -webkit-transform: rotate(0); }
-	5% { -webkit-transform: rotate(10deg); }
-	10% { -webkit-transform: rotate(-9deg); }
-	15% { -webkit-transform: rotate(8deg); }
-	20% { -webkit-transform: rotate(-7deg); }
-	25% { -webkit-transform: rotate(6deg); }
-	30% { -webkit-transform: rotate(-5deg); }
-	35% { -webkit-transform: rotate(4deg); }
-	40% { -webkit-transform: rotate(-3deg); }
-	45% { -webkit-transform: rotate(2deg); }
-	50% { -webkit-transform: rotate(0); } /* Come to rest at 50%. The rest is just stillness */
-	100% { -webkit-transform: rotate(0); }
-}
-
-@-moz-keyframes swinging{
-	0% { -moz-transform: rotate(0); }
-	5% { -moz-transform: rotate(10deg); }
-	10% { -moz-transform: rotate(-9deg); }
-	15% { -moz-transform: rotate(8deg); }
-	20% { -moz-transform: rotate(-7deg); }
-	25% { -moz-transform: rotate(6deg); }
-	30% { -moz-transform: rotate(-5deg); }
-	35% { -moz-transform: rotate(4deg); }
-	40% { -moz-transform: rotate(-3deg); }
-	45% { -moz-transform: rotate(2deg); }
-	50% { -moz-transform: rotate(0); } /* Come to rest at 50%. The rest is just stillness */
-	100% { -moz-transform: rotate(0); }
-}
-
-@keyframes swinging{
-	0% { transform: rotate(0); }
-	5% { transform: rotate(10deg); }
-	10% { transform: rotate(-9deg); }
-	15% { transform: rotate(8deg); }
-	20% { transform: rotate(-7deg); }
-	25% { transform: rotate(6deg); }
-	30% { transform: rotate(-5deg); }
-	35% { transform: rotate(4deg); }
-	40% { transform: rotate(-3deg); }
-	45% { transform: rotate(2deg); }
-	50% { transform: rotate(0); } /* Come to rest at 50%. The rest is just stillness */
-	100% { transform: rotate(0); }
-}
+@import "animate";
 
 
 /* GLOBAL STYLES
@@ -55,6 +11,10 @@
 body {
 	padding-bottom: 40px;
 	color: #5a5a5a;
+}
+
+a {
+	@include transition-duration(0.2s);
 }
 
 
@@ -91,13 +51,14 @@ body {
 
 /* CUSTOMIZE THE HERO
 -------------------------------------------------- */
-$hero-height: 640px;
+$hero-height: 680px;
 
 /* Carousel base class */
 .hero {
 	height: $hero-height;
 	margin-bottom: 60px;
 	/*background-image: url("../img/bg1.jpg");*/
+	background-color: grey;
 	background-position: center;
 
 	.hero-parallax-container {
@@ -107,14 +68,19 @@ $hero-height: 640px;
 		height: $hero-height;
 		overflow: hidden;
 	}
+	.hero-fence {
+		position: absolute;
+		width: 100%;
+		height: $hero-height;
+		z-index: 10;
+	}
 	#hero-parallax {
+		opacity: 0;
 		position: absolute;
 		width: 100%;
 		height: $hero-height;
 		overflow: hidden;
 		.parallax-layer {
-			img {
-			}
 			position: absolute;
 		}
 	}
@@ -123,27 +89,66 @@ $hero-height: 640px;
 		height: $hero-height;
 		width: 100%;
 		z-index: 1;
-		padding-top: 200px;
+		padding-top: 100px;
 		text-align: center;
 		.logo {
 			max-width: 600px;
 			width: 92%;
-			-webkit-transition-timing-function: cubic-bezier(0.42,0,0.58,1);
-			-moz-transition-timing-function: cubic-bezier(0.42,0,0.58,1);
-			transition-timing-function: cubic-bezier(0.42,0,0.58,1);
+			@include transition-timing-function(cubic-bezier(0.42,0,0.58,1));
 			-webkit-transform-origin:50% -500%;
 			-moz-transform-origin:50% -500%;
 			transform-origin:50% -500%;
 		}
-
-		.logoa:hover {
-			.logo {
-
-
+		.brief {
+			padding: 32px 18px 0;
+			margin: auto;
+			text-align: center;
+			font-size: 16px;
+			max-width: 724px;
+			color: #eee;
+			p {
+				margin-bottom: 22px;
+				@include text-shadow(0 0 4px rgba(0,0,0, 0.6), 1.6px 1.6px 0 #000, -1.6px 1.6px 0 #000, 1.6px -1.6px 0 #000, -1.6px -1.6px 0 #000);
+			}
+			a {
+				margin-top: 8px;
+				background-color: rgba(255,255,255, .4);
+			}
+			a:hover {
+				background-color: rgba(255,255,255, .6);
 			}
 
+			span { display: inline-block; }
 		}
+	}
+}
 
+.hero-ranking {
+	position: absolute;
+	top: $hero-height - 105px;
+	width: 100%;
+	height: 300px;
+	text-align: right;
+
+	.hero-line {
+		overflow: hidden;
+		.top {
+			width: 127px;
+			height: 118px;
+			position: absolute;
+			background-image: url("../img/titan-icon.png");
+			background-repeat: no-repeat;
+			text-align: center;
+			padding-left: 30px;
+			span {
+				display: block;
+				color: #eee;
+				@include text-shadow(0 0 4px rgba(0,0,0, 0.6), 1px 1px 0 #000, -1px 1px 0 #000, 1px -1px 0 #000, -1px -1px 0 #000);
+			}
+			.crusades::before {
+				content: "討伐數 ";
+			}
+		}
 	}
 }
 
@@ -155,6 +160,12 @@ $hero-height: 640px;
 .marketing {
 	padding-left: 15px;
 	padding-right: 15px;
+	iframe {
+		max-width: 100%;
+	}
+	.youtube {
+		text-align: center;
+	}
 }
 
 /* Center align the text within the three columns below the carousel */
@@ -227,10 +238,45 @@ $hero-height: 640px;
 		font-size: 50px;
 	}
 
+	.navbar-nav.navbar-right:last-child {
+		margin-right: 24px;
+	}
+
 }
 
 @media (min-width: 992px) {
 	.featurette-heading {
 		margin-top: 120px;
+	}
+}
+
+
+@media (max-width: 999px) {
+	.hero-ranking {
+		display: none;
+	}
+	$hero-height: 640px;
+	.hero {
+		height: $hero-height;
+		.hero-parallax-container {
+			height: $hero-height;
+		}
+		.hero-fence {
+			height: $hero-height;
+		}
+		#hero-parallax {
+			height: $hero-height;
+		}
+		.hero-inner {
+			height: $hero-height;
+		}
+	}
+}
+
+
+
+@media (max-width: 399px) {
+	.hero-inner .logo {
+		display: none;
 	}
 }
