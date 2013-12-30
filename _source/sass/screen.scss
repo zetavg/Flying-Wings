@@ -1,4 +1,5 @@
 @import "compass/reset";
+@import "compass/css3";
 @import "bootstrap";
 
 @-webkit-keyframes swinging{
@@ -122,31 +123,21 @@ $hero-height: 640px;
 		height: $hero-height;
 		width: 100%;
 		z-index: 1;
+		padding-top: 200px;
 		text-align: center;
 		.logo {
 			max-width: 600px;
 			width: 92%;
-			-webkit-transform-origin:50% -100px;
-			-moz-transform-origin:50% -100px;
-			transform-origin:50% -100px;
-			-webkit-animation:swinging 10s ease-in-out 0s infinite;
-			-moz-animation:swinging 10s ease-in-out 0s infinite;
-			animation:swinging 10s ease-in-out 0s infinite;
-/*			-webkit-animation-iteration-count: 1;
-			-moz-animation-iteration-count: 1;
-			animation-iteration-count: 1;*/
-			-webkit-animation-play-state:running;
-			-moz-animation-play-state:running;
-			animation-play-state:running;
-
+			-webkit-transition-timing-function: cubic-bezier(0.42,0,0.58,1);
+			-moz-transition-timing-function: cubic-bezier(0.42,0,0.58,1);
+			transition-timing-function: cubic-bezier(0.42,0,0.58,1);
+			-webkit-transform-origin:50% -500%;
+			-moz-transform-origin:50% -500%;
+			transform-origin:50% -500%;
 		}
 
 		.logoa:hover {
 			.logo {
-
-				-webkit-animation-play-state:running;
-				-moz-animation-play-state:running;
-				animation-play-state:running;
 
 
 			}

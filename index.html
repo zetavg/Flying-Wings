@@ -173,6 +173,21 @@
     <script src="/js/bootstrap.min.js"></script>
     <script src="/js/jquery.parallax.min.js"></script>
     <script>
+      (function( $ ){
+        $.fn.rotateSec = function(deg, sec) {
+          this.css({'transition-duration': sec+'s'});
+          this.css({'-ms-transition-duration': sec+'s'});
+          this.css({'-moz-transition-duration': sec+'s'});
+          this.css({'-o-transition-duration': sec+'s'});
+          this.css({'-webkit-transition-duration': sec+'s'});
+          this.css({'transform': 'rotate('+deg+'deg)'});
+          this.css({'-ms-transform': 'rotate('+deg+'deg)'});
+          this.css({'-moz-transform': 'rotate('+deg+'deg)'});
+          this.css({'-o-transform': 'rotate('+deg+'deg)'});
+          this.css({'-webkit-transform': 'rotate('+deg+'deg)'});
+          return this;
+        };
+      })( jQuery );
       function RefreshHeroParallax() {
         if ($(window).width() > 1400)
           $('#hero-parallax .parallax-layer img').width($(window).width()+80);
@@ -180,11 +195,29 @@
           $('#hero-parallax .parallax-layer img').width(1400);
         jQuery('#hero-parallax .parallax-layer')
         .parallax({
-          mouseport: jQuery('#hero-parallax')
+          mouseport: jQuery('body')
         }, {xparallax: '15px', yparallax: '25px'}, {xparallax: '40px', yparallax: '60px'}, {xparallax: '60px', yparallax: '100px'});
+      }
+      function SwingLogo(t) {
+        console.log(t);
+        if ($('.hero .logoa').is(":hover")) {
+          if (t > 0) t += 0.3;
+          else t -= 0.3;
+        }
+        if (t > 1) t = 0.1;
+        else if (t < -1) t = -0.1;
+        if (t > 0.11 || t < -0.11) {
+          $('.hero .logo').rotateSec(t*3, 0.7);
+          if (t > 0) t -= 0.3;
+          else t += 0.3;
+        } else {
+          $('.hero .logo').rotateSec(0, 0.7);
+        }
+        setTimeout("SwingLogo("+(-t)+")", 700);
       }
       window.onload = function() {
         RefreshHeroParallax();
+        SwingLogo(1.0);
       }
       window.onresize = function() {
         RefreshHeroParallax();
