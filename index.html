@@ -71,13 +71,13 @@
     <div id="Hero" class="hero" data-ride="hero">
       <ul id="hero-parallax" class="parallax-viewport">
         <!-- parallax layers -->
-        <li class="layer" data-depth="0.1">
+        <li class="layer parallax" data-depth="0.1">
           <img src="/img/hbg0.png">
         </li >
-        <li class="layer" data-depth="0.16">
+        <li class="layer parallax" data-depth="0.16">
           <img src="/img/hbg1.png">
         </li >
-        <li class="layer" data-depth="0.28">
+        <li class="layer parallax" data-depth="0.28">
           <img src="/img/hbg2.png">
         </li >
         <li class="layer hero-inner">
@@ -216,9 +216,13 @@
       })( jQuery );
       function RefreshHeroParallax() {
         if ($(window).width() > 1439) {
-          $('#hero-parallax .layer img').width($(window).width()+80);
+          $('#hero-parallax .layer.parallax img').width($(window).width() + $(window).width()/18);
+          $('#hero-parallax .layer.parallax img').css('margin-top', -$(window).width()/36+'px');
+          $('#hero-parallax .layer.parallax img').css('margin-left', -$(window).width()/36+'px');
         } else {
-          $('#hero-parallax .layer img').width(1600);
+          $('#hero-parallax .layer.parallax img').width(1600);
+          $('#hero-parallax .layer.parallax img').css('margin-top', '-40px');
+          $('#hero-parallax .layer.parallax img').css('margin-left', '-40px');
         }
       }
       function SwingLogo(t) {
@@ -243,9 +247,11 @@
       }
       window.onload = function() {
         RefreshHeroParallax();
-        $('#hero-parallax').parallax();
-        setTimeout("$('.hero-fence').hide();", 100);
-        setTimeout("$('#hero-parallax').addClass('animated fadeIn');", 200);
+        $('#hero-parallax').parallax({
+          scalarY: 30
+        });
+        setTimeout("$('.hero-fence').hide();", 10);
+        setTimeout("$('#hero-parallax').addClass('animated fadeIn');", 100);
         setTimeout("$('.hero-ranking').addClass('animated fadeIn');", 200);
         FixedUpdate();
         SwingLogo(1.0);

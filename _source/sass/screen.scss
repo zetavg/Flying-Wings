@@ -87,7 +87,7 @@ hr {
 		width: 100%;
 		height: $hero-height;
 		overflow: hidden;
-		.layer {
+		.layer.parallax {
 			img {
 				margin-top: -40px;
 				margin-left: -40px;
@@ -366,8 +366,8 @@ hr {
 
 @media (max-width: 999px) {
 	.container {
-		padding-left: 60px;
-		padding-right: 60px;
+		padding-left: 40px;
+		padding-right: 40px;
 	}
 	.hero-ranking {
 		display: none;
