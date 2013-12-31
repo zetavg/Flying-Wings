@@ -253,22 +253,25 @@ hr {
 		text-align: center;
 		font-size: 24px;
 		color: #eee;
-		img {
+		.avator {
 			position: relative;
 			max-width: 100%;
-			border:1px solid #999;
+			border:1px solid #ccc;
 			padding:5px;
 			background:#efefef;
 			margin-bottom: 12px;
 			@extend .img-circle;
 			@include box-shadow($shadow);
 		}
+		img {
+			@extend .img-circle;
+		}
 		@include text-shadow($shadow);
 	}
 	.developer a:hover {
 		$shadow: 0 4px 30px rgba(0,0,0, 1);
 		text-decoration: none;
-		img {
+		.avator {
 			@include box-shadow($shadow);
 			top: -8px;
 			bottom: 8px;

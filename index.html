@@ -173,11 +173,11 @@
         <div class="container content">
           <div class="row">
             <div class="developers-title"><h1>Developers</h1><hr></div>
-            <div class="developer"><a target="_blank" href="https://www.facebook.com/pokaichang72"><img src="https://0.gravatar.com/avatar/fb9733f2971dc0532dc6083e79c71e1a?s=160"><br>Neson Chang</a></div>
-            <div class="developer"><a target="_blank" href="https://www.facebook.com/yukaihuang93"><img src="http://i.imgur.com/U2L5tCq.jpg"><br>Yukai</a></div>
-            <div class="developer"><a target="_blank" href="https://www.facebook.com/ericwlapse"><img src="http://i.imgur.com/bEsGPCo.jpg"><br>陳太太</a></div>
-            <div class="developer"><a target="_blank" href="https://www.facebook.com/iamwanchien"><img src="http://i.imgur.com/ihMHfDD.jpg"><br>枝</a></div>
-            <div class="developer"><a target="_blank" href="https://www.facebook.com/dreamingdexiaoxiaohao"><img src="http://i.imgur.com/w235XYn.jpg"><br>Briuin Lin</a></div>
+            <div class="developer"><a target="_blank" href="https://www.facebook.com/pokaichang72"><div class="avator"><img src="https://0.gravatar.com/avatar/fb9733f2971dc0532dc6083e79c71e1a?s=160"></div><div class="name">Neson Chang</div></a></div>
+            <div class="developer"><a target="_blank" href="https://www.facebook.com/yukaihuang93"><div class="avator"><img src="http://i.imgur.com/U2L5tCq.jpg"></div><div class="name">Yukai</div></a></div>
+            <div class="developer"><a target="_blank" href="https://www.facebook.com/ericwlapse"><div class="avator"><img src="http://i.imgur.com/bEsGPCo.jpg"></div><div class="name">陳太太</div></a></div>
+            <div class="developer"><a target="_blank" href="https://www.facebook.com/iamwanchien"><div class="avator"><img src="http://i.imgur.com/ihMHfDD.jpg"></div><div class="name">枝</div></a></div>
+            <div class="developer"><a target="_blank" href="https://www.facebook.com/dreamingdexiaoxiaohao"><div class="avator"><img src="http://i.imgur.com/w235XYn.jpg"></div><div class="name">Briuin Lin</div></a></div>
           </div>
         </div>
       </div>
@@ -214,7 +214,7 @@
           return this;
         };
       })( jQuery );
-      function RefreshHeroParallax() {
+      function RefreshResponsive() {
         if ($(window).width() > 1439) {
           $('#hero-parallax .layer.parallax img').width($(window).width() + $(window).width()/18);
           $('#hero-parallax .layer.parallax img').css('margin-top', -$(window).width()/36+'px');
@@ -224,6 +224,8 @@
           $('#hero-parallax .layer.parallax img').css('margin-top', '-40px');
           $('#hero-parallax .layer.parallax img').css('margin-left', '-40px');
         }
+        $('.avator').height($('.avator').width() + 12);
+        $('.avator img').width($('.avator').width());
       }
       function SwingLogo(t) {
         console.log(t);
@@ -246,18 +248,20 @@
         setTimeout("FixedUpdate()", 500);
       }
       window.onload = function() {
-        RefreshHeroParallax();
+        RefreshResponsive();
         $('#hero-parallax').parallax({
           scalarY: 30
         });
         setTimeout("$('.hero-fence').hide();", 10);
         setTimeout("$('#hero-parallax').addClass('animated fadeIn');", 100);
         setTimeout("$('.hero-ranking').addClass('animated fadeIn');", 200);
+        setTimeout("RefreshResponsive()", 500);
         FixedUpdate();
         SwingLogo(1.0);
       }
       window.onresize = function() {
-        RefreshHeroParallax();
+        RefreshResponsive();
+        setTimeout("RefreshResponsive()", 500);
       }
 
     </script>
