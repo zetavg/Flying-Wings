@@ -69,26 +69,26 @@
     <!-- Hero
     ================================================== -->
     <div id="Hero" class="hero" data-ride="hero">
-      <div id="hero-parallax" class="parallax-viewport">
+      <ul id="hero-parallax" class="parallax-viewport">
         <!-- parallax layers -->
-        <div class="parallax-layer" style="position: absolute;">
+        <li class="layer" data-depth="0.1">
           <img src="/img/hbg0.png">
-        </div>
-        <div class="parallax-layer" style="position: absolute;">
+        </li >
+        <li class="layer" data-depth="0.16">
           <img src="/img/hbg1.png">
-        </div>
-        <div class="parallax-layer" style="position: absolute;">
+        </li >
+        <li class="layer" data-depth="0.28">
           <img src="/img/hbg2.png">
-        </div>
-        <div class="hero-inner">
+        </li >
+        <li class="layer hero-inner">
           <a href="/" class="logoa"><img class="logo" src="/img/logo.png"></a>
           <div class="brief">
             <p><span>立體機動裝置，</span><span>尖端科技的結晶，</span><span>是一套人性化的萬能交通工具，</span><span>出現在我們這個充滿巨人的世界。</span><span>精銳士兵米卡莎，</span><span>充滿正義感，</span><span>是一個英勇的肉塊削手，</span><span>他以無比的勇氣，</span><span>超人的智慧，</span><span>擊殺巨人，</span><span>拯救善良無助的受害者。</span></p>
             <p><span>在「飛ぶの翼」，</span><span>你也可以。</span><span>穿戴上立體機動裝置，</span><span>選擇你的角色，</span><span>駕著鋼索與氣體，</span><span>飛翔穿梭在那不存在之人的危險世界，</span><span>戰勝那無辜、絕望、弱勢的禍首吧！</span></p>
             <a href="#" class="btn btn-default btn-lg" role="button"><span class ="glyphicon glyphicon-arrow-down"></span> 下載 .apk 安裝檔</a>
           </div>
-        </div>
-      </div>
+        </li>
+      </ul>
       <div class="hero-fence"></div>
     </div>
     <div class="hero-ranking">
@@ -123,7 +123,6 @@
           <p>* 設備需設定為接受不明來源應用程式。</p>
         </div>
       </div><!-- /.row -->
-
 
       <!-- START THE FEATURETTES -->
 
@@ -216,14 +215,11 @@
         };
       })( jQuery );
       function RefreshHeroParallax() {
-        if ($(window).width() > 1439)
-          $('#hero-parallax .parallax-layer img').width($(window).width()+80);
-        else
-          $('#hero-parallax .parallax-layer img').width(1600);
-        jQuery('#hero-parallax .parallax-layer')
-        .parallax({
-          mouseport: jQuery('#Hero')
-        }, {xparallax: '15px', yparallax: '25px'}, {xparallax: '40px', yparallax: '60px'}, {xparallax: '60px', yparallax: '100px'});
+        if ($(window).width() > 1439) {
+          $('#hero-parallax .layer img').width($(window).width()+80);
+        } else {
+          $('#hero-parallax .layer img').width(1600);
+        }
       }
       function SwingLogo(t) {
         console.log(t);
@@ -247,6 +243,7 @@
       }
       window.onload = function() {
         RefreshHeroParallax();
+        $('#hero-parallax').parallax();
         setTimeout("$('.hero-fence').hide();", 100);
         setTimeout("$('#hero-parallax').addClass('animated fadeIn');", 200);
         setTimeout("$('.hero-ranking').addClass('animated fadeIn');", 200);
