@@ -227,14 +227,36 @@
         $('.avator').height($('.avator').width() + 12);
         $('.avator img').width($('.avator').width());
       }
+
+      var do_x, do_y, do_z, prev_do_x, prev_do_y, prev_do_z;
+      window.addEventListener('deviceorientation', handleOrientation);
+      function handleOrientation(event) {
+        do_x = event.beta;
+        do_y = event.gamma;
+        do_z = event.alpha;
+      }
       function SwingLogo(t) {
-        console.log(t);
-        if ($('.hero .logoa').is(":hover")) {
+        if ((prev_do_x - do_x) > 0.001 || (prev_do_y - do_y) > 0.001 || (prev_do_z - do_z) > 0.001) {
+          var d_do_x = Math.abs(prev_do_x - do_x);
+          if (d_do_x > 180) d_do_x = 360 - d_do_x;
+          var d_do_y = Math.abs(prev_do_y - do_y);
+          if (d_do_y > 180) d_do_y = 360 - d_do_y;
+          var d_do_z = Math.abs(prev_do_z - do_z);
+          if (d_do_z > 180) d_do_z = 360 - d_do_z;
+          if (t > 0) t += d_do_x*0.01;
+          else t -= d_do_x*0.01;
+          if (t > 0) t += d_do_y*0.01;
+          else t -= d_do_y*0.01;
+          if (t > 0) t += d_do_z*0.01;
+          else t -= d_do_z*0.01;
+          if (t > 1.8) t = 1.8;
+          else if (t < -1.8) t = -1.8;
+        } else if ($('.hero .logoa').is(":hover")) {
           if (t > 0) t += 0.3;
           else t -= 0.3;
+          if (t > 0.8) t = 0.8;
+          else if (t < -0.8) t = -0.8;
         }
-        if (t > 0.8) t = 0.8;
-        else if (t < -0.8) t = -0.8;
         if (t > 0.11 || t < -0.11) {
           $('.hero .logo').rotateSec(t*3, 0.7);
           if (t > 0) t -= 0.18;
@@ -242,11 +264,18 @@
         } else {
           $('.hero .logo').rotateSec(0, 0.7);
         }
+        prev_do_x = do_x;
+        prev_do_y = do_y;
+        prev_do_z = do_z;
         setTimeout("SwingLogo("+(-t)+")", 700);
       }
+
       function FixedUpdate() {
         setTimeout("FixedUpdate()", 500);
       }
+      $(document).ready(function($) {
+        RefreshResponsive();
+      });
       window.onload = function() {
         RefreshResponsive();
         $('#hero-parallax').parallax({
@@ -254,7 +283,7 @@
         });
         setTimeout("$('.hero-fence').hide();", 10);
         setTimeout("$('#hero-parallax').addClass('animated fadeIn');", 100);
-        setTimeout("$('.hero-ranking').addClass('animated fadeIn');", 200);
+        setTimeout("$('.hero-ranking').addClass('animated fadeIn');", 800);
         setTimeout("RefreshResponsive()", 500);
         FixedUpdate();
         SwingLogo(1.0);

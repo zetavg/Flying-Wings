@@ -366,7 +366,6 @@ hr {
 	}
 }
 
-
 @media (max-width: 999px) {
 	.container {
 		padding-left: 40px;
@@ -393,15 +392,35 @@ hr {
 	}
 }
 
-
 @media (max-width: 639px) {
 	.featurette-divider {
 		margin: 20px 0;
 	}
 }
 
+@media (max-width: 499px) {
+	.col-lg-7.youtube iframe {
+		height: 240px;
+	}
+	.developers {
+		.developer, .developer a {
+			font-size: 18px;
+		}
+	}
+}
 
 @media (max-width: 399px) {
+	.col-lg-7.youtube iframe {
+		height: 200px;
+	}
+	.developers {
+		.developer, .developer a {
+			font-size: 16px;
+		}
+	}
+}
+
+@media (max-width: 329px) {
 	.hero-inner .logo {
 		display: none;
 	}
@@ -410,7 +429,7 @@ hr {
 	}
 	.developers {
 		.developer, .developer a {
-			font-size: 12px;
+			font-size: 14px;
 		}
 	}
 }
