@@ -3,18 +3,25 @@
 @import "bootstrap";
 @import "animate";
 
+$hero-height: 680px;
+$developers: 5;
+$developers-in-row: 5;
 
 /* GLOBAL STYLES
 -------------------------------------------------- */
 /* Padding below the footer and lighter body text */
 
 body {
-	padding-bottom: 40px;
 	color: #5a5a5a;
+	background-image: url('../img/bbg.jpg')
 }
 
 a {
 	@include transition-duration(0.2s);
+}
+
+hr {
+	border-top: 1px solid #999;
 }
 
 
@@ -51,13 +58,13 @@ a {
 
 /* CUSTOMIZE THE HERO
 -------------------------------------------------- */
-$hero-height: 680px;
 
 /* Carousel base class */
 .hero {
 	height: $hero-height;
 	margin-bottom: 60px;
-	/*background-image: url("../img/bg1.jpg");*/
+	background-image: url("../img/ajax-loader.gif");
+	background-repeat: no-repeat;
 	background-color: grey;
 	background-position: center;
 
@@ -124,6 +131,7 @@ $hero-height: 680px;
 }
 
 .hero-ranking {
+	opacity: 0;
 	position: absolute;
 	top: $hero-height - 105px;
 	width: 100%;
@@ -153,11 +161,11 @@ $hero-height: 680px;
 }
 
 
-/* MARKETING CONTENT
+/* CONTENT
 -------------------------------------------------- */
 
 /* Pad the edges of the mobile views a bit */
-.marketing {
+.content {
 	padding-left: 15px;
 	padding-right: 15px;
 	iframe {
@@ -169,14 +177,14 @@ $hero-height: 680px;
 }
 
 /* Center align the text within the three columns below the carousel */
-.marketing .col-lg-4 {
+.content .col-lg-4 {
 	text-align: center;
 	margin-bottom: 20px;
 }
-.marketing h2 {
+.content h2 {
 	font-weight: normal;
 }
-.marketing .col-lg-4 p {
+.content .col-lg-4 p {
 	margin-left: 10px;
 	margin-right: 10px;
 }
@@ -189,14 +197,99 @@ $hero-height: 680px;
 	margin: 80px 0; /* Space out the Bootstrap <hr> more */
 }
 
-/* Thin out the marketing headings */
+/* Thin out the content headings */
 .featurette-heading {
 	font-weight: 300;
 	line-height: 1;
 	letter-spacing: -1px;
 }
 
+.developers-container {
+	background-image: url('../img/dbg.jpg');
+	background-size: auto;
+	background-repeat: repeat;
+	background-color: grey;
+}
 
+.developers {
+	width: 100%;
+	background-color: #aaa;
+	text-align: center;
+	position: relative;
+	padding-top: 12px;
+	padding-bottom: 18px;
+
+	background: -moz-radial-gradient(center, ellipse cover,  rgba(0,0,0,0) 0%, rgba(0,0,0,0) 1%, rgba(0,0,0,0) 70%, rgba(0,0,0,0.3) 85%, rgba(0,0,0,0.6) 98%, rgba(0,0,0,0.65) 100%); /* FF3.6+ */
+	background: -webkit-gradient(radial, center center, 0px, center center, 100%, color-stop(0%,rgba(0,0,0,0)), color-stop(1%,rgba(0,0,0,0)), color-stop(70%,rgba(0,0,0,0)), color-stop(85%,rgba(0,0,0,0.3)), color-stop(98%,rgba(0,0,0,0.6)), color-stop(100%,rgba(0,0,0,0.65))); /* Chrome,Safari4+ */
+	background: -webkit-radial-gradient(center, ellipse cover,  rgba(0,0,0,0) 0%,rgba(0,0,0,0) 1%,rgba(0,0,0,0) 70%,rgba(0,0,0,0.3) 85%,rgba(0,0,0,0.6) 98%,rgba(0,0,0,0.65) 100%); /* Chrome10+,Safari5.1+ */
+	background: -o-radial-gradient(center, ellipse cover,  rgba(0,0,0,0) 0%,rgba(0,0,0,0) 1%,rgba(0,0,0,0) 70%,rgba(0,0,0,0.3) 85%,rgba(0,0,0,0.6) 98%,rgba(0,0,0,0.65) 100%); /* Opera 12+ */
+	background: -ms-radial-gradient(center, ellipse cover,  rgba(0,0,0,0) 0%,rgba(0,0,0,0) 1%,rgba(0,0,0,0) 70%,rgba(0,0,0,0.3) 85%,rgba(0,0,0,0.6) 98%,rgba(0,0,0,0.65) 100%); /* IE10+ */
+	background: radial-gradient(ellipse at center,  rgba(0,0,0,0) 0%,rgba(0,0,0,0) 1%,rgba(0,0,0,0) 70%,rgba(0,0,0,0.3) 85%,rgba(0,0,0,0.6) 98%,rgba(0,0,0,0.65) 100%); /* W3C */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#00000000', endColorstr='#a6000000',GradientType=1 ); /* IE6-9 fallback on horizontal gradient */
+
+
+	* {
+		text-align: center;
+		@include transition-duration(0.2s);
+	}
+	.developers-title {
+		@extend .col-md-12;
+		text-align: left;
+		* { text-align: left; }
+	}
+	hr {
+		border-top: 1px solid #777;
+	}
+	.developer {
+		@extend .col-md-2;
+		@extend .col-xs-6;
+		position: relative;
+		margin: 18px 0;
+	}
+	.developer, .developer a {
+		$shadow: 0 1px 20px rgba(0,0,0, .8);
+		text-align: center;
+		font-size: 24px;
+		color: #eee;
+		img {
+			position: relative;
+			max-width: 100%;
+			border:1px solid #999;
+			padding:5px;
+			background:#efefef;
+			margin-bottom: 12px;
+			@extend .img-circle;
+			@include box-shadow($shadow);
+		}
+		@include text-shadow($shadow);
+	}
+	.developer a:hover {
+		$shadow: 0 4px 30px rgba(0,0,0, 1);
+		text-decoration: none;
+		img {
+			@include box-shadow($shadow);
+			top: -8px;
+			bottom: 8px;
+		}
+		//@include text-shadow($shadow);
+	}
+}
+
+/* FOOTER
+-------------------------------------------------- */
+
+.footer-container {
+	border-top: 1px solid #444;
+	background-color: #555;
+	padding-top: 10px;
+	padding-bottom: 30px;
+	footer, footer * {
+		color: #000;
+	}
+	footer {
+
+	}
+}
 
 /* RESPONSIVE CSS
 -------------------------------------------------- */
@@ -204,7 +297,7 @@ $hero-height: 680px;
 @media (min-width: 768px) {
 
 	/* Remove the edge padding needed for mobile */
-	.marketing {
+	.content {
 		padding-left: 0;
 		padding-right: 0;
 	}
@@ -248,10 +341,32 @@ $hero-height: 680px;
 	.featurette-heading {
 		margin-top: 120px;
 	}
+
+	.developers {
+		.developer {
+			position: relative;
+			width: (100% / $developers-in-row);
+			a {
+				display: block;
+				margin: 0 18px;
+			}
+		}
+		@if ($developers % $developers-in-row > 0) {
+			@for $i from 1 through ($developers % $developers-in-row - 1) {
+				.developer:nth-child(#{ $developers - $i}) {
+					margin-right: (100% - (100% / $developers-in-row) * ($developers % $developers-in-row) ) / ($developers % $developers-in-row - 1);
+				}
+			}
+		}
+	}
 }
 
 
 @media (max-width: 999px) {
+	.container {
+		padding-left: 60px;
+		padding-right: 60px;
+	}
 	.hero-ranking {
 		display: none;
 	}
@@ -274,9 +389,23 @@ $hero-height: 680px;
 }
 
 
+@media (max-width: 639px) {
+	.featurette-divider {
+		margin: 20px 0;
+	}
+}
+
 
 @media (max-width: 399px) {
 	.hero-inner .logo {
 		display: none;
+	}
+	.featurette-divider {
+		margin: 10px 0;
+	}
+	.developers {
+		.developer, .developer a {
+			font-size: 12px;
+		}
 	}
 }

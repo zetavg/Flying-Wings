@@ -8,7 +8,7 @@
     <meta name="author" content="">
     <link rel="shortcut icon" href="">
 
-    <title>Carousel Template for Bootstrap</title>
+    <title>飛ぶの翼．立體機動裝置遊戲</title>
 
     <!-- CSS -->
     <link href="/css/screen.css" rel="stylesheet">
@@ -105,12 +105,11 @@
     </div>
 
 
-
-    <!-- Marketing messaging and featurettes
+    <!-- Content and featurettes
     ================================================== -->
     <!-- Wrap the rest of the page in another container to center all the content. -->
 
-    <div class="container marketing">
+    <div class="container content">
 
       <!-- Three columns of text below the carousel -->
       <div class="row">
@@ -148,7 +147,7 @@
         </div>
         <div class="col-md-7">
           <h2 class="featurette-heading">流暢的飛翔體驗，<span class="text-muted"><br>滿足你駕馭立體機動裝置的快感。</span></h2>
-          <p class="lead">有了這套先進的移動工具，你就像添了一對翅膀般，自由穿梭於樓宇樹林間。</p>
+          <p class="lead">有了這套先進的裝備，你就像添了一對翅膀般，自由穿梭於樓宇樹林間。旋轉、飛躍，快來體驗遨遊天際的快感！</p>
         </div>
       </div>
 
@@ -157,7 +156,7 @@
       <div class="row featurette">
         <div class="col-md-7">
           <h2 class="featurette-heading">獵殺巨人，<span class="text-muted">為人類爭取榮耀！</span></h2>
-          <p class="lead">它們是獵物，而我們才是獵手！</p>
+          <p class="lead">它們是獵物，而我們才是獵手，成千上萬隻巨人任你討伐，衝入危險地域，削下巨人後頸，讓它們從此記得被你隨意宰割的恐懼！</p>
         </div>
         <div class="col-md-5">
           <img class="featurette-image img-responsive" src="/img/f3.jpg">
@@ -168,16 +167,31 @@
 
       <!-- /END THE FEATURETTES -->
 
+    </div><!-- /.container -->
+
+    <div class="developers-container">
+      <div class="developers">
+        <div class="container content">
+          <div class="row">
+            <div class="developers-title"><h1>Developers</h1><hr></div>
+            <div class="developer"><a href="https://www.facebook.com/pokaichang72"><img src="https://0.gravatar.com/avatar/fb9733f2971dc0532dc6083e79c71e1a?s=160"><br>Neson Chang</a></div>
+            <div class="developer"><a href="https://www.facebook.com/yukaihuang93"><img src="https://fbcdn-profile-a.akamaihd.net/hprofile-ak-prn1/c121.0.719.719/s160x160/1497616_711565012196453_722796211_n.jpg"><br>Yukai</a></div>
+            <div class="developer"><a href="https://www.facebook.com/ericwlapse"><img src="https://fbcdn-profile-a.akamaihd.net/hprofile-ak-frc3/c132.56.696.696/s160x160/970921_10201048216401458_1087038676_n.jpg"><br>陳太太</a></div>
+            <div class="developer"><a href="https://www.facebook.com/iamwanchien"><img src="https://fbcdn-profile-a.akamaihd.net/hprofile-ak-frc3/c36.30.381.381/s160x160/530236_4146454078866_143801628_n.jpg"><br>枝</a></div>
+            <div class="developer"><a href="https://www.facebook.com/dreamingdexiaoxiaohao"><img src="https://fbcdn-profile-a.akamaihd.net/hprofile-ak-frc1/c163.0.635.635/s160x160/1380275_595448100517102_1738620556_n.jpg"><br>Briuin Lin</a></div>
+          </div>
+        </div>
+      </div>
+    </div>
 
 
-
-      <!-- FOOTER -->
-      <footer>
+    <!-- FOOTER -->
+    <div class="footer-container">
+      <footer class="container">
         <p class="pull-right"><a href="#">Back to top</a></p>
         <p>A [ NTUST Mobile Game Design ] Project. 此為向「進擊的巨人」高度致敬之作 (業)，絕無侵權之意。</p>
       </footer>
-
-    </div><!-- /.container -->
+    </div>
 
 
     <!-- JavaScript
@@ -234,7 +248,8 @@
       window.onload = function() {
         RefreshHeroParallax();
         setTimeout("$('.hero-fence').hide();", 100);
-        setTimeout("$('#hero-parallax').addClass('animated fadeIn');", 300);
+        setTimeout("$('#hero-parallax').addClass('animated fadeIn');", 200);
+        setTimeout("$('.hero-ranking').addClass('animated fadeIn');", 200);
         FixedUpdate();
         SwingLogo(1.0);
       }
