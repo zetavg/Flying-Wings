@@ -40,25 +40,25 @@
             <div class="navbar-collapse collapse">
               <ul class="nav navbar-nav">
                 <li class="<?php if ($page_nav == 'home') echo 'active'; ?>"><a href="/">Home</a></li>
-                <li class="<?php if ($page_nav == 'introduction') echo 'active'; ?>"><a href="#introduction">Introduction</a></li>
+                <li class="<?php if ($page_nav == 'introduction') echo 'active'; ?>"><a href="/cs/">Introduction</a></li>
                 <li class="<?php if ($page_nav == 'system') echo 'active'; ?>"><a href="/system/">System</a></li>
                 <li class="dropdown">
-                  <a href="#" class="dropdown-toggle" data-toggle="dropdown">Ranking <b class="caret"></b></a>
+                  <a href="/cs/" class="dropdown-toggle" data-toggle="dropdown">Ranking <b class="caret"></b></a>
                   <ul class="dropdown-menu">
                     <li class="dropdown-header">Scroe</li>
-                    <li><a href="#">Kills</a></li>
-                    <li><a href="#">Survival</a></li>
-                    <li><a href="#">Average Kills</a></li>
+                    <li><a href="/cs/">Kills</a></li>
+                    <li><a href="/cs/">Survival</a></li>
+                    <li><a href="/cs/">Average Kills</a></li>
                     <li class="divider"></li>
                     <li class="dropdown-header">Achievement</li>
-                    <li><a href="#">Medals</a></li>
-                    <li><a href="#">Statistics</a></li>
+                    <li><a href="/cs/">Medals</a></li>
+                    <li><a href="/cs/">Statistics</a></li>
                   </ul>
                 </li>
               </ul>
               <ul class="nav navbar-nav navbar-right">
-                <li><a href="#contact">Contact</a></li>
-                <li><a href="#credits">Credits</a></li>
+                <li><a href="/cs/">Contact</a></li>
+                <li><a href="/cs/">Credits</a></li>
               </ul>
             </div>
           </div>
