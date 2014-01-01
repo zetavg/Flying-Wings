@@ -194,7 +194,7 @@ hr {
 }
 
 .no-header {
-	height: 94px;
+	height: 50px;
 }
 
 /* Featurettes
@@ -294,6 +294,18 @@ hr {
 	}
 }
 
+/* COMP
+-------------------------------------------------- */
+
+.parallax-x {
+	overflow: hidden;
+	text-align: center;
+	li {
+		text-align: center;
+		white-space: nowrap;
+	}
+}
+
 /* FOOTER
 -------------------------------------------------- */
 
@@ -314,6 +326,10 @@ hr {
 -------------------------------------------------- */
 
 @media (min-width: 768px) {
+
+	.no-header {
+		height: 92px;
+	}
 
 	/* Remove the edge padding needed for mobile */
 	.content {

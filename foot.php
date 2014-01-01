@@ -113,6 +113,10 @@
         $('#hero-parallax').parallax({
           scalarY: 30
         });
+        $('.parallax-x').parallax({
+          limitY: 0,
+          scalarX: 10
+        });
         setTimeout("$('.hero-fence').hide();", 10);
         setTimeout("$('#hero-parallax').addClass('animated fadeIn');", 100);
         setTimeout("$('.hero-ranking').addClass('animated fadeIn');", 800);
