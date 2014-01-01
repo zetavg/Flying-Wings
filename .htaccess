@@ -1,0 +1,9 @@
+Options All -Indexes
+
+RewriteEngine On
+RewriteBase /
+RewriteRule ^index.php$ - [L]
+RewriteCond %{REQUEST_URI} !^.*(.css|.js|.gif|.png|.jpg|.jpeg|.eot|.svg|.ttf|.woff)$
+# RewriteRule ^(.*).php$ index.php
+RewriteRule ^(.*)/(.*)$ $1.php?action=$2
+# ErrorDocument 404 /index.php
