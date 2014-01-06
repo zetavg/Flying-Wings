@@ -643,21 +643,24 @@ function FixedUpdate () {
 
 		// Pull
 		if ((transform.position - TDMG_pull_target).magnitude > 0.1) {
-			var tdmg_wire_speed = (12 - Vector3.Project(rigidbody.velocity, (TDMG_pull_target - transform.position).normalized).magnitude);
-			if (tdmg_wire_speed < 0) tdmg_wire_speed = 0;
+			var tdmg_wire_speed_d : float;
+			if (tdmg_pull_to_v < 0) tdmg_wire_speed_d = (12 + Vector3.Project(rigidbody.velocity, (TDMG_pull_target - transform.position).normalized).magnitude);
+			else tdmg_wire_speed_d = (12 - Vector3.Project(rigidbody.velocity, (TDMG_pull_target - transform.position).normalized).magnitude);
+			print(tdmg_wire_speed_d);
+			if (tdmg_wire_speed_d < 0) tdmg_wire_speed_d = 0;
 			if (((pre_position.y-TDMG_pull_target.y) > (transform.position.y - ((TDMG_Hook_LC.transform.position + TDMG_Hook_RC.transform.position)/2).y) && (transform.position.y-TDMG_pull_target.y) < (transform.position.y - ((TDMG_Hook_LC.transform.position + TDMG_Hook_RC.transform.position)/2).y)) || ((pre_position.y-TDMG_pull_target.y) < (transform.position.y - ((TDMG_Hook_LC.transform.position + TDMG_Hook_RC.transform.position)/2).y) && (transform.position.y-TDMG_pull_target.y) > (transform.position.y - ((TDMG_Hook_LC.transform.position + TDMG_Hook_RC.transform.position)/2).y)) || ((TDMG_pull_target - (TDMG_Hook_LC.transform.position + TDMG_Hook_RC.transform.position)/2).magnitude < 0.1)) {
 				TDMG_pull_y_cd = 40;
 				TDMG_pull_y_count++;
 			}
 			if (TDMG_pull_y_count < 2) {
 				if (!TDMG_pull_y_cd) {
-					rigidbody.AddForce((TDMG_pull_target - (TDMG_Hook_LC.transform.position + TDMG_Hook_RC.transform.position)/2).normalized * tdmg_wire_speed, ForceMode.VelocityChange);  // 向繩索方向加力
+					rigidbody.AddForce((TDMG_pull_target - (TDMG_Hook_LC.transform.position + TDMG_Hook_RC.transform.position)/2).normalized * tdmg_wire_speed_d, ForceMode.VelocityChange);  // 向繩索方向加力
 				} else {
-					rigidbody.AddForce(((TDMG_pull_target - (TDMG_Hook_LC.transform.position + TDMG_Hook_RC.transform.position)/2).normalized - Vector3.up*(TDMG_pull_target - (TDMG_Hook_LC.transform.position + TDMG_Hook_RC.transform.position)/2).normalized.y) * tdmg_wire_speed, ForceMode.VelocityChange);  // 向繩索方向加力
+					rigidbody.AddForce(((TDMG_pull_target - (TDMG_Hook_LC.transform.position + TDMG_Hook_RC.transform.position)/2).normalized - Vector3.up*(TDMG_pull_target - (TDMG_Hook_LC.transform.position + TDMG_Hook_RC.transform.position)/2).normalized.y) * tdmg_wire_speed_d, ForceMode.VelocityChange);  // 向繩索方向加力
 					TDMG_pull_y_cd--;
 				}
 			} else {  // 避免出現 Y 軸簡諧運動
-				rigidbody.AddForce(((TDMG_pull_target - (TDMG_Hook_LC.transform.position + TDMG_Hook_RC.transform.position)/2).normalized - Vector3.up*(TDMG_pull_target - (TDMG_Hook_LC.transform.position + TDMG_Hook_RC.transform.position)/2).normalized.y) * tdmg_wire_speed, ForceMode.VelocityChange);  // 向繩索方向加力
+				rigidbody.AddForce(((TDMG_pull_target - (TDMG_Hook_LC.transform.position + TDMG_Hook_RC.transform.position)/2).normalized - Vector3.up*(TDMG_pull_target - (TDMG_Hook_LC.transform.position + TDMG_Hook_RC.transform.position)/2).normalized.y) * tdmg_wire_speed_d, ForceMode.VelocityChange);  // 向繩索方向加力
 				var yfa = (TDMG_pull_target.y - ((TDMG_Hook_LC.transform.position + TDMG_Hook_RC.transform.position)/2).y)/3;
 				yfa -= rigidbody.velocity.y/12;
 				rigidbody.AddForce(transform.up*(yfa), ForceMode.VelocityChange);
@@ -875,21 +878,21 @@ function FixedUpdate () {
 			}
 			if ((transform.position - TDMG_pull_target).magnitude > 0.1) {
 				// MButton.guiTexture.texture = MButton_texture_pull_pulled;
-				var tdmg_wire_speed = (12 - Vector3.Project(rigidbody.velocity, (TDMG_pull_target - transform.position).normalized).magnitude);
-				if (tdmg_wire_speed < 0) tdmg_wire_speed = 0;
+				var tdmg_wire_speed_d = (12 - Vector3.Project(rigidbody.velocity, (TDMG_pull_target - transform.position).normalized).magnitude);
+				if (tdmg_wire_speed_d < 0) tdmg_wire_speed_d = 0;
 				if (((pre_position.y-TDMG_pull_target.y) > (transform.position.y - ((TDMG_Hook_LC.transform.position + TDMG_Hook_RC.transform.position)/2).y) && (transform.position.y-TDMG_pull_target.y) < (transform.position.y - ((TDMG_Hook_LC.transform.position + TDMG_Hook_RC.transform.position)/2).y)) || ((pre_position.y-TDMG_pull_target.y) < (transform.position.y - ((TDMG_Hook_LC.transform.position + TDMG_Hook_RC.transform.position)/2).y) && (transform.position.y-TDMG_pull_target.y) > (transform.position.y - ((TDMG_Hook_LC.transform.position + TDMG_Hook_RC.transform.position)/2).y)) || ((TDMG_pull_target - (TDMG_Hook_LC.transform.position + TDMG_Hook_RC.transform.position)/2).magnitude < 0.1)) {
 					TDMG_pull_y_cd = 10;
 					TDMG_pull_y_count++;
 				}
 				if (TDMG_pull_y_count < 2) {
 					if (!TDMG_pull_y_cd) {
-						rigidbody.AddForce((TDMG_pull_target - (TDMG_Hook_LC.transform.position + TDMG_Hook_RC.transform.position)/2).normalized * tdmg_wire_speed, ForceMode.VelocityChange);  // 向繩索方向加力
+						rigidbody.AddForce((TDMG_pull_target - (TDMG_Hook_LC.transform.position + TDMG_Hook_RC.transform.position)/2).normalized * tdmg_wire_speed_d, ForceMode.VelocityChange);  // 向繩索方向加力
 					} else {
-						rigidbody.AddForce(((TDMG_pull_target - (TDMG_Hook_LC.transform.position + TDMG_Hook_RC.transform.position)/2).normalized - Vector3.up*(TDMG_pull_target - (TDMG_Hook_LC.transform.position + TDMG_Hook_RC.transform.position)/2).normalized.y) * tdmg_wire_speed, ForceMode.VelocityChange);  // 向繩索方向加力
+						rigidbody.AddForce(((TDMG_pull_target - (TDMG_Hook_LC.transform.position + TDMG_Hook_RC.transform.position)/2).normalized - Vector3.up*(TDMG_pull_target - (TDMG_Hook_LC.transform.position + TDMG_Hook_RC.transform.position)/2).normalized.y) * tdmg_wire_speed_d, ForceMode.VelocityChange);  // 向繩索方向加力
 						TDMG_pull_y_cd--;
 					}
 				} else {  // 避免出現 Y 軸簡諧運動
-					rigidbody.AddForce(((TDMG_pull_target - (TDMG_Hook_LC.transform.position + TDMG_Hook_RC.transform.position)/2).normalized - Vector3.up*(TDMG_pull_target - (TDMG_Hook_LC.transform.position + TDMG_Hook_RC.transform.position)/2).normalized.y) * tdmg_wire_speed, ForceMode.VelocityChange);  // 向繩索方向加力
+					rigidbody.AddForce(((TDMG_pull_target - (TDMG_Hook_LC.transform.position + TDMG_Hook_RC.transform.position)/2).normalized - Vector3.up*(TDMG_pull_target - (TDMG_Hook_LC.transform.position + TDMG_Hook_RC.transform.position)/2).normalized.y) * tdmg_wire_speed_d, ForceMode.VelocityChange);  // 向繩索方向加力
 					var yfa = (TDMG_pull_target.y - ((TDMG_Hook_LC.transform.position + TDMG_Hook_RC.transform.position)/2).y)/3;
 					yfa -= rigidbody.velocity.y/12;
 					rigidbody.AddForce(transform.up*(yfa), ForceMode.VelocityChange);
