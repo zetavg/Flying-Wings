@@ -317,9 +317,9 @@ function FixedUpdate () {
 		if (TDMG_Jet.GetComponent(AudioSource).volume > 0) TDMG_Jet.GetComponent(AudioSource).volume -= 0.05;  // 關閉噴氣音效
 	} else {  // 天上飛
 		if (input_forward) {
-			rigidbody.AddForce(transform.forward * ((input_forward*characterSpeed)*1.4-transform.InverseTransformDirection(rigidbody.velocity).z) /16, ForceMode.VelocityChange);  // 前進, x1.4 /16
+			rigidbody.AddForce(transform.forward * ((input_forward*characterSpeed)*1.6-transform.InverseTransformDirection(rigidbody.velocity).z) /16, ForceMode.VelocityChange);  // 前進, x1.6 /16
 			rigidbody.AddForce((-1) * transform.right * (transform.InverseTransformDirection(rigidbody.velocity).x) /16, ForceMode.VelocityChange);  // 消除左右移動, /16
-			if (!hit_thing) rigidbody.AddForce(transform.up * input_forward/2, ForceMode.Acceleration);
+			if (!hit_thing) rigidbody.AddForce(transform.up * input_forward*0.6, ForceMode.Acceleration);  // 推升
 
 			TDMG_Jet.GetComponent(AudioSource).volume += (input_forward/100 - TDMG_Jet.GetComponent(AudioSource).volume)/10;
 		}
@@ -639,10 +639,18 @@ function FixedUpdate () {
 
 	if (MButton_status == 1 && MButton.held) {  // Pull!
 
-		// Var
+		// Force
+		if (!hit_thing) rigidbody.AddForce(transform.up * input_forward*0.4, ForceMode.Acceleration);  // 推升
 
 		// Pull
 		if ((transform.position - TDMG_pull_target).magnitude > 0.1) {
+			var tdmg_pull_direction = (TDMG_pull_target - TDMG.transform.position).normalized;
+			if (tdmg_pull_to_v < 0) rigidbody.AddForce(Vector3.Project(-rigidbody.velocity, (TDMG.transform.position - TDMG_pull_target).normalized) + (TDMG.transform.position - TDMG_pull_target).normalized*-1, ForceMode.VelocityChange);
+			rigidbody.AddForce(tdmg_pull_direction*(16-tdmg_pull_to_v)/8, ForceMode.VelocityChange);  // 向繩索方向加力
+			rigidbody.AddForce(Vector3.up*(tdmg_pull_direction.y)*(16-tdmg_pull_to_v)/8, ForceMode.VelocityChange);  // y 軸輔助
+
+
+		/*
 			var tdmg_wire_speed_d : float;
 			if (tdmg_pull_to_v < 0) tdmg_wire_speed_d = (12 + Vector3.Project(rigidbody.velocity, (TDMG_pull_target - transform.position).normalized).magnitude);
 			else tdmg_wire_speed_d = (12 - Vector3.Project(rigidbody.velocity, (TDMG_pull_target - transform.position).normalized).magnitude);
@@ -664,19 +672,7 @@ function FixedUpdate () {
 				var yfa = (TDMG_pull_target.y - ((TDMG_Hook_LC.transform.position + TDMG_Hook_RC.transform.position)/2).y)/3;
 				yfa -= rigidbody.velocity.y/12;
 				rigidbody.AddForce(transform.up*(yfa), ForceMode.VelocityChange);
-			}
-
-			// Hold too
-			if (MButton.tapped) {  // Hold!
-				TDMG_hold_dist = (TDMG.transform.position - TDMG_pull_target).magnitude;
-			}
-			// if ((TDMG.transform.position - TDMG_pull_target).magnitude < TDMG_hold_dist) {
-			// 	TDMG_hold_dist = (TDMG.transform.position - TDMG_pull_target).magnitude;
-			// }
-			// if ((TDMG.transform.position - TDMG_pull_target).magnitude > TDMG_hold_dist) {
-			// 	rigidbody.AddForce(Vector3.Project(-rigidbody.velocity, (TDMG.transform.position - TDMG_pull_target).normalized) + (TDMG.transform.position - TDMG_pull_target).normalized*-1, ForceMode.VelocityChange);
-			// }
-
+			}*/
 
 			TDMG_Gear.GetComponent(AudioSource).volume += (tdmg_pull_to_v - (TDMG_Gear.GetComponent(AudioSource).volume))/10;  // 音效
 		}
@@ -1081,4 +1077,10 @@ function OnCollisionStay(what : Collision) {
     if(what.gameObject.name == "Terrain" || what.gameObject.tag == "Wall" || what.gameObject.tag == "Building" || what.gameObject.name == "wall" || what.gameObject.name == "house1") {
 		hit_thing = true;
 	}
+    if(what.gameObject.tag == "Titan") {
+		if (TDMG_Hook_L_state == 2 && TDMG_Attacher_L.transform.root.gameObject.tag == "Titan") TDMG_Hook_L_state = 1;
+		if (TDMG_Hook_R_state == 2 && TDMG_Attacher_R.transform.root.gameObject.tag == "Titan") TDMG_Hook_R_state = 1;
+	}
 }
+
+

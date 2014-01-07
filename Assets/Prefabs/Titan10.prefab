@@ -493,6 +493,7 @@ GameObject:
   - 114: {fileID: 11400000}
   - 143: {fileID: 14300000}
   - 143: {fileID: 14300002}
+  - 143: {fileID: 14300004}
   m_Layer: 0
   m_Name: Titan10
   m_TagString: Titan
@@ -951,7 +952,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 100062}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -1.71931076, y: 0, z: -120.138412}
+  m_LocalPosition: {x: -47.1144257, y: 0, z: 19.1089573}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 400060}
@@ -1446,6 +1447,20 @@ CharacterController:
   m_MinMoveDistance: 0
   m_Center: {x: 0, y: .0199999996, z: 0}
 --- !u!143 &14300002
+CharacterController:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 100062}
+  serializedVersion: 2
+  m_Height: .00999999978
+  m_Radius: .00999999978
+  m_SlopeLimit: 45
+  m_StepOffset: .300000012
+  m_SkinWidth: .0799999982
+  m_MinMoveDistance: 0
+  m_Center: {x: 0, y: .0199999996, z: 0}
+--- !u!143 &14300004
 CharacterController:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
