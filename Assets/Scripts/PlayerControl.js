@@ -208,6 +208,7 @@ function SetGUITPixelInsetToCenter(myGUTTexture : GameObject, steps : float) {
 function Start () {
 
 	// Initialize Variables //
+	Time.timeScale = 0.1;
 
 
 	// Find GameObjects //
@@ -380,7 +381,7 @@ function FixedUpdate () {
 		else tdmg_use_hook_l = true;
 
 		if ( tdmg_target_hit.collider.gameObject.tag != "Titan" && tdmg_target_hit.collider.gameObject.tag != "AimPoint" &&
-		     ((TDMG_Hook_L_state == 0 && TDMG_Hook_L_state == 0) || ((TDMG_Hook_L_state != 1 && TDMG_Hook_L_state != 1) && (TDMG_pull_target - TDMG.transform.position).magnitude < 40)) &&
+		     ((TDMG_Hook_L_state == 0 && TDMG_Hook_R_state == 0) || ((TDMG_Hook_L_state != 1 && TDMG_Hook_R_state != 1) && (TDMG_pull_target - TDMG.transform.position).magnitude < 40)) &&
 		     (TDMG.transform.position - tdmg_target_hit.point).magnitude < 40 ) {  // Consider to use both hooks
 			var tdmg_target_ray_L : Ray = Ray(MainCam.transform.position-transform.right, Target.transform.position - MainCam.transform.position - transform.right);
 			var tdmg_target_hit_L : RaycastHit;
