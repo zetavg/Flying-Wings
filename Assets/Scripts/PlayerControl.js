@@ -646,8 +646,13 @@ function FixedUpdate () {
 		if ((transform.position - TDMG_pull_target).magnitude > 0.1) {
 			var tdmg_pull_direction = (TDMG_pull_target - TDMG.transform.position).normalized;
 			if (tdmg_pull_to_v < 0) rigidbody.AddForce(Vector3.Project(-rigidbody.velocity, (TDMG.transform.position - TDMG_pull_target).normalized) + (TDMG.transform.position - TDMG_pull_target).normalized*-1, ForceMode.VelocityChange);
-			rigidbody.AddForce(tdmg_pull_direction*(16-tdmg_pull_to_v)/8, ForceMode.VelocityChange);  // 向繩索方向加力
-			rigidbody.AddForce(Vector3.up*(tdmg_pull_direction.y)*(16-tdmg_pull_to_v)/8, ForceMode.VelocityChange);  // y 軸輔助
+			rigidbody.AddForce(tdmg_pull_direction*(16-tdmg_pull_to_v)/12, ForceMode.VelocityChange);  // 向繩索方向加力
+
+			if (!(TDMG_Hook_L_state == 2 && TDMG_Attacher_L.transform.root.gameObject.tag == "Titan") && !(TDMG_Hook_R_state == 2 && TDMG_Attacher_R.transform.root.gameObject.tag == "Titan")) {
+				rigidbody.AddForce(Vector3.up*(tdmg_pull_direction.y)*(16-tdmg_pull_to_v)/12, ForceMode.VelocityChange);  // y 軸輔助
+			} else {
+				rigidbody.AddForce(Vector3.up*(tdmg_pull_direction.y)*(16-tdmg_pull_to_v)/12, ForceMode.VelocityChange);  // y 軸輔助
+			}
 
 
 		/*
@@ -674,7 +679,7 @@ function FixedUpdate () {
 				rigidbody.AddForce(transform.up*(yfa), ForceMode.VelocityChange);
 			}*/
 
-			TDMG_Gear.GetComponent(AudioSource).volume += (tdmg_pull_to_v - (TDMG_Gear.GetComponent(AudioSource).volume))/10;  // 音效
+			TDMG_Gear.GetComponent(AudioSource).volume += (tdmg_pull_to_v/10 - (TDMG_Gear.GetComponent(AudioSource).volume))/10;  // 音效
 		}
 	} else {
 		TDMG_pull_y_cd = 0;
