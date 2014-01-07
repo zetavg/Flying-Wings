@@ -40,10 +40,11 @@ function LateUpdate () {
 	}
 
 	if (ActiveOnlyIsVisible) {
-		if (!target.transform.root.renderer.isVisible) {
+		if (!target.renderer.isVisible) {
+			thisTransform.position += Vector3(-100, -100, 0);
+		} else if () {
 			thisTransform.position += Vector3(-100, -100, 0);
 		}
-		print(cam.WorldToViewportPoint(target.position + offset));
 	}
 }
 
