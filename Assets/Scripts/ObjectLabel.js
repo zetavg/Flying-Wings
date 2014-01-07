@@ -42,7 +42,7 @@ function LateUpdate () {
 	if (ActiveOnlyIsVisible) {
 		if (!target.renderer.isVisible) {
 			thisTransform.position += Vector3(-100, -100, 0);
-		} else if () {
+		} else if (!target.renderer.isVisible) {
 			thisTransform.position += Vector3(-100, -100, 0);
 		}
 	}

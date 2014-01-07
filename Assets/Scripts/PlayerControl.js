@@ -247,6 +247,9 @@ function Start () {
 	HoldButton.Disable();
 	MButton.UseSet(1);
 
+	TDMG_Hook_L.transform.parent = null;
+	TDMG_Hook_R.transform.parent = null;
+
 }
 
 
@@ -728,6 +731,8 @@ function FixedUpdate () {
 			TDMG_Hook_L_state = 0;
 			TDMG.audio.PlayOneShot(TDMG_Withdraw_sound, 1);
 		}
+	} else {
+		TDMG_Hook_L.transform.position = TDMG_Hook_LC.transform.position;
 	}
 
 	if (TDMG_Hook_R_state == 3) {  // 若射出中
@@ -750,6 +755,8 @@ function FixedUpdate () {
 			TDMG_Hook_R_state = 0;
 			TDMG.audio.PlayOneShot(TDMG_Withdraw_sound, 1);
 		}
+	} else {
+		TDMG_Hook_R.transform.position = TDMG_Hook_RC.transform.position;
 	}
 
 
