@@ -12,7 +12,7 @@ var curWayPoint : AutoWayPoint;
 
 function Die () {
 	died = true;
-	animation.CrossFade("Die", 0.5);
+	animation.CrossFade("TitanDie", 0.5);
 
 	for (var child1 : Transform in transform) {
 		if (child1.gameObject.name == "AimPoint") {

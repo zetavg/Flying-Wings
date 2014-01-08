@@ -63,6 +63,12 @@ private var TDMG_Aimer_R : GameObject;
 private var TDMG_Attacher_L : GameObject;
 private var TDMG_Attacher_R : GameObject;
 
+// Effects Emitters //
+
+private var EffectsEmitters : GameObject;
+private var EffectsEmitter_LandingDust : GameObject;
+private var EffectsEmitter_KillBlood : GameObject;
+
 
 // GUI
 //////////////////////////////////////////////////////////////////////
@@ -72,7 +78,6 @@ private var ThrustLever : Joystick;
 private var MButton : TapButton;
 private var ReleaseButton : TapButton;
 private var HoldButton : TapButton;
-
 
 private var GUIAnimateGear : GameObject;
 private var TargetCrosshair : GameObject;
@@ -111,6 +116,8 @@ private var TDMG_aim_scan_aimpoint_l_obj : GameObject;
 private var TDMG_aim_scan_aimpoint_r_obj : GameObject;
 
 private var fixupdate_count = 0;
+
+private var mouse_wheel = 4.0;
 
 public var disableGUI = false;
 
@@ -208,8 +215,6 @@ function SetGUITPixelInsetToCenter(myGUTTexture : GameObject, steps : float) {
 function Start () {
 
 	// Initialize Variables //
-	Time.timeScale = 0.1;
-
 
 	// Find GameObjects //
 
@@ -225,12 +230,14 @@ function Start () {
 	TDMG_Hook_R = transform.Find("TDMG/TDMG_Hook_R_Container/TDMG_Hook").gameObject;
 	TDMG_Jet = transform.Find("TDMG/TDMG_Jet").gameObject;
 
-
 	TDMG_Aimer_L = transform.Find("/TDMG_Aimer_L").gameObject;
 	TDMG_Aimer_R = transform.Find("/TDMG_Aimer_R").gameObject;
 	TDMG_Attacher_L = transform.Find("/TDMG_Attacher_L").gameObject;
 	TDMG_Attacher_R = transform.Find("/TDMG_Attacher_R").gameObject;
 
+	EffectsEmitters = transform.Find("Effects Emitters").gameObject;
+	EffectsEmitter_LandingDust = transform.Find("Effects Emitters/Landing Dust").gameObject;
+	EffectsEmitter_KillBlood = transform.Find("Effects Emitters/Kill Blood").gameObject;
 
 	PlayerControlGUI = transform.Find("/Player Control GUI").gameObject;
 	MButton = PlayerControlGUI.transform.Find("B_M").GetComponent("TapButton");
@@ -251,6 +258,10 @@ function Start () {
 	TDMG_Hook_L.transform.parent = null;
 	TDMG_Hook_R.transform.parent = null;
 
+	// Debug //
+
+	// Time.timeScale = 0.5;
+
 }
 
 
@@ -264,6 +275,11 @@ function FixedUpdate () {
 
 	var forward_speed = transform.InverseTransformDirection(rigidbody.velocity).z;
 	var TDMG_Gear_sound = 0;
+	audio.pitch = Time.timeScale;
+	var audios : AudioSource[] = FindObjectsOfType(AudioSource) as AudioSource[];
+	for (var audio : AudioSource in audios) {
+		if (1) audio.pitch = Time.timeScale;
+	}
 /*
 	MainCam.transform.localPosition.x = 0;
 	MainCam.transform.localPosition.y = 1;
@@ -274,10 +290,28 @@ function FixedUpdate () {
 	// Basic Controls and Controls SFX
 	//////////////////////////////////////////////////////////////////
 
+	// Use mouse? //
+	var use_mouse_input = false;
+	/*if (Input.mousePosition.x > 0 && Input.mousePosition.y > 0 && Input.mousePosition.x < Screen.width && Input.mousePosition.y < Screen.height) {
+		use_mouse_input = true;
+		Screen.showCursor = false;
+		if(Input.GetMouseButton(0))
+					Debug.Log("Pressed left click.");
+				if(Input.GetMouseButton(1))
+					Debug.Log("Pressed right click.");
+				if(Input.GetMouseButton(2))
+					Debug.Log("Pressed middle click.");
+	}*/
+
 	// Rotation (Gravity) //
 
 	// Y (left & right)
 	var input_rotate_y = GetInputAngle_y();
+	if (use_mouse_input) {
+		input_rotate_y = (Input.mousePosition.x - (Screen.width/2))/500;
+		if (input_rotate_y > 1) input_rotate_y = 1;
+		else if (input_rotate_y < -1) input_rotate_y = -1;
+	}
 	var rotate_dead_zone = 0.0;
 	if (on_ground) rotate_dead_zone = 0.1;
 	else rotate_dead_zone = 0.04;
@@ -298,6 +332,11 @@ function FixedUpdate () {
 
 	// X (up & down)
 	var input_rotate_x = GetInputAngle_x();
+	if (use_mouse_input) {
+		input_rotate_x = (Input.mousePosition.y - (Screen.height/2))/500;
+		if (input_rotate_x > 1) input_rotate_x = 1;
+		else if (input_rotate_x < -1) input_rotate_x = -1;
+	}
 
 	if (input_rotate_x > 0.25) input_rotate_x = 0.25;  // limit
 	else if (input_rotate_x < -0.25) input_rotate_x = -0.25;
@@ -310,6 +349,14 @@ function FixedUpdate () {
 
 	// Forward (Joystick:Thrust Lever) //
 	var input_forward = (ThrustLever.position.y+1)*4;  // 0~8
+	if (use_mouse_input) {
+		input_forward = mouse_wheel;
+		ThrustLever.position.y = (mouse_wheel/4) - 1;
+		if (Input.GetAxis("Mouse ScrollWheel") > 0) mouse_wheel++;
+		if (Input.GetAxis("Mouse ScrollWheel") < 0) mouse_wheel--;
+		if (mouse_wheel > 8) mouse_wheel = 8;
+		else if (mouse_wheel < 0) mouse_wheel = 0;
+	}
 	if (input_forward < 1) input_forward = 0;
 	if (on_ground) {  // 地上走
 		if (input_forward == 0 && Mathf.Abs(input_rotate_y) > 0.10) {  // 禁止在地面定點旋轉，若要旋轉，則強制加力前進
@@ -317,16 +364,18 @@ function FixedUpdate () {
 		}
 		rigidbody.AddForce(transform.forward * ((input_forward*characterSpeed)-transform.InverseTransformDirection(rigidbody.velocity).z), ForceMode.VelocityChange);  // 前進
 		rigidbody.AddForce((-1) * transform.right * (transform.InverseTransformDirection(rigidbody.velocity).x), ForceMode.VelocityChange);  // 消除左右滑動
-		if (!pre_on_ground) audio.PlayOneShot(Land_sound, 1);  // 落地音效
+		if (!pre_on_ground) {
+			audio.PlayOneShot(Land_sound, 1);  // 落地音效
+			EffectsEmitter_LandingDust.particleEmitter.Emit();
+		}
 		if (TDMG_Jet.GetComponent(AudioSource).volume > 0) TDMG_Jet.GetComponent(AudioSource).volume -= 0.05;  // 關閉噴氣音效
 	} else {  // 天上飛
-		if (input_forward) {
-			rigidbody.AddForce(transform.forward * ((input_forward*characterSpeed)*1.6-transform.InverseTransformDirection(rigidbody.velocity).z) /16, ForceMode.VelocityChange);  // 前進, x1.6 /16
-			rigidbody.AddForce((-1) * transform.right * (transform.InverseTransformDirection(rigidbody.velocity).x) /16, ForceMode.VelocityChange);  // 消除左右移動, /16
-			if (!hit_thing) rigidbody.AddForce(transform.up * input_forward*0.6, ForceMode.Acceleration);  // 推升
+		rigidbody.AddForce(transform.forward * ((input_forward*characterSpeed)*1.6-transform.InverseTransformDirection(rigidbody.velocity).z) /16, ForceMode.VelocityChange);  // 前進, x1.6 /16
+		rigidbody.AddForce((-1) * transform.right * (transform.InverseTransformDirection(rigidbody.velocity).x) /16, ForceMode.VelocityChange);  // 消除左右移動, /16
+		if (!hit_thing) rigidbody.AddForce(transform.up * input_forward*0.6, ForceMode.Acceleration);  // 推升
 
-			TDMG_Jet.GetComponent(AudioSource).volume += (input_forward/100 - TDMG_Jet.GetComponent(AudioSource).volume)/10;
-		}
+		TDMG_Jet.GetComponent(AudioSource).volume += (input_forward/100 - TDMG_Jet.GetComponent(AudioSource).volume)/10;
+
 	}
 
 	// Debug
@@ -443,11 +492,11 @@ function FixedUpdate () {
 					TDMG_aim_scan_ray_org_b += TargetW.transform.forward*i*2;
 					TDMG_aim_scan_aimpoint_min_dist_inl_a = TDMG_aim_scan_aimpoint_min_dist;
 					TDMG_aim_scan_aimpoint_min_dist_inl_b = TDMG_aim_scan_aimpoint_min_dist;
-					TDMG_aim_scan_ray_dist = Mathf.Sqrt((TDMG_WIRE_MAX_DISTANCE-16)*(TDMG_WIRE_MAX_DISTANCE-16) - i*i);
+					TDMG_aim_scan_ray_dist = Mathf.Sqrt((TDMG_WIRE_MAX_DISTANCE-20)*(TDMG_WIRE_MAX_DISTANCE-20) - i*i);
 
 					// Debug
-					Debug.DrawLine(TDMG_aim_scan_ray_org_a, TDMG_aim_scan_ray_org_a + TargetW.transform.forward*TDMG_aim_scan_ray_dist);
-					Debug.DrawLine(TDMG_aim_scan_ray_org_b, TDMG_aim_scan_ray_org_b + TargetW.transform.forward*TDMG_aim_scan_ray_dist);
+					// Debug.DrawLine(TDMG_aim_scan_ray_org_a, TDMG_aim_scan_ray_org_a + TargetW.transform.forward*TDMG_aim_scan_ray_dist);
+					// Debug.DrawLine(TDMG_aim_scan_ray_org_b, TDMG_aim_scan_ray_org_b + TargetW.transform.forward*TDMG_aim_scan_ray_dist);
 					// print("hits " + TDMG_aim_scan_hit_a.length + " " + TDMG_aim_scan_hit_b.length);
 					// /Debug
 
@@ -532,6 +581,9 @@ function FixedUpdate () {
 	if (tdmg_use_hook_l && tdmg_use_hook_r) {
 		AimCrosshairL.GetComponent(GUITextureHelper).UseTexture(1);
 		AimCrosshairR.GetComponent(GUITextureHelper).UseTexture(1);
+	} else if (tdmg_is_aimed && tdmg_target_hit.collider.gameObject.tag == "AimPoint") {
+		AimCrosshairL.GetComponent(GUITextureHelper).UseTexture(2);
+		AimCrosshairR.GetComponent(GUITextureHelper).UseTexture(2);
 	} else {
 		AimCrosshairL.GetComponent(GUITextureHelper).UseTexture(0);
 		AimCrosshairR.GetComponent(GUITextureHelper).UseTexture(0);
@@ -624,7 +676,7 @@ function FixedUpdate () {
 		GUIAnimateGear.GetComponent(GUITextureHelper).LRotateV( tdmg_pull_to_v/2 );
 	}
 
-	if (MButton_status == 0 && MButton.tapped) {  // Fire!
+	if (MButton_status == 0 && (MButton.tapped || (use_mouse_input && Input.GetMouseButton(0)))) {  // Fire!
 		TDMG.audio.PlayOneShot(TDMG_Fire_sound, 1);
 		TDMG_fire_start_time = Time.time;
 		if (tdmg_use_hook_l) {
@@ -641,7 +693,7 @@ function FixedUpdate () {
 
 	}
 
-	if (MButton_status == 1 && MButton.held) {  // Pull!
+	if (MButton_status == 1 && (MButton.held || (use_mouse_input && Input.GetMouseButton(0)))) {  // Pull!
 
 		// Force
 		if (!hit_thing) rigidbody.AddForce(transform.up * input_forward*0.4, ForceMode.Acceleration);  // 推升
@@ -649,15 +701,16 @@ function FixedUpdate () {
 		// Pull
 		if ((transform.position - TDMG_pull_target).magnitude > 0.1) {
 			var tdmg_pull_direction = (TDMG_pull_target - TDMG.transform.position).normalized;
+			var tdmg_pull_fgain = input_forward - 4;
+			if (tdmg_pull_fgain < 0) tdmg_pull_fgain = 0;
 			if (tdmg_pull_to_v < 0) rigidbody.AddForce(Vector3.Project(-rigidbody.velocity, (TDMG.transform.position - TDMG_pull_target).normalized) + (TDMG.transform.position - TDMG_pull_target).normalized*-1, ForceMode.VelocityChange);
 			rigidbody.AddForce(tdmg_pull_direction*(16-tdmg_pull_to_v)/12, ForceMode.VelocityChange);  // 向繩索方向加力
 
 			if (!(TDMG_Hook_L_state == 2 && TDMG_Attacher_L.transform.root.gameObject.tag == "Titan") && !(TDMG_Hook_R_state == 2 && TDMG_Attacher_R.transform.root.gameObject.tag == "Titan")) {
-				rigidbody.AddForce(Vector3.up*(tdmg_pull_direction.y)*(16-tdmg_pull_to_v)/12, ForceMode.VelocityChange);  // y 軸輔助
+				rigidbody.AddForce(Vector3.up*(tdmg_pull_direction.y)*(16+tdmg_pull_fgain-tdmg_pull_to_v)/12, ForceMode.VelocityChange);  // y 軸輔助
 			} else {
-				rigidbody.AddForce(Vector3.up*(tdmg_pull_direction.y)*(16-tdmg_pull_to_v)/12, ForceMode.VelocityChange);  // y 軸輔助
+				rigidbody.AddForce(Vector3.up*(tdmg_pull_direction.y)*(16+tdmg_pull_fgain-tdmg_pull_to_v)/12, ForceMode.VelocityChange);  // y 軸輔助
 			}
-
 
 		/*
 			var tdmg_wire_speed_d : float;
@@ -691,16 +744,16 @@ function FixedUpdate () {
 		TDMG_Gear.GetComponent(AudioSource).volume = 0;
 	}
 
-	if (HoldButton.tapped) {  // Hold!
+	if (HoldButton.tapped || (use_mouse_input && Input.GetMouseButtonDown(2))) {  // Hold!
 		TDMG_hold_dist = (TDMG.transform.position - TDMG_pull_target).magnitude;
 	}
-	if (HoldButton.held) {  // Hold!
+	if (HoldButton.held || (use_mouse_input && Input.GetMouseButton(2))) {  // Hold!
 		if ((TDMG.transform.position - TDMG_pull_target).magnitude > TDMG_hold_dist) {
 			rigidbody.AddForce(Vector3.Project(-rigidbody.velocity, (TDMG.transform.position - TDMG_pull_target).normalized) + (TDMG.transform.position - TDMG_pull_target).normalized*-1, ForceMode.VelocityChange);
 		}
 	}
 
-	if (ReleaseButton.tapped) {  // Release!
+	if (ReleaseButton.tapped || (use_mouse_input && Input.GetMouseButtonDown(1))) {  // Release!
 		if (TDMG_Hook_L_state == 2) TDMG_Hook_L_state = 1;
 		if (TDMG_Hook_R_state == 2) TDMG_Hook_R_state = 1;
 	}
@@ -760,184 +813,6 @@ function FixedUpdate () {
 		TDMG_Hook_R.transform.position = TDMG_Hook_RC.transform.position;
 	}
 
-
-	// 總體狀態，及 GUI 反應 //
-
-	//var ReleaseButton_status = 1;  // 0: Release, 1: Releaseing, 2: Disabled
-/*
-	if (TDMG_Hook_L_state + TDMG_Hook_R_state <= 1 ) {  // 有可用的 TDMG Hook，且皆已收回或收回中
-		MButton_status = 0;
-		ReleaseButton_status = 2;
-		//TDMG_Attacher.GetComponent(ConfigurableJoint).linearLimit.limit = Mathf.Infinity;
-
-	} else if (TDMG_Hook_L_state == 2 || TDMG_Hook_R_state == 2) {  // 有已 attach 的 TDMG Hook
-		MButton_status = 1;
-		//if ((transform.position - TDMG_Attacher.transform.position).magnitude > 2) {  // 最短兩公尺
-			//TDMG_Attacher.GetComponent(ConfigurableJoint).linearLimit.limit = (transform.position - TDMG_Attacher.transform.position).magnitude;  // 限制繩長，拉回不再放
-		//}
-		//print((transform.position - TDMG_Attacher.transform.position).magnitude);
-		ReleaseButton_status = 0;
-
-	} else if (TDMG_Hook_L_state == 3 || TDMG_Hook_R_state == 3) {  // 有射出中的 TDMG Hook
-		MButton_status = 2;
-		ReleaseButton_status = 2;
-		//TDMG_Attacher.GetComponent(ConfigurableJoint).linearLimit.limit = Mathf.Infinity;
-	}
-*/
-/*	// 按鍵行為 //
-	var is_fire_hit = false;
-	var heading = MainCam.transform.position - Target.transform.position;  // 取得瞄準方向
-	var fire_ray : Ray = Ray(MainCam.transform.position, -1*heading);
-	var fire_hit : RaycastHit;
-	var fire_hit_p_L : Vector3;
-	var fire_hit_p_R : Vector3;
-	if (Physics.Raycast(fire_ray, fire_hit)) {  // 取得擊中點 (fire_hit.point)
-		Debug.DrawLine(fire_ray.origin, fire_hit.point);
-		if ((transform.position - fire_hit.point).magnitude < TDMG_WIRE_MAX_DISTANCE) {
-			is_fire_hit = true;
-			// Aim.guiTexture.texture = Aim_aim_texture;
-		} else {
-			// Aim.guiTexture.texture = Aim_texture;
-		}
-	}*/
-/*
-	if (MButton_status == 0) {  // Fire
-		// MButton.guiTexture.texture = MButton_texture;
-
-		if (MButton.tapped == true) {  // Fire TDMG Hook
-
-			if (is_fire_hit) {
-				TDMG.audio.PlayOneShot(TDMG_Fire_sound, 1);
-				Debug.DrawLine(fire_ray.origin, fire_hit.point);
-	//			TDMG_Attacher.transform.position = fire_hit.point;  // 將 TDMG_Attacher 移至擊中點
-	//			TDMG_Attacher.transform.parent = fire_hit.transform;  // 將 TDMG_Attacher 的 parent 設為被擊中物件，等同將 TDMG_Attacher attach 到被擊中物件上
-
-				var fire_ray_L : Ray = Ray(MainCam.transform.position-transform.right, -1*heading-transform.right);
-				var fire_hit_L : RaycastHit;
-				var fire_ray_R : Ray = Ray(MainCam.transform.position+transform.right, -1*heading+transform.right);
-				var fire_hit_R : RaycastHit;
-				var use_hook_L = false;
-				var use_hook_R = false;
-
-				if (fire_hit.collider.gameObject.tag != "Titan") {
-					if (!TDMG_Hook_L_state && Physics.Raycast(fire_ray_L, fire_hit_L)) {  // 取得左右擊中點
-						if ((fire_hit.point - fire_hit_L.point).magnitude < 10.5) {
-
-							use_hook_L = true;
-							TDMG_Attacher_L.transform.position = fire_hit_L.point;  // 將 TDMG_Attacher 移至擊中點
-							TDMG_Attacher_L.transform.parent = fire_hit_L.transform;  // 將 TDMG_Attacher 的 parent 設為被擊中物件，等同將 TDMG_Attacher attach 到被擊中物件上
-						}
-					}
-
-					if (!TDMG_Hook_R_state && Physics.Raycast(fire_ray_R, fire_hit_R)) {  // 取得左右擊中點
-
-						if ((fire_hit.point - fire_hit_R.point).magnitude < 10.5) {
-							use_hook_R = true;
-							TDMG_Attacher_R.transform.position = fire_hit_R.point;  // 將 TDMG_Attacher 移至擊中點
-							TDMG_Attacher_R.transform.parent = fire_hit_R.transform;  // 將 TDMG_Attacher 的 parent 設為被擊中物件，等同將 TDMG_Attacher attach 到被擊中物件上
-						}
-					}
-				}
-
-				if (!use_hook_L || !use_hook_R) {  // 其中一 hook 無法使用？
-					if (TDMG_Hook_L_state != 0) {
-						use_hook_R = true;
-						TDMG_Attacher_R.transform.position = fire_hit.point;  // 將 TDMG_Attacher 移至擊中點
-						TDMG_Attacher_R.transform.parent = fire_hit.transform;  // 將 TDMG_Attacher 的 parent 設為被擊中物件，等同將 TDMG_Attacher attach 到被擊中物件上
-					} else if (TDMG_Hook_R_state != 0) {
-						use_hook_L = true;
-						TDMG_Attacher_L.transform.position = fire_hit.point;  // 將 TDMG_Attacher 移至擊中點
-						TDMG_Attacher_L.transform.parent = fire_hit.transform;  // 將 TDMG_Attacher 的 parent 設為被擊中物件，等同將 TDMG_Attacher attach 到被擊中物件上
-					} else {
-						if (input_rotate_y > 0) {
-							use_hook_R = true;
-							TDMG_Attacher_R.transform.position = fire_hit.point;  // 將 TDMG_Attacher 移至擊中點
-							TDMG_Attacher_R.transform.parent = fire_hit.transform;  // 將 TDMG_Attacher 的 parent 設為被擊中物件，等同將 TDMG_Attacher attach 到被擊中物件上
-						} else {
-							use_hook_L = true;
-							TDMG_Attacher_L.transform.position = fire_hit.point;  // 將 TDMG_Attacher 移至擊中點
-							TDMG_Attacher_L.transform.parent = fire_hit.transform;  // 將 TDMG_Attacher 的 parent 設為被擊中物件，等同將 TDMG_Attacher attach 到被擊中物件上
-						}
-					}
-				}
-
-				// 射出 Hook，並開始計時
-				TDMG_fire_start_time = Time.time;
-				if (use_hook_L) TDMG_Hook_L_state = 3;
-				if (use_hook_R) TDMG_Hook_R_state = 3;
-			}
-
-		}
-
-
-	} */
-
-	/*
-	if (MButton_status == 1) {  // Pull
-		// MButton.guiTexture.texture = MButton_texture_pull;
-
-		if (MButton.held == true) {
-			var TDMG_pull_target : Vector3;
-			if (TDMG_Hook_L_state == 2 && TDMG_Hook_R_state == 2) {
-				TDMG_pull_target = (TDMG_Attacher_L.transform.position + TDMG_Attacher_R.transform.position) / 2;
-			} else if (TDMG_Hook_L_state == 2) {
-				TDMG_pull_target = TDMG_Attacher_L.transform.position;
-			} else if (TDMG_Hook_R_state == 2) {
-				TDMG_pull_target = TDMG_Attacher_R.transform.position;
-			}
-			if ((transform.position - TDMG_pull_target).magnitude > 0.1) {
-				// MButton.guiTexture.texture = MButton_texture_pull_pulled;
-				var tdmg_wire_speed_d = (12 - Vector3.Project(rigidbody.velocity, (TDMG_pull_target - transform.position).normalized).magnitude);
-				if (tdmg_wire_speed_d < 0) tdmg_wire_speed_d = 0;
-				if (((pre_position.y-TDMG_pull_target.y) > (transform.position.y - ((TDMG_Hook_LC.transform.position + TDMG_Hook_RC.transform.position)/2).y) && (transform.position.y-TDMG_pull_target.y) < (transform.position.y - ((TDMG_Hook_LC.transform.position + TDMG_Hook_RC.transform.position)/2).y)) || ((pre_position.y-TDMG_pull_target.y) < (transform.position.y - ((TDMG_Hook_LC.transform.position + TDMG_Hook_RC.transform.position)/2).y) && (transform.position.y-TDMG_pull_target.y) > (transform.position.y - ((TDMG_Hook_LC.transform.position + TDMG_Hook_RC.transform.position)/2).y)) || ((TDMG_pull_target - (TDMG_Hook_LC.transform.position + TDMG_Hook_RC.transform.position)/2).magnitude < 0.1)) {
-					TDMG_pull_y_cd = 10;
-					TDMG_pull_y_count++;
-				}
-				if (TDMG_pull_y_count < 2) {
-					if (!TDMG_pull_y_cd) {
-						rigidbody.AddForce((TDMG_pull_target - (TDMG_Hook_LC.transform.position + TDMG_Hook_RC.transform.position)/2).normalized * tdmg_wire_speed_d, ForceMode.VelocityChange);  // 向繩索方向加力
-					} else {
-						rigidbody.AddForce(((TDMG_pull_target - (TDMG_Hook_LC.transform.position + TDMG_Hook_RC.transform.position)/2).normalized - Vector3.up*(TDMG_pull_target - (TDMG_Hook_LC.transform.position + TDMG_Hook_RC.transform.position)/2).normalized.y) * tdmg_wire_speed_d, ForceMode.VelocityChange);  // 向繩索方向加力
-						TDMG_pull_y_cd--;
-					}
-				} else {  // 避免出現 Y 軸簡諧運動
-					rigidbody.AddForce(((TDMG_pull_target - (TDMG_Hook_LC.transform.position + TDMG_Hook_RC.transform.position)/2).normalized - Vector3.up*(TDMG_pull_target - (TDMG_Hook_LC.transform.position + TDMG_Hook_RC.transform.position)/2).normalized.y) * tdmg_wire_speed_d, ForceMode.VelocityChange);  // 向繩索方向加力
-					var yfa = (TDMG_pull_target.y - ((TDMG_Hook_LC.transform.position + TDMG_Hook_RC.transform.position)/2).y)/3;
-					yfa -= rigidbody.velocity.y/12;
-					rigidbody.AddForce(transform.up*(yfa), ForceMode.VelocityChange);
-				}
-
-				TDMG_Gear.GetComponent(AudioSource).volume += ((Vector3.Project(rigidbody.velocity, (TDMG_pull_target - transform.position).normalized).magnitude) - (TDMG_Gear.GetComponent(AudioSource).volume))/10;
-			}
-		} else {
-			// MButton.guiTexture.texture = MButton_texture_pull;
-			TDMG_pull_y_cd = 0;
-			TDMG_pull_y_count = 0;
-		}
-
-	} else {
-		// MButton.guiTexture.texture = MButton_texture_disabled;
-	}
-*/
-/*	if (ReleaseButton_status == 0) {  // 可用
-		// ReleaseButton.guiTexture.texture = ReleaseButton_texture;
-		if (ReleaseButton.tapped == true) {
-			if (TDMG_Hook_L_state == 2) TDMG_Hook_L_state = 1;
-			if (TDMG_Hook_R_state == 2) TDMG_Hook_R_state = 1;
-		}
-	} else if (ReleaseButton_status == 1) {  // 已按
-		// ReleaseButton.guiTexture.texture = ReleaseButton_texture_released;
-	} else {
-		// ReleaseButton.guiTexture.texture = ReleaseButton_texture_disabled;
-	}*/
-
-	// Hook 物理行為，依 Status 依序定義 //
-	/////...
-
-
-	// input_rotate_x
-	//print(TargetW.transform.position);
-	//print(TDMG_Attacher.transform.position);
 
 	// Kill
 	//////////////////////////////////////////////////////////////////
@@ -1063,17 +938,28 @@ function FixedUpdate () {
 }
 
 
-function Update () {
+function LateUpdate () {
 	TDMG_Hook_LC.GetComponent(LineRenderer).SetPosition(0, TDMG_Hook_L.transform.position);
 	TDMG_Hook_LC.GetComponent(LineRenderer).SetPosition(1, TDMG_Hook_LC.transform.position);
 	TDMG_Hook_RC.GetComponent(LineRenderer).SetPosition(0, TDMG_Hook_R.transform.position);
 	TDMG_Hook_RC.GetComponent(LineRenderer).SetPosition(1, TDMG_Hook_RC.transform.position);
+
+	if (TDMG_Hook_L_state == 0) {
+		TDMG_Hook_L.transform.position = TDMG_Hook_LC.transform.position;
+	}
+	if (TDMG_Hook_R_state == 0) {
+		TDMG_Hook_R.transform.position = TDMG_Hook_RC.transform.position;
+	}
 }
 
 
 function OnTriggerStay (what : Collider) {
 	if (what.gameObject.name == "Kill Range") {
-		if (kill_mode == 0) kill_mode = 1;
+		if (kill_mode == 0) {
+			if (!(Vector3.Angle(rigidbody.velocity, (what.gameObject.transform.position - transform.position)) > 90.0)) {
+				kill_mode = 1;
+			}
+		}
 	}
 }
 
@@ -1081,6 +967,8 @@ function OnTriggerStay (what : Collider) {
 function OnTriggerEnter(what : Collider) {
 	if (what.gameObject.name == "Kill Point") {
 		kill_mode = 2;
+		rigidbody.AddForce((what.gameObject.transform.position - TDMG.transform.position)*10, ForceMode.VelocityChange);
+		EffectsEmitter_KillBlood.particleEmitter.Emit();
 		what.transform.root.gameObject.GetComponent(TitanAI).Die();
 	}
 }

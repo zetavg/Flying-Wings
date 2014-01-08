@@ -66,6 +66,7 @@ ModelImporter:
     100120: titan10biped R UpperArm
     100122: titan10biped Spine
     100124: titan10biped Spine1
+    100126: titan011
     400000: Bip002
     400002: Bip002 Footsteps
     400004: Bip002 Head
@@ -129,11 +130,15 @@ ModelImporter:
     400120: titan10biped R UpperArm
     400122: titan10biped Spine
     400124: titan10biped Spine1
+    400126: titan011
+    2300000: titan011
+    3300000: titan011
     4300000: Box001
     4300002: titan10
+    4300004: titan011
     7400000: Take 001
-    7400002: Walk
-    7400004: Die
+    7400002: TitanWalk
+    7400004: TitanDie
     9500000: //RootNode
     11100000: //RootNode
     13700000: Box001
@@ -145,13 +150,16 @@ ModelImporter:
   animations:
     legacyGenerateAnimations: 4
     bakeSimulation: 0
+    optimizeGameObjects: 0
     animationCompression: 1
     animationRotationError: .5
     animationPositionError: .5
     animationScaleError: .5
     animationWrapMode: 0
+    extraExposedTransformPaths: []
     clipAnimations:
-    - name: Take 001
+    - serializedVersion: 16
+      name: Take 001
       takeName: Take 001
       firstFrame: 0
       lastFrame: 250
@@ -160,6 +168,7 @@ ModelImporter:
       level: 0
       cycleOffset: 0
       loop: 0
+      loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
       loopBlendPositionY: 0
@@ -171,8 +180,12 @@ ModelImporter:
       mirror: 0
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
+      events: []
       transformMask: []
-    - name: Walk
+      maskType: 0
+      maskSource: {instanceID: 0}
+    - serializedVersion: 16
+      name: TitanWalk
       takeName: Take 001
       firstFrame: 11
       lastFrame: 70
@@ -181,6 +194,7 @@ ModelImporter:
       level: 0
       cycleOffset: 0
       loop: 0
+      loopTime: 1
       loopBlend: 1
       loopBlendOrientation: 0
       loopBlendPositionY: 0
@@ -192,16 +206,21 @@ ModelImporter:
       mirror: 0
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
+      events: []
       transformMask: []
-    - name: Die
+      maskType: 0
+      maskSource: {instanceID: 0}
+    - serializedVersion: 16
+      name: TitanDie
       takeName: Take 001
       firstFrame: 81
-      lastFrame: 120
+      lastFrame: 140
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
       cycleOffset: 0
       loop: 0
+      loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
       loopBlendPositionY: 0
@@ -213,7 +232,10 @@ ModelImporter:
       mirror: 0
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
+      events: []
       transformMask: []
+      maskType: 0
+      maskSource: {instanceID: 0}
     isReadable: 1
   meshes:
     lODScreenPercentages: []
@@ -240,7 +262,6 @@ ModelImporter:
   humanDescription:
     human: []
     skeleton: []
-    handles: []
     armTwist: .5
     foreArmTwist: .5
     upperLegTwist: .5
@@ -250,6 +271,5 @@ ModelImporter:
     feetSpacing: 0
     rootMotionBoneName: 
   lastHumanDescriptionAvatarSource: {instanceID: 0}
-  additionalBone: 1
   animationType: 1
   userData: 
