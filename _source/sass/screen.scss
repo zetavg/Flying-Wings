@@ -207,12 +207,20 @@ hr {
 	@include transition-duration(0.2s);
 }
 
+.center-if-mobile {
+	text-align: center;
+}
+
+.show-if-mobile {
+	display: block;
+}
+
 /* Featurettes
 ------------------------- */
 
 .story {
 	text-align: center;
-	h1, h2, h3, h4, h5, h6, p {
+	>h1, >h2, >h3, >h4, >h5, >h6, >p, >.row {
 		margin-left: auto;
 		margin-right: auto;
 		max-width: 724px;
@@ -379,10 +387,10 @@ hr {
 	.navbar-nav.navbar-right:last-child {
 		margin-right: 24px;
 	}
-
 }
 
 @media (min-width: 992px) {
+
 	.featurette-heading {
 		margin-top: 120px;
 	}
@@ -404,6 +412,18 @@ hr {
 			}
 		}
 	}
+}
+
+@media (min-width: 1210px) {
+
+	.center-if-mobile {
+		text-align: left;
+	}
+
+	.show-if-mobile {
+		display: none;
+	}
+
 }
 
 @media (max-width: 999px) {

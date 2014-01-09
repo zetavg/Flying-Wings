@@ -58,7 +58,6 @@
 
     <div class="container content">
 
-      <!-- Three columns of text below the carousel -->
       <div class="row">
         <div class="col-lg-7 youtube">
           <iframe width="720" height="400" src="//www.youtube-nocookie.com/embed/42mRD632jBs?rel=0" frameborder="0" allowfullscreen></iframe>

@@ -21,7 +21,13 @@
     <!-- Wrap the rest of the page in another container to center all the content. -->
 
     <div class="story" style="background-color: #ccc; padding-top: 100px; padding-bottom: 100px;">
-      <h1>Comming Soon</h1>
+      <h1>　</h1>
+      <h1>　</h1>
+      <h1>　</h1>
+      <h1>Comming Soon ...</h1>
+      <h1>　</h1>
+      <h1>　</h1>
+      <h1>　</h1>
     </div>
     <div class="container content">
 

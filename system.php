@@ -20,13 +20,13 @@
     ================================================== -->
     <!-- Wrap the rest of the page in another container to center all the content. -->
 
-    <div class="story game-scene" style="background-image: url(/img/sysgbg_bg.jpg); background-attachment: fixed; background-size: cover; background-position: 50% 0%; text-align: center; padding-top: 100px; padding-bottom: 100px;">
+    <div class="story game-scene" style="background-image: url(/img/sysgbg_bg.jpg); background-attachment: fixed; background-size: cover; background-position: 50% 0%; text-align: center; padding-top: 100px; padding-bottom: 100px; text-shadow: 0 0 4px rgba(0,0,0, 1)">
       <h1 style="color: #dedede;">Control System</h1>
       <p style="color: #ddd;">真正模擬立體機動裝置的真實物理行為，結合 UI 設計原理，打造出極為直覺的操控方式，<br>聰明地讓你輕鬆駕馭這套複雜裝置，神奇之處令人歎為觀止。</p>
       <h1>　</h1>
       <h2 style="color: #ddd;">遊戲界面</h2>
       <p>　</p>
-      <div class="game-phone-container" style="position: relative; width: 90%; max-width: 600px; margin: auto;">
+      <div class="game-phone-container" style="position: relative; width: 90%; max-width: 800px; margin: auto;"><!-- max-width: 600px -->
         <img src="/img/mobile-device-outline.png" style="width: 100%; opacity: 0;">
         <div class="game-phone-screen" style="position: absolute; top: 7%; bottom: 7%; left: 12%; right: 13%; background-image: url(/img/sysgbg.jpg); background-attachment: fixed; background-size: cover; background-position: 50% 0%;">
           <img src="/img/mobile-device-outline.png" style="width: 100%; opacity: 0;">
@@ -45,7 +45,20 @@
         </div>
       </div>
       <p>　</p>
-      <h2 style="color: #ddd;">遊戲界面</h2>
+      <p>　</p>
+      <div class="row">
+        <div class="col-lg-4 col-lg-offset-1">
+          <img src="/img/mobileGameUI_ex.png" style="width: 100%; max-width: 300px;">
+        </div>
+        <div class="col-lg-7 center-if-mobile" style="color: #ddd; padding-top: 8px;">
+          <br class="show-if-mobile">
+          1: 速度控制桿，掌控地面行走及空中噴氣<br>
+          2: 立體機動裝置準心，半自動瞄準<br>
+          3: Fire／Pull 鍵，發射抓鈎／捲回繩索<br>
+          4: Hold 鍵，鎖定繩索<br>
+          5: Release 鍵，釋放並收回抓鈎
+        </div>
+      </div>
     </div>
 
     <div class="story game-scene" style="background-image: url(/img/sbg2.jpg); background-size: auto; background-repeat: repeat; background-position: 50% 50%; text-align: center; padding-top: 100px; padding-bottom: 100px;">
