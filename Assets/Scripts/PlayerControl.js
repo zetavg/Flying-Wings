@@ -106,6 +106,8 @@ private var TDMG_pull_y_cd = 0;
 private var TDMG_pull_y_count = 0;
 private var TDMG_hold_dist = 0.0;
 private var kill_cd = 0;
+private var kill_cr = 0;
+private var kill_crd = 1;
 
 private var TDMG_aim_scan_act = false;
 private var TDMG_aim_scan_preact = false;
@@ -114,6 +116,8 @@ private var TDMG_aim_scan_aimpoint_l : Vector3;
 private var TDMG_aim_scan_aimpoint_r : Vector3;
 private var TDMG_aim_scan_aimpoint_l_obj : GameObject;
 private var TDMG_aim_scan_aimpoint_r_obj : GameObject;
+
+private var Detach_Cam = false;
 
 private var fixupdate_count = 0;
 
@@ -380,6 +384,51 @@ function FixedUpdate () {
 
 	// Debug
 	// print("v " + transform.InverseTransformDirection(rigidbody.velocity).z);
+
+
+	// Camera
+	//////////////////////////////////////////////////////////////////
+
+	Detach_Cam = false;
+
+	if (kill_cr) {
+		Detach_Cam = true;
+		if (kill_cr > 40) {
+			MainCamW.transform.localRotation.eulerAngles.y += (50-kill_cr)*kill_crd*10;
+			MainCam.transform.localPosition.z = -3 - (50-kill_cr)*0.2;
+		} else if (kill_cr < 10) {
+			MainCamW.transform.localRotation.eulerAngles.y += (kill_cr)*kill_crd*10;
+			MainCam.transform.localPosition.z = -3 - (kill_cr)*0.2;
+		} else {
+			MainCamW.transform.localRotation.eulerAngles.y += 10*kill_crd*10;
+			MainCam.transform.localPosition.z = -3 - 10*0.2;
+		}
+		kill_cr--;
+	} else {
+		//MainCam.camera.fieldOfView += ((72 + forward_speed*2 - 8) - MainCam.camera.fieldOfView)/10;
+		var cam_dist = (-3 - forward_speed/4 + 1);
+		if (cam_dist > -2) cam_dist = -2;
+		MainCam.transform.localPosition.z += (cam_dist - MainCam.transform.localPosition.z)/10;
+	}
+
+	var MainCam_behind_ray : Ray = Ray(MainCamW.transform.position+MainCamW.transform.up, -MainCamW.transform.forward);
+	var MainCam_behind_ray_hit : RaycastHit;
+	Physics.Raycast(MainCam_behind_ray, MainCam_behind_ray_hit);
+	var MainCam_behind_distance = (MainCamW.transform.position+MainCamW.transform.up - MainCam_behind_ray_hit.point).magnitude;
+	if (MainCam_behind_distance < -MainCam.transform.localPosition.z+0.4) {
+		MainCam.transform.localPosition.z = -MainCam_behind_distance+0.4;
+	}
+
+	// MainCamW.transform.localRotation.eulerAngles.y += 10*2.5;
+
+	// Debug //
+	//print("MCFieldOfView " + MainCam.camera.fieldOfView);
+	// Debug.DrawLine(MainCamW.transform.position+MainCamW.transform.up, MainCam_behind_ray_hit.point);
+	//Debug.DrawLine(MainCamW.transform.position+MainCamW.transform.up+MainCam.transform.forward, MainCamW.transform.position+MainCamW.transform.up);
+	//print("MainCam_behind_distance " + MainCam_behind_distance);
+	//print("MainCam.transform.forward " + MainCam.transform.forward);
+	//print("MainCam.transform.forward " + MainCam.transform.forward);
+
 
 
 	// 3DMG Wire
@@ -877,30 +926,6 @@ function FixedUpdate () {
 	}
 
 
-	// Camera
-	//////////////////////////////////////////////////////////////////
-
-	//MainCam.camera.fieldOfView += ((72 + forward_speed*2 - 8) - MainCam.camera.fieldOfView)/10;
-	var cam_dist = (-3 - forward_speed/4 + 1);
-	if (cam_dist > -2) cam_dist = -2;
-	MainCam.transform.localPosition.z += (cam_dist - MainCam.transform.localPosition.z)/10;
-
-	var MainCam_behind_ray : Ray = Ray(MainCamW.transform.position+MainCamW.transform.up, -MainCamW.transform.forward);
-	var MainCam_behind_ray_hit : RaycastHit;
-	Physics.Raycast(MainCam_behind_ray, MainCam_behind_ray_hit);
-	var MainCam_behind_distance = (MainCamW.transform.position+MainCamW.transform.up - MainCam_behind_ray_hit.point).magnitude;
-	if (MainCam_behind_distance < -MainCam.transform.localPosition.z+0.4) {
-		MainCam.transform.localPosition.z = -MainCam_behind_distance+0.4;
-	}
-
-	// Debug //
-	//print("MCFieldOfView " + MainCam.camera.fieldOfView);
-	// Debug.DrawLine(MainCamW.transform.position+MainCamW.transform.up, MainCam_behind_ray_hit.point);
-	//Debug.DrawLine(MainCamW.transform.position+MainCamW.transform.up+MainCam.transform.forward, MainCamW.transform.position+MainCamW.transform.up);
-	//print("MainCam_behind_distance " + MainCam_behind_distance);
-	//print("MainCam.transform.forward " + MainCam.transform.forward);
-	//print("MainCam.transform.forward " + MainCam.transform.forward);
-
 
 	// Update var
 	//////////////////////////////////////////////////////////////////
@@ -969,6 +994,9 @@ function OnTriggerEnter(what : Collider) {
 		kill_mode = 2;
 		rigidbody.AddForce((what.gameObject.transform.position - TDMG.transform.position)*10, ForceMode.VelocityChange);
 		EffectsEmitter_KillBlood.particleEmitter.Emit();
+		kill_cr = 50;
+		if (Random.value > 0.5) kill_crd = 1;
+		else kill_crd = -1;
 		what.transform.root.gameObject.GetComponent(TitanAI).Die();
 	}
 }
