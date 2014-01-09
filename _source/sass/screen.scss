@@ -197,6 +197,16 @@ hr {
 	height: 50px;
 }
 
+.linear-transition {
+	@include transition-timing-function(linear);
+	@include transition-duration(0.2s);
+}
+
+.ease-out-transition {
+	@include transition-timing-function(ease-out);
+	@include transition-duration(0.2s);
+}
+
 /* Featurettes
 ------------------------- */
 

@@ -28,4 +28,6 @@
 
     </div><!-- /.container -->
 
+<?php include('footer.php'); ?>
+<?php include('js.php'); ?>
 <?php include('foot.php'); ?>
