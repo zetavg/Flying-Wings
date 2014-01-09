@@ -224,7 +224,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 100002}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: .600000024, y: .5, z: 0}
+  m_LocalPosition: {x: .600000024, y: .5, z: 1}
   m_LocalScale: {x: 0, y: 0, z: 0}
   m_Children: []
   m_Father: {fileID: 400000}
@@ -323,7 +323,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 100020}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: .400000006, y: .5, z: 0}
+  m_LocalPosition: {x: .400000006, y: .5, z: 1}
   m_LocalScale: {x: 0, y: 0, z: 0}
   m_Children: []
   m_Father: {fileID: 400000}
@@ -432,6 +432,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 28d7a969833ca4a57ac2667795a56930, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ignoreCustomSet: 1
+  baseScreenWidth: 600
+  scaleBelow: 1
 --- !u!114 &11400010
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -443,6 +446,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 28d7a969833ca4a57ac2667795a56930, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ignoreCustomSet: 1
+  baseScreenWidth: 600
+  scaleBelow: 1
 --- !u!114 &11400012
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -454,6 +460,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 28d7a969833ca4a57ac2667795a56930, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ignoreCustomSet: 1
+  baseScreenWidth: 600
+  scaleBelow: 1
 --- !u!114 &11400014
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -492,6 +501,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 28d7a969833ca4a57ac2667795a56930, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ignoreCustomSet: 1
+  baseScreenWidth: 600
+  scaleBelow: 1
 --- !u!114 &11400018
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -530,6 +542,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 28d7a969833ca4a57ac2667795a56930, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ignoreCustomSet: 1
+  baseScreenWidth: 600
+  scaleBelow: 1
 --- !u!114 &11400022
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -541,6 +556,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 28d7a969833ca4a57ac2667795a56930, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ignoreCustomSet: 1
+  baseScreenWidth: 600
+  scaleBelow: 1
 --- !u!114 &11400024
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -552,6 +570,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 28d7a969833ca4a57ac2667795a56930, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ignoreCustomSet: 1
+  baseScreenWidth: 600
+  scaleBelow: 1
 --- !u!114 &11400026
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -596,6 +617,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 28d7a969833ca4a57ac2667795a56930, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ignoreCustomSet: 1
+  baseScreenWidth: 600
+  scaleBelow: 1
 --- !u!114 &11400030
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -644,6 +668,8 @@ MonoBehaviour:
   clampBorderSize: .0500000007
   useMainCamera: 1
   cameraToUse: {fileID: 0}
+  ActiveOnlyIsVisible: 0
+  ActiveOnlyIsVisibleInDistacne: 100
 --- !u!114 &11400036
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -655,6 +681,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 28d7a969833ca4a57ac2667795a56930, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ignoreCustomSet: 1
+  baseScreenWidth: 600
+  scaleBelow: 1
 --- !u!114 &11400038
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -683,6 +712,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 28d7a969833ca4a57ac2667795a56930, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ignoreCustomSet: 1
+  baseScreenWidth: 600
+  scaleBelow: 1
 --- !u!131 &13100000
 GUITexture:
   m_ObjectHideFlags: 1

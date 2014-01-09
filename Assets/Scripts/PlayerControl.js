@@ -264,7 +264,7 @@ function Start () {
 
 	// Debug //
 
-	// Time.timeScale = 0.5;
+	// Time.timeScale = 0.8;
 
 }
 
@@ -391,24 +391,29 @@ function FixedUpdate () {
 
 	Detach_Cam = false;
 
+	//MainCam.camera.fieldOfView += ((72 + forward_speed*2 - 8) - MainCam.camera.fieldOfView)/10;
+	var cam_dist = (-3 - forward_speed/4 + 1);
+	if (cam_dist > -2) cam_dist = -2;
+	MainCam.transform.localPosition.z += (cam_dist - MainCam.transform.localPosition.z)/10;
+
 	if (kill_cr) {
 		Detach_Cam = true;
 		if (kill_cr > 40) {
 			MainCamW.transform.localRotation.eulerAngles.y += (50-kill_cr)*kill_crd*10;
-			MainCam.transform.localPosition.z = -3 - (50-kill_cr)*0.2;
+			MainCamW.transform.localRotation.eulerAngles.x = (50-kill_cr)*4;
+			MainCam.transform.localPosition.z = (MainCam.transform.localPosition.z*(10-(50-kill_cr)) + (-6.2)*(50-kill_cr))/10;
 		} else if (kill_cr < 10) {
 			MainCamW.transform.localRotation.eulerAngles.y += (kill_cr)*kill_crd*10;
-			MainCam.transform.localPosition.z = -3 - (kill_cr)*0.2;
+			MainCamW.transform.localRotation.eulerAngles.x = (kill_cr)*4;
+			MainCam.transform.localPosition.z = (MainCam.transform.localPosition.z*(10-kill_cr) + (-6.2)*(kill_cr))/10;
 		} else {
 			MainCamW.transform.localRotation.eulerAngles.y += 10*kill_crd*10;
-			MainCam.transform.localPosition.z = -3 - 10*0.2;
+			MainCamW.transform.localRotation.eulerAngles.x = 10*4;
+			MainCam.transform.localPosition.z = -6.2;
 		}
 		kill_cr--;
 	} else {
-		//MainCam.camera.fieldOfView += ((72 + forward_speed*2 - 8) - MainCam.camera.fieldOfView)/10;
-		var cam_dist = (-3 - forward_speed/4 + 1);
-		if (cam_dist > -2) cam_dist = -2;
-		MainCam.transform.localPosition.z += (cam_dist - MainCam.transform.localPosition.z)/10;
+
 	}
 
 	var MainCam_behind_ray : Ray = Ray(MainCamW.transform.position+MainCamW.transform.up, -MainCamW.transform.forward);
