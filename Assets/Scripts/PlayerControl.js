@@ -990,34 +990,42 @@ function FixedUpdate () {
 
 
 function LateUpdate () {
+
+	var mo = Vector3.zero;  // 偏移量
+	var pn = 0.0;  // 峰數
+	var va = 0.0;  // 振幅
+	var vai = 0.0;  // 振幅 in loop
+	var ic = 0;
+
 	var TDMG_Wire_L_Length = (TDMG_Hook_LC.transform.position - TDMG_Hook_L.transform.position).magnitude*2;
 	var TDMG_Wire_L_VertexCount = 40 + parseInt(TDMG_Wire_L_Length);
 	var TDMG_Wire_L_VertexMax = TDMG_Wire_L_VertexCount-1;
-	var mo = Vector3.zero;  // 偏移量
-	var pn = 0;  // 峰數
-	var va = 0.0;  // 振幅
+	var TDMG_Wire_L_left = Vector3.Cross(Vector3.up, (TDMG_Hook_LC.transform.position - TDMG_Hook_L.transform.position)).normalized;
+	var TDMG_Wire_L_up = Vector3.Cross(TDMG_Wire_L_left, (TDMG_Hook_LC.transform.position - TDMG_Hook_L.transform.position)).normalized;
 	TDMG_Hook_LC.GetComponent(LineRenderer).SetPosition(0, TDMG_Hook_L.transform.position);
 	TDMG_Hook_LC.GetComponent(LineRenderer).SetVertexCount(TDMG_Wire_L_VertexCount);
-
-
-	pn = parseInt(TDMG_Wire_L_Length);
-	if (pn > 8) pn = 8;
+	pn = TDMG_Wire_L_Length/4;
+	if (pn < 8) pn = TDMG_Wire_L_Length*TDMG_Wire_L_Length/32;
 	if (pn < 1) pn = 0;
-	mo = Vector3.zero;
 	va = 1.0;
 	if (Mathf.Sqrt(TDMG_Wire_L_Length) < 5) va -= (5-Mathf.Sqrt(TDMG_Wire_L_Length))/3;
 	if (va < 0) va = 0.0;
-
 	for (i=0; i<TDMG_Wire_L_VertexCount; i++) {
-		if (TDMG_Hook_L_state == 3) {
-			mo += Vector3.up*Mathf.Sin((2*Mathf.PI)*pn*i/(TDMG_Wire_L_VertexMax))*0.4*va;
-			mo += Vector3.left*Mathf.Sin((2*Mathf.PI)*parseInt(TDMG_Hook_Wire_L_Rand*8)*i/(TDMG_Wire_L_VertexMax))*0.1*va;
+		ic = TDMG_Wire_L_VertexCount - i;
+		if (TDMG_Hook_L_state == 3 || TDMG_Hook_L_state == 1) {
+			vai = ic*1.0/TDMG_Wire_L_VertexMax;
+			if (i*10.0/TDMG_Wire_L_VertexCount < 1) vai *= i*10.0/TDMG_Wire_L_VertexCount;
+			if (TDMG_Wire_L_Length < 16) vai *= (Mathf.Sqrt(TDMG_Wire_L_Length)-2)/4;
+			if (vai > 1) vai = 1;
+			else if (vai < 0) vai = 0;
+			mo = Vector3.zero;
+			mo += TDMG_Wire_L_up*Mathf.Sin((i/4.0+1))*vai*0.4;
+			mo += TDMG_Wire_L_left*Mathf.Sin((i/4.0+1)*(0.75+TDMG_Hook_Wire_L_Rand*0.5))*vai*0.2;
+		} else if (TDMG_Hook_L_state == 2) {
 
 		}
 		TDMG_Hook_LC.GetComponent(LineRenderer).SetPosition(i, (TDMG_Hook_L.transform.position*(TDMG_Wire_L_VertexMax-i) + TDMG_Hook_LC.transform.position*i)/TDMG_Wire_L_VertexMax + mo);
 	}
-	// TDMG_Hook_LC.GetComponent(LineRenderer).SetPosition(1, (TDMG_Hook_LC.transform.position + TDMG_Hook_L.transform.position)/2 - Vector3.up);
-	// TDMG_Hook_LC.GetComponent(LineRenderer).SetPosition(TDMG_Wire_L_VertexCount-1, TDMG_Hook_LC.transform.position);
 
 	TDMG_Hook_RC.GetComponent(LineRenderer).SetPosition(0, TDMG_Hook_R.transform.position);
 	TDMG_Hook_RC.GetComponent(LineRenderer).SetPosition(1, TDMG_Hook_RC.transform.position);
