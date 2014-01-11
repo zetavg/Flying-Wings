@@ -13,3 +13,7 @@ EditorBuildSettings:
     path: Assets/Scenes/test.unity
   - enabled: 0
     path: Assets/Scenes/test2.unity
+  - enabled: 1
+    path: Assets/Scenes/Title.unity
+  - enabled: 1
+    path: Assets/Scenes/stage.unity
