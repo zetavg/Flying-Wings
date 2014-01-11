@@ -104,6 +104,8 @@ private var TDMG_Hook_L_attach_point : Vector3;
 private var TDMG_Hook_R_attach_point : Vector3;
 private var TDMG_Hook_Wire_L_Rand : float;
 private var TDMG_Hook_Wire_R_Rand : float;
+private var TDMG_Hook_Wire_L_Rand2 : float;
+private var TDMG_Hook_Wire_R_Rand2 : float;
 private var TDMG_Wire_L_ecd : int;  // 0~100
 private var TDMG_Wire_R_ecd : int;  // 0~100
 private var TDMG_pull_y_cd = 0;
@@ -226,6 +228,12 @@ function Start () {
 
 	TDMG_Hook_Wire_L_Rand = Random.value;
 	TDMG_Hook_Wire_R_Rand = Random.value;
+	TDMG_Hook_Wire_L_Rand2 = (Random.value-0.5);
+	if (TDMG_Hook_Wire_L_Rand2 < 0) TDMG_Hook_Wire_L_Rand2 -= 0.5;
+	else TDMG_Hook_Wire_L_Rand2 += 0.5;
+	TDMG_Hook_Wire_R_Rand2 = (Random.value-0.5);
+	if (TDMG_Hook_Wire_R_Rand2 < 0) TDMG_Hook_Wire_R_Rand2 -= 0.5;
+	else TDMG_Hook_Wire_R_Rand2 += 0.5;
 
 	// Find GameObjects //
 
@@ -846,6 +854,9 @@ function FixedUpdate () {
 			TDMG_Hook_L_state = 0;
 			TDMG.audio.PlayOneShot(TDMG_Withdraw_sound, 1);
 			TDMG_Hook_Wire_L_Rand = Random.value;
+			TDMG_Hook_Wire_L_Rand2 = (Random.value-0.5);
+			if (TDMG_Hook_Wire_L_Rand2 < 0) TDMG_Hook_Wire_L_Rand2 -= 0.5;
+			else TDMG_Hook_Wire_L_Rand2 += 0.5;
 		}
 	} else {
 		TDMG_Hook_L.transform.position = TDMG_Hook_LC.transform.position;
@@ -870,6 +881,9 @@ function FixedUpdate () {
 			TDMG_Hook_R_state = 0;
 			TDMG.audio.PlayOneShot(TDMG_Withdraw_sound, 1);
 			TDMG_Hook_Wire_R_Rand = Random.value;
+			TDMG_Hook_Wire_R_Rand2 = (Random.value-0.5);
+			if (TDMG_Hook_Wire_R_Rand2 < 0) TDMG_Hook_Wire_R_Rand2 -= 0.5;
+			else TDMG_Hook_Wire_R_Rand2 += 0.5;
 		}
 	} else {
 		TDMG_Hook_R.transform.position = TDMG_Hook_RC.transform.position;
@@ -1019,16 +1033,44 @@ function LateUpdate () {
 			if (vai > 1) vai = 1;
 			else if (vai < 0) vai = 0;
 			mo = Vector3.zero;
-			mo += TDMG_Wire_L_up*Mathf.Sin((i/4.0+1))*vai*0.4;
-			mo += TDMG_Wire_L_left*Mathf.Sin((i/4.0+1)*(0.75+TDMG_Hook_Wire_L_Rand*0.5))*vai*0.2;
+			mo += TDMG_Wire_L_up*Mathf.Sin((i/4.0+1))*vai*0.4*TDMG_Hook_Wire_L_Rand2;
+			mo += TDMG_Wire_L_left*Mathf.Sin((i/4.0+1)*(0.75+TDMG_Hook_Wire_L_Rand*0.5))*vai*0.2*TDMG_Hook_Wire_L_Rand2;
 		} else if (TDMG_Hook_L_state == 2) {
 
 		}
 		TDMG_Hook_LC.GetComponent(LineRenderer).SetPosition(i, (TDMG_Hook_L.transform.position*(TDMG_Wire_L_VertexMax-i) + TDMG_Hook_LC.transform.position*i)/TDMG_Wire_L_VertexMax + mo);
 	}
 
+	var TDMG_Wire_R_Length = (TDMG_Hook_RC.transform.position - TDMG_Hook_R.transform.position).magnitude*2;
+	var TDMG_Wire_R_VertexCount = 40 + parseInt(TDMG_Wire_R_Length);
+	var TDMG_Wire_R_VertexMax = TDMG_Wire_R_VertexCount-1;
+	var TDMG_Wire_R_left = Vector3.Cross(Vector3.up, (TDMG_Hook_RC.transform.position - TDMG_Hook_R.transform.position)).normalized;
+	var TDMG_Wire_R_up = Vector3.Cross(TDMG_Wire_R_left, (TDMG_Hook_RC.transform.position - TDMG_Hook_R.transform.position)).normalized;
 	TDMG_Hook_RC.GetComponent(LineRenderer).SetPosition(0, TDMG_Hook_R.transform.position);
-	TDMG_Hook_RC.GetComponent(LineRenderer).SetPosition(1, TDMG_Hook_RC.transform.position);
+	TDMG_Hook_RC.GetComponent(LineRenderer).SetVertexCount(TDMG_Wire_R_VertexCount);
+	pn = TDMG_Wire_R_Length/4;
+	if (pn < 8) pn = TDMG_Wire_R_Length*TDMG_Wire_R_Length/32;
+	if (pn < 1) pn = 0;
+	va = 1.0;
+	if (Mathf.Sqrt(TDMG_Wire_R_Length) < 5) va -= (5-Mathf.Sqrt(TDMG_Wire_R_Length))/3;
+	if (va < 0) va = 0.0;
+	for (i=0; i<TDMG_Wire_R_VertexCount; i++) {
+		ic = TDMG_Wire_R_VertexCount - i;
+		if (TDMG_Hook_R_state == 3 || TDMG_Hook_R_state == 1) {
+			vai = ic*1.0/TDMG_Wire_R_VertexMax;
+			if (i*10.0/TDMG_Wire_R_VertexCount < 1) vai *= i*10.0/TDMG_Wire_R_VertexCount;
+			if (TDMG_Wire_R_Length < 16) vai *= (Mathf.Sqrt(TDMG_Wire_R_Length)-2)/4;
+			if (vai > 1) vai = 1;
+			else if (vai < 0) vai = 0;
+			mo = Vector3.zero;
+			mo += TDMG_Wire_R_up*Mathf.Sin((i/4.0+1))*vai*0.4*TDMG_Hook_Wire_R_Rand2;
+			mo += TDMG_Wire_R_left*Mathf.Sin((i/4.0+1)*(0.75+TDMG_Hook_Wire_R_Rand*0.5))*vai*0.2*TDMG_Hook_Wire_R_Rand2;
+		} else if (TDMG_Hook_R_state == 2) {
+
+		}
+		TDMG_Hook_RC.GetComponent(LineRenderer).SetPosition(i, (TDMG_Hook_R.transform.position*(TDMG_Wire_R_VertexMax-i) + TDMG_Hook_RC.transform.position*i)/TDMG_Wire_R_VertexMax + mo);
+	}
+
 
 	if (TDMG_Hook_L_state == 0) {
 		TDMG_Hook_L.transform.position = TDMG_Hook_LC.transform.position;
