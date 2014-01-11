@@ -102,6 +102,10 @@ private var TDMG_Hook_L_state = 0;
 private var TDMG_Hook_R_state = 0;  // 0 已收回，1 收回中，2 attach，3 射出
 private var TDMG_Hook_L_attach_point : Vector3;
 private var TDMG_Hook_R_attach_point : Vector3;
+private var TDMG_Hook_Wire_L_Rand : float;
+private var TDMG_Hook_Wire_R_Rand : float;
+private var TDMG_Wire_L_ecd : int;  // 0~100
+private var TDMG_Wire_R_ecd : int;  // 0~100
 private var TDMG_pull_y_cd = 0;
 private var TDMG_pull_y_count = 0;
 private var TDMG_hold_dist = 0.0;
@@ -219,6 +223,9 @@ function SetGUITPixelInsetToCenter(myGUTTexture : GameObject, steps : float) {
 function Start () {
 
 	// Initialize Variables //
+
+	TDMG_Hook_Wire_L_Rand = Random.value;
+	TDMG_Hook_Wire_R_Rand = Random.value;
 
 	// Find GameObjects //
 
@@ -838,6 +845,7 @@ function FixedUpdate () {
 			TDMG_Hook_L.transform.position = TDMG_Hook_LC.transform.position;  // 完成回收
 			TDMG_Hook_L_state = 0;
 			TDMG.audio.PlayOneShot(TDMG_Withdraw_sound, 1);
+			TDMG_Hook_Wire_L_Rand = Random.value;
 		}
 	} else {
 		TDMG_Hook_L.transform.position = TDMG_Hook_LC.transform.position;
@@ -851,7 +859,6 @@ function FixedUpdate () {
 		} else if ((TDMG_Attacher_R.transform.position - TDMG_Hook_R.transform.position).magnitude < 0.8) {  // 中
 			TDMG_Hook_R_state = 2;
 			TDMG_Attacher_R.audio.PlayOneShot(TDMG_Hooked_sound, 1);
-			//TDMG_Attacher.GetComponent(ConfigurableJoint).linearLimit.limit = (transform.position - TDMG_Attacher_R.transform.position).magnitude;
 		}
 	} else if (TDMG_Hook_R_state == 2) {
 		TDMG_Hook_R.transform.position = TDMG_Attacher_R.transform.position;
@@ -862,6 +869,7 @@ function FixedUpdate () {
 			TDMG_Hook_R.transform.position = TDMG_Hook_RC.transform.position;  // 完成回收
 			TDMG_Hook_R_state = 0;
 			TDMG.audio.PlayOneShot(TDMG_Withdraw_sound, 1);
+			TDMG_Hook_Wire_R_Rand = Random.value;
 		}
 	} else {
 		TDMG_Hook_R.transform.position = TDMG_Hook_RC.transform.position;
@@ -926,7 +934,6 @@ function FixedUpdate () {
 		}*/
 		var TDMG_jet_air_color = Color.white;
 		TDMG_jet_air_color.a = (TDMG_jet_air_amount/12);
-		print(TDMG_jet_air_color + " aa " + TDMG_jet_air_amount);
 		TDMG_Jet.GetComponent(TrailRenderer).material.SetColor("_Color", TDMG_jet_air_color);
 
 		if (!kill_cd) {
@@ -983,8 +990,35 @@ function FixedUpdate () {
 
 
 function LateUpdate () {
+	var TDMG_Wire_L_Length = (TDMG_Hook_LC.transform.position - TDMG_Hook_L.transform.position).magnitude*2;
+	var TDMG_Wire_L_VertexCount = 40 + parseInt(TDMG_Wire_L_Length);
+	var TDMG_Wire_L_VertexMax = TDMG_Wire_L_VertexCount-1;
+	var mo = Vector3.zero;  // 偏移量
+	var pn = 0;  // 峰數
+	var va = 0.0;  // 振幅
 	TDMG_Hook_LC.GetComponent(LineRenderer).SetPosition(0, TDMG_Hook_L.transform.position);
-	TDMG_Hook_LC.GetComponent(LineRenderer).SetPosition(1, TDMG_Hook_LC.transform.position);
+	TDMG_Hook_LC.GetComponent(LineRenderer).SetVertexCount(TDMG_Wire_L_VertexCount);
+
+
+	pn = parseInt(TDMG_Wire_L_Length);
+	if (pn > 8) pn = 8;
+	if (pn < 1) pn = 0;
+	mo = Vector3.zero;
+	va = 1.0;
+	if (Mathf.Sqrt(TDMG_Wire_L_Length) < 5) va -= (5-Mathf.Sqrt(TDMG_Wire_L_Length))/3;
+	if (va < 0) va = 0.0;
+
+	for (i=0; i<TDMG_Wire_L_VertexCount; i++) {
+		if (TDMG_Hook_L_state == 3) {
+			mo += Vector3.up*Mathf.Sin((2*Mathf.PI)*pn*i/(TDMG_Wire_L_VertexMax))*0.4*va;
+			mo += Vector3.left*Mathf.Sin((2*Mathf.PI)*parseInt(TDMG_Hook_Wire_L_Rand*8)*i/(TDMG_Wire_L_VertexMax))*0.1*va;
+
+		}
+		TDMG_Hook_LC.GetComponent(LineRenderer).SetPosition(i, (TDMG_Hook_L.transform.position*(TDMG_Wire_L_VertexMax-i) + TDMG_Hook_LC.transform.position*i)/TDMG_Wire_L_VertexMax + mo);
+	}
+	// TDMG_Hook_LC.GetComponent(LineRenderer).SetPosition(1, (TDMG_Hook_LC.transform.position + TDMG_Hook_L.transform.position)/2 - Vector3.up);
+	// TDMG_Hook_LC.GetComponent(LineRenderer).SetPosition(TDMG_Wire_L_VertexCount-1, TDMG_Hook_LC.transform.position);
+
 	TDMG_Hook_RC.GetComponent(LineRenderer).SetPosition(0, TDMG_Hook_R.transform.position);
 	TDMG_Hook_RC.GetComponent(LineRenderer).SetPosition(1, TDMG_Hook_RC.transform.position);
 

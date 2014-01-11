@@ -13249,6 +13249,14 @@ Prefab:
       propertyPath: minSize
       value: .00999999978
       objectReference: {fileID: 0}
+    - target: {fileID: 12000002, guid: 29aa22aed289b4bc2899a5f8c3757c9a, type: 2}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: faafb0a79deff4f02b1fae53ddef155f, type: 2}
+    - target: {fileID: 12000000, guid: 29aa22aed289b4bc2899a5f8c3757c9a, type: 2}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: faafb0a79deff4f02b1fae53ddef155f, type: 2}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 29aa22aed289b4bc2899a5f8c3757c9a, type: 2}
   m_RootGameObject: {fileID: 1392255719}
@@ -46467,24 +46475,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c23fee4c09e8b41edabd1609c06c96a7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  emit: 1
-  emitTime: 5.8499999
-  material: {fileID: 2100000, guid: ca49380a71a2bb64c830d06bd421b9d1, type: 2}
-  lifeTime: 1
-  colors:
-  - r: 0
-    g: 0
-    b: 0
-    a: 0
-  sizes: []
-  uvLengthScale: .00999999978
-  higherQualityUVs: 1
-  movePixelsForRebuild: 6
-  maxRebuildTime: .100000001
-  minVertexDistance: .100000001
-  maxVertexDistance: 10
-  maxAngle: 3
-  autoDestruct: 0
 --- !u!1 &1231542477
 GameObject:
   m_ObjectHideFlags: 0
@@ -56922,7 +56912,7 @@ LineRenderer:
   m_LightmapIndex: 255
   m_LightmapTilingOffset: {x: 1, y: 1, z: 0, w: 0}
   m_Materials:
-  - {fileID: 2100000, guid: 2f19f618203394ebc9011f6792cfcbf8, type: 2}
+  - {fileID: 2100000, guid: faafb0a79deff4f02b1fae53ddef155f, type: 2}
   m_SubsetIndices: 
   m_StaticBatchRoot: {fileID: 0}
   m_UseLightProbes: 0
@@ -72201,7 +72191,7 @@ LineRenderer:
   m_LightmapIndex: 255
   m_LightmapTilingOffset: {x: 1, y: 1, z: 0, w: 0}
   m_Materials:
-  - {fileID: 2100000, guid: 2f19f618203394ebc9011f6792cfcbf8, type: 2}
+  - {fileID: 2100000, guid: faafb0a79deff4f02b1fae53ddef155f, type: 2}
   m_SubsetIndices: 
   m_StaticBatchRoot: {fileID: 0}
   m_UseLightProbes: 0
