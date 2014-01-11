@@ -900,12 +900,22 @@ function FixedUpdate () {
 		} else if (speed_state == 0) {
 			animation.CrossFade("Stand", 0.2);
 		}
+		var TDMG_jet_air_color_g = TDMG_Jet.GetComponent(TrailRenderer).material.GetColor("_Color");
+		if (TDMG_jet_air_color_g.a > 0) {
+			TDMG_jet_air_color_g.a -= 0.1;
+			TDMG_Jet.GetComponent(TrailRenderer).material.SetColor("_Color", TDMG_jet_air_color_g);
+		}
+
 	} else {  //Flying
-		var TDMG_jet_air_amount = Mathf.Sqrt(input_forward)*2.828;
+/*		var TDMG_jet_air_amount = Mathf.Sqrt(input_forward)*2.828;*/
+		var TDMG_jet_air_amount = Mathf.Sqrt(Mathf.Abs(input_forward*transform.InverseTransformDirection(rigidbody.velocity).z));
+/*
 		TDMG_Jet.particleEmitter.enabled = true;
 		TDMG_Jet.particleEmitter.localVelocity = Vector3(0, -(TDMG_jet_air_amount));
-		TDMG_Jet.particleEmitter.minEmission = TDMG_jet_air_amount*100;
-		TDMG_Jet.particleEmitter.maxEmission = TDMG_jet_air_amount*200;
+		// TDMG_Jet.particleEmitter.minEmission = TDMG_jet_air_amount*100;
+		// TDMG_Jet.particleEmitter.maxEmission = TDMG_jet_air_amount*200;
+		TDMG_Jet.particleEmitter.minEmission = 10;
+		TDMG_Jet.particleEmitter.maxEmission = 10;
 		TDMG_Jet.particleEmitter.minEnergy = TDMG_jet_air_amount*0.001;
 		TDMG_Jet.particleEmitter.maxEnergy = TDMG_jet_air_amount*0.1;
 		TDMG_Jet.particleEmitter.rndVelocity = Vector3(TDMG_jet_air_amount*0.1, TDMG_jet_air_amount*0.1, TDMG_jet_air_amount*0.1);
@@ -913,7 +923,11 @@ function FixedUpdate () {
 			//var TDMG_Gas_s = Instantiate(TDMG_Gas);
 			//TDMG_Gas_s.transform.position = TDMG_Jet.transform.position;
 			//TDMG_Gas_s.rigidbody.AddForce(TDMG_Jet.transform.input_forward);
-		}
+		}*/
+		var TDMG_jet_air_color = Color.white;
+		TDMG_jet_air_color.a = (TDMG_jet_air_amount/12);
+		print(TDMG_jet_air_color + " aa " + TDMG_jet_air_amount);
+		TDMG_Jet.GetComponent(TrailRenderer).material.SetColor("_Color", TDMG_jet_air_color);
 
 		if (!kill_cd) {
 			if (kill_mode == 1) {  // 準備擊殺
