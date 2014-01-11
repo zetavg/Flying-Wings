@@ -12,32 +12,50 @@ var curWayPoint : AutoWayPoint;
 
 function Die () {
 	died = true;
-	animation.CrossFade("Die", 0.5);
+	animation.CrossFade("TitanDie", 0.5);
 
-	for (var child : Transform in transform) {
-		if (child.gameObject.name == "Kill Range" || child.gameObject.name == "Kill Point") {
-			Destroy(child.gameObject);
+	for (var child1 : Transform in transform) {
+		if (child1.gameObject.name == "AimPoint") {
+			child1.active = false;
 		}
-		for (var child2 : Transform in child.transform) {
+		if (child1.gameObject.name == "Kill Range" || child1.gameObject.name == "Kill Point") {
+			Destroy(child1.gameObject);
+		}
+		for (var child2 : Transform in child1.transform) {
+			if (child2.gameObject.name == "AimPoint") {
+				child2.active = false;
+			}
 			if (child2.gameObject.name == "Kill Range" || child2.gameObject.name == "Kill Point") {
 				Destroy(child2.gameObject);
 			}
 
 			for (var child3 : Transform in child2.transform) {
+				if (child3.gameObject.name == "AimPoint") {
+					child3.active = false;
+				}
 				if (child3.gameObject.name == "Kill Range" || child3.gameObject.name == "Kill Point") {
 					Destroy(child3.gameObject);
 				}
 
 				for (var child4 : Transform in child3.transform) {
+					if (child4.gameObject.name == "AimPoint") {
+						child4.active = false;
+					}
 					if (child4.gameObject.name == "Kill Range" || child4.gameObject.name == "Kill Point") {
 						Destroy(child4.gameObject);
 					}
 					for (var child5 : Transform in child4.transform) {
+						if (child5.gameObject.name == "AimPoint") {
+							child5.active = false;
+						}
 						if (child5.gameObject.name == "Kill Range" || child5.gameObject.name == "Kill Point") {
 							Destroy(child5.gameObject);
 						}
 
 						for (var child6 : Transform in child5.transform) {
+							if (child6.gameObject.name == "AimPoint") {
+								child6.active = false;
+							}
 							if (child6.gameObject.name == "Kill Range" || child6.gameObject.name == "Kill Point") {
 								Destroy(child6.gameObject);
 							}

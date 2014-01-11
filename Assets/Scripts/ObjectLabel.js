@@ -6,9 +6,17 @@ var clampToScreen = false;	// If true, label will be visible even if object is o
 var clampBorderSize = .05;	// How much viewport space to leave at the borders when a label is being clamped
 var useMainCamera = true;	// Use the camera tagged MainCamera
 var cameraToUse : Camera;	// Only use this if useMainCamera is false
+var ActiveOnlyIsVisible = false;
+var ActiveOnlyIsVisibleInDistacne = 100.0;
 private var cam : Camera;
 private var thisTransform : Transform;
 private var camTransform : Transform;
+
+function Awake () {
+	if (!target) {
+		target = transform.parent.transform;
+	}
+}
 
 function Start () {
 	thisTransform = transform;
@@ -19,7 +27,7 @@ function Start () {
 	camTransform = cam.transform;
 }
 
-function Update () {
+function LateUpdate () {
 	if (clampToScreen) {
 		var relativePosition = camTransform.InverseTransformPoint(target.position);
 		relativePosition.z = Mathf.Max(relativePosition.z, 1.0);
@@ -31,6 +39,18 @@ function Update () {
 	else {
 		thisTransform.position = cam.WorldToViewportPoint(target.position + offset);
 	}
+
+	if (ActiveOnlyIsVisible) {
+		var rch : RaycastHit;
+		if (!target.renderer.isVisible) {
+			thisTransform.position += Vector3(-100, -100, 0);
+		} else if (!Physics.Raycast(camTransform.position, (target.transform.position-camTransform.position), rch, ActiveOnlyIsVisibleInDistacne)) {
+			thisTransform.position += Vector3(-100, -100, 0);
+		} else if ((rch.point - target.transform.position).magnitude > 3.9) {
+			thisTransform.position += Vector3(-100, -100, 0);
+		}
+	}
 }
+
 
 @script RequireComponent(GUIText)

@@ -31,6 +31,9 @@ var touchPad : boolean; 									// Is this a TouchPad?
 var touchZone : Rect;
 var deadZone : Vector2 = Vector2.zero;						// Control when position is output
 var normalize : boolean = false; 							// Normalize output after the dead-zone?
+var lockX = false;
+var lockY = false;
+var doNotReset = false;
 var position : Vector2; 									// [-1, 1] in x,y
 var tapCount : int;											// Current tap count
 
@@ -93,14 +96,17 @@ function Disable()
 
 function ResetJoystick()
 {
-	// Release the finger control and set the joystick back to the default position
-	gui.pixelInset = defaultRect;
-	lastFingerId = -1;
-	position = Vector2.zero;
-	fingerDownPos = Vector2.zero;
+	if (!doNotReset) {
+		// Release the finger control and set the joystick back to the default position
+		gui.pixelInset = defaultRect;
+		lastFingerId = -1;
+		position = Vector2.zero;
+		fingerDownPos = Vector2.zero;
 
-	if ( touchPad )
-		gui.color.a = 0.025;
+		if ( touchPad )
+			gui.color.a = 0.025;
+	}
+
 }
 
 function IsFingerDown() : boolean
@@ -125,6 +131,7 @@ function Update()
 	}
 
 	var count = Input.touchCount;
+	//gameObject.Find('/Debug_info').guiText.text = count.ToString();
 
 	// Adjust the tap time window while it still available
 	if ( tapTimeWindow > 0 )
@@ -195,14 +202,14 @@ function Update()
 				if ( touchPad )
 				{
 					// For a touchpad, let's just set the position directly based on distance from initial touchdown
-					//position.x = Mathf.Clamp( ( touch.position.x - fingerDownPos.x ) / ( touchZone.width / 2 ), -1, 1 );
-					position.y = Mathf.Clamp( ( touch.position.y - fingerDownPos.y ) / ( touchZone.height / 2 ), -1, 1 );
+					if (!lockX) position.x = Mathf.Clamp( ( touch.position.x - fingerDownPos.x ) / ( touchZone.width / 2 ), -1, 1 );
+					if (!lockY) position.y = Mathf.Clamp( ( touch.position.y - fingerDownPos.y ) / ( touchZone.height / 2 ), -1, 1 );
 				}
 				else
 				{
 					// Change the location of the joystick graphic to match where the touch is
-					//gui.pixelInset.x =  Mathf.Clamp( guiTouchPos.x, guiBoundary.min.x, guiBoundary.max.x );
-					gui.pixelInset.y =  Mathf.Clamp( guiTouchPos.y, guiBoundary.min.y, guiBoundary.max.y );
+					if (!lockX) gui.pixelInset.x =  Mathf.Clamp( guiTouchPos.x, guiBoundary.min.x, guiBoundary.max.x );
+					if (!lockY) gui.pixelInset.y =  Mathf.Clamp( guiTouchPos.y, guiBoundary.min.y, guiBoundary.max.y );
 				}
 
 				if ( touch.phase == TouchPhase.Ended || touch.phase == TouchPhase.Canceled )
