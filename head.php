@@ -1,13 +1,15 @@
 <?php if (!defined('PAGE')) die("403"); ?>
 <!DOCTYPE html>
-<html>
+<html lang='zh-TW'>
   <head>
-    <meta charset="utf-8">
+    <meta charset='utf-8' />
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="">
     <meta name="author" content="">
     <link rel="shortcut icon" href="">
+    <meta property='og:description' content="立體機動裝置，尖端科技的結晶，是一套人性化的萬能交通工具，出現在我們這個充滿巨人的世界。經過多年研究，現在終於有了讓任何人使用兩根手指，操控立體機動裝置的技術。極為直覺的操控方式，聰明地讓你輕鬆駕馭這套複雜裝置，神奇之處令人歎為觀止。">
+    <meta property='og:image' content="/img/fb.png">
 
     <title><?php echo $page_title; ?></title>
 
@@ -40,7 +42,7 @@
             <div class="navbar-collapse collapse">
               <ul class="nav navbar-nav">
                 <li class="<?php if ($page_nav == 'home') echo 'active'; ?>"><a href="/">Home</a></li>
-                <li class="<?php if ($page_nav == 'introduction') echo 'active'; ?>"><a href="/cs/">Introduction</a></li>
+                <li class="<?php if ($page_nav == 'introduction') echo 'active'; ?>"><a href="/system/">Introduction</a></li>
                 <li class="<?php if ($page_nav == 'system') echo 'active'; ?>"><a href="/system/">System</a></li>
                 <li class="dropdown">
                   <a href="/cs/" class="dropdown-toggle" data-toggle="dropdown">Ranking <b class="caret"></b></a>
