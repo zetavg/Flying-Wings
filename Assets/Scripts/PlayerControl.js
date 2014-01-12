@@ -55,6 +55,7 @@ private var TDMG_Hook_RC : GameObject;
 private var TDMG_Hook_L : GameObject;
 private var TDMG_Hook_R : GameObject;
 private var TDMG_Jet : GameObject;
+private var TDMG_Jet_tail : GameObject;
 
 // 3DMG Wire Helpers //
 
@@ -94,6 +95,7 @@ public var on_ground = 0;  // 是否在地上? 0: 否, n>0: 接觸到 n 個地�
 private var pre_on_ground = 0;  // 上一次 update 時是否在地上?
 private var pre_position : Vector3;  // 上一次 update 時的坐標
 private var pre_rotation : Quaternion;  // 上一次 update 時的 rotation
+private var MButton_status : int;  // 0: Fire, 1: Pull, 2: Firing, 3: Releasing, 4: NoTarget.
 private var prev_MButton_status : int;
 private var kill_mode = 0;  // 0: not killing, 1: prepare killing, 2: kill
 private var hit_thing = false;  // 是否有接觸到物體?
@@ -267,6 +269,7 @@ function Start () {
 	TDMG_Hook_L = transform.Find("TDMG/TDMG_Hook_L_Container/TDMG_Hook").gameObject;
 	TDMG_Hook_R = transform.Find("TDMG/TDMG_Hook_R_Container/TDMG_Hook").gameObject;
 	TDMG_Jet = transform.Find("TDMG/TDMG_Jet").gameObject;
+	TDMG_Jet_tail = transform.Find("TDMG/TDMG_Jet/tail").gameObject;
 
 	TDMG_Aimer_L = transform.Find("/TDMG_Aimer_L").gameObject;
 	TDMG_Aimer_R = transform.Find("/TDMG_Aimer_R").gameObject;
@@ -313,11 +316,14 @@ function FixedUpdate () {
 
 	var forward_speed = transform.InverseTransformDirection(rigidbody.velocity).z;
 	var TDMG_Gear_sound = 0;
+
+/*
 	audio.pitch = Time.timeScale;
 	var audios : AudioSource[] = FindObjectsOfType(AudioSource) as AudioSource[];
 	for (var audio : AudioSource in audios) {
 		if (1) audio.pitch = Time.timeScale;
 	}
+*/
 /*
 	MainCam.transform.localPosition.x = 0;
 	MainCam.transform.localPosition.y = 1;
@@ -478,7 +484,6 @@ function FixedUpdate () {
 
 	// Status //
 
-	var MButton_status;  // 0: Fire, 1: Pull, 2: Firing, 3: Releasing, 4: NoTarget.
 	var TDMG_has_attached = false;  // 是否有 Attached?
 	var tdmg_pull_to_v = (Vector3.Project(rigidbody.velocity, (TDMG_pull_target - transform.position).normalized).magnitude);
 	if  ((transform.position - TDMG_pull_target).magnitude - (pre_position - TDMG_pull_target).magnitude > 0) tdmg_pull_to_v = -tdmg_pull_to_v;
@@ -667,7 +672,7 @@ function FixedUpdate () {
 
 	// GUI //
 
-	TargetCrosshair.transform.position = Camera.main.WorldToViewportPoint(Target.transform.position);
+	TargetCrosshair.transform.position = MainCam.camera.WorldToViewportPoint(Target.transform.position);
 
 	if (tdmg_use_hook_l && tdmg_use_hook_r) {
 		AimCrosshairL.GetComponent(GUITextureHelper).UseTexture(1);
@@ -682,16 +687,16 @@ function FixedUpdate () {
 
 	if (tdmg_is_aimed) {
 		if (tdmg_use_hook_l) {
-			AimCrosshairL.transform.position = Camera.main.WorldToViewportPoint(Target.transform.position);
-			SetGUITPixelInsetToPosition(AimCrosshairL, Camera.main.WorldToViewportPoint(TDMG_Aimer_L.transform.position), 8);
+			AimCrosshairL.transform.position = MainCam.camera.WorldToViewportPoint(Target.transform.position);
+			SetGUITPixelInsetToPosition(AimCrosshairL, MainCam.camera.WorldToViewportPoint(TDMG_Aimer_L.transform.position), 8);
 			AimCrosshairL.GetComponent(GUITextureHelper).Show();
 		} else {
 			SetGUITPixelInsetToCenter(AimCrosshairL, 1);
 			AimCrosshairL.GetComponent(GUITextureHelper).Hide();
 		}
 		if (tdmg_use_hook_r) {
-			AimCrosshairR.transform.position = Camera.main.WorldToViewportPoint(Target.transform.position);
-			SetGUITPixelInsetToPosition(AimCrosshairR, Camera.main.WorldToViewportPoint(TDMG_Aimer_R.transform.position), 8);
+			AimCrosshairR.transform.position = MainCam.camera.WorldToViewportPoint(Target.transform.position);
+			SetGUITPixelInsetToPosition(AimCrosshairR, MainCam.camera.WorldToViewportPoint(TDMG_Aimer_R.transform.position), 8);
 			AimCrosshairR.GetComponent(GUITextureHelper).Show();
 		} else {
 			SetGUITPixelInsetToCenter(AimCrosshairR, 1);
@@ -805,11 +810,10 @@ function FixedUpdate () {
 					rigidbody.AddForce(Vector3.up*(tdmg_pull_direction.y)*(16+tdmg_pull_fgain-tdmg_pull_to_v)/12, ForceMode.VelocityChange);  // y 軸輔助
 				}
 
-			/*
+
 				var tdmg_wire_speed_d : float;
 				if (tdmg_pull_to_v < 0) tdmg_wire_speed_d = (12 + Vector3.Project(rigidbody.velocity, (TDMG_pull_target - transform.position).normalized).magnitude);
 				else tdmg_wire_speed_d = (12 - Vector3.Project(rigidbody.velocity, (TDMG_pull_target - transform.position).normalized).magnitude);
-				print(tdmg_wire_speed_d);
 				if (tdmg_wire_speed_d < 0) tdmg_wire_speed_d = 0;
 				if (((pre_position.y-TDMG_pull_target.y) > (transform.position.y - ((TDMG_Hook_LC.transform.position + TDMG_Hook_RC.transform.position)/2).y) && (transform.position.y-TDMG_pull_target.y) < (transform.position.y - ((TDMG_Hook_LC.transform.position + TDMG_Hook_RC.transform.position)/2).y)) || ((pre_position.y-TDMG_pull_target.y) < (transform.position.y - ((TDMG_Hook_LC.transform.position + TDMG_Hook_RC.transform.position)/2).y) && (transform.position.y-TDMG_pull_target.y) > (transform.position.y - ((TDMG_Hook_LC.transform.position + TDMG_Hook_RC.transform.position)/2).y)) || ((TDMG_pull_target - (TDMG_Hook_LC.transform.position + TDMG_Hook_RC.transform.position)/2).magnitude < 0.1)) {
 					TDMG_pull_y_cd = 40;
@@ -827,7 +831,7 @@ function FixedUpdate () {
 					var yfa = (TDMG_pull_target.y - ((TDMG_Hook_LC.transform.position + TDMG_Hook_RC.transform.position)/2).y)/3;
 					yfa -= rigidbody.velocity.y/12;
 					rigidbody.AddForce(transform.up*(yfa), ForceMode.VelocityChange);
-				}*/
+				}
 
 				TDMG_Gear.GetComponent(AudioSource).volume += (tdmg_pull_to_v/10 - (TDMG_Gear.GetComponent(AudioSource).volume))/10;  // 音效
 			}
@@ -947,33 +951,33 @@ function FixedUpdate () {
 		} else if (speed_state == 0) {
 			animation.CrossFade("Stand", 0.2);
 		}
-		var TDMG_jet_air_color_g = TDMG_Jet.GetComponent(TrailRenderer).material.GetColor("_Color");
+		var TDMG_jet_air_color_g = TDMG_Jet_tail.GetComponent(TrailRenderer).material.GetColor("_Color");
 		if (TDMG_jet_air_color_g.a > 0) {
 			TDMG_jet_air_color_g.a -= 0.1;
-			TDMG_Jet.GetComponent(TrailRenderer).material.SetColor("_Color", TDMG_jet_air_color_g);
+			TDMG_Jet_tail.GetComponent(TrailRenderer).material.SetColor("_Color", TDMG_jet_air_color_g);
 		}
 
 	} else {  //Flying
-/*		var TDMG_jet_air_amount = Mathf.Sqrt(input_forward)*2.828;*/
+		var TDMG_jet_amount = Mathf.Sqrt(input_forward)*8.0;
 		var TDMG_jet_air_amount = Mathf.Sqrt(Mathf.Abs(input_forward*transform.InverseTransformDirection(rigidbody.velocity).z));
-/*
+
 		TDMG_Jet.particleEmitter.enabled = true;
-		TDMG_Jet.particleEmitter.localVelocity = Vector3(0, -(TDMG_jet_air_amount));
-		// TDMG_Jet.particleEmitter.minEmission = TDMG_jet_air_amount*100;
-		// TDMG_Jet.particleEmitter.maxEmission = TDMG_jet_air_amount*200;
-		TDMG_Jet.particleEmitter.minEmission = 10;
-		TDMG_Jet.particleEmitter.maxEmission = 10;
-		TDMG_Jet.particleEmitter.minEnergy = TDMG_jet_air_amount*0.001;
-		TDMG_Jet.particleEmitter.maxEnergy = TDMG_jet_air_amount*0.1;
-		TDMG_Jet.particleEmitter.rndVelocity = Vector3(TDMG_jet_air_amount*0.1, TDMG_jet_air_amount*0.1, TDMG_jet_air_amount*0.1);
+		// TDMG_Jet.particleEmitter.localVelocity = Vector3(0, -(TDMG_jet_air_amount));
+		TDMG_Jet.particleEmitter.minEmission = TDMG_jet_amount*60;
+		TDMG_Jet.particleEmitter.maxEmission = TDMG_jet_amount*80;
+		// TDMG_Jet.particleEmitter.minEmission = 10;
+		// TDMG_Jet.particleEmitter.maxEmission = 10;
+		// TDMG_Jet.particleEmitter.minEnergy = TDMG_jet_amount*0.01;
+		// TDMG_Jet.particleEmitter.maxEnergy = TDMG_jet_amount*0.1;
+		// TDMG_Jet.particleEmitter.rndVelocity = Vector3(TDMG_jet_air_amount*0.1, TDMG_jet_air_amount*0.1, TDMG_jet_air_amount*0.1);
 		if (Random.Range(8,0.1) <= input_forward) {  // 氣體噴出量，(input_forward) = 8(全速) ~ 0(stop)
 			//var TDMG_Gas_s = Instantiate(TDMG_Gas);
 			//TDMG_Gas_s.transform.position = TDMG_Jet.transform.position;
 			//TDMG_Gas_s.rigidbody.AddForce(TDMG_Jet.transform.input_forward);
-		}*/
+		}
 		var TDMG_jet_air_color = Color.white;
 		TDMG_jet_air_color.a = (TDMG_jet_air_amount/12);
-		TDMG_Jet.GetComponent(TrailRenderer).material.SetColor("_Color", TDMG_jet_air_color);
+		TDMG_Jet_tail.GetComponent(TrailRenderer).material.SetColor("_Color", TDMG_jet_air_color);
 
 		if (!kill_cd) {
 			if (kill_mode == 1) {  // 準備擊殺
