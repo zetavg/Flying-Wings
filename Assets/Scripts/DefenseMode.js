@@ -5,13 +5,27 @@
 var scriptActive = false;
 var status_game = false;
 
+var titanAttack : float; //攻擊強度
+var titanNumber : int;	//巨人數量
+var titanSpeed : float;	//巨人移動速度（應該越快月難打吧）
+
+var CountTime : int; //	倒數秒數
+var countState = false;
+
+function Awake()
+{
+	DontDestroyOnLoad(gameObject);
+}
 
 function ModeActive()
 {
 	status_game = true;
 	
 	var gateLife = 100;
-	CountDown(180);
+	
+	CountTime = 180;
+	countState = true;
+
 }
 
 function StartAnime()
@@ -33,10 +47,51 @@ function Failed()
 	//popup 幾張崩潰圖幻燈片
 	//popup 選單，Replay/Menu等等
 
+
+	status_game = false;
+	//切到計分scene
+
+
 }
 
-function CountDown(amount : int)
+function CountDown()
 {
-	//倒數here
+	if (CountTime > 0)
+	{
+		CountTime -= Time.deltaTime;
+		//Debug.Log(Countdown);
+		//Timer.guiText.text = Countdown.ToString("F1"); 
+	}
+	//else if (Countdown == 0)
+	//load score level here
+
+}
+
+function SetUpLevel(difficulty : Level)
+{
+	switch(difficulty)
+	{
+		//假如血量100的話辣
+		case Level.Easy:
+			titanAttack = 5;
+			titanNumber = 10;
+			titanSpeed = 1;
+			break;
+		case Level.Hard:
+			titanAttack = 10;
+			titanNumber = 30;
+			titanSpeed = 2;
+			break;
+		case Level.Insane:
+			titanAttack = 50;
+			titanNumber = 100;
+			titanSpeed = 5;
+			break;
+	}
+}
+
+function Update()
+{
+	if (countState) CountDown();
 
 }
