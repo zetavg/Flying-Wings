@@ -31,20 +31,31 @@ var timeattack : TapButton;
 var tutorial : TapButton;
 var back : TapButton;
 
+var play : TapButton;
+
 var kill_about : GameObject;
 var defense_about : GameObject;
 var timeattack_about : GameObject;
 var tutorial_about : GameObject;
 
+//難度設定按鈕
+var levelEasy : TapButton;
+var levelHard : TapButton;
+var levelInsane : TapButton;
+
 var controlButtons : GameObject[];
 
-var GameMode : GameMode;
-var level : Level;
+//Set Default value for difficulty and gamemode
+var GameMode : GameMode.Defense;
+var level : Level.Easy;
+
 
 //mode scripts
-var Defense : DefenseMode;
-Defense = GameObject.Find("DefenseMode").GetComponent(DefenseMode);
+var DefenseMd : DefenseMode;
+DefenseMd = GameObject.Find("DefenseMode").GetComponent(DefenseMode);
 
+var TimeMd : TimeAttack;
+TimeMd = GameObject.Find("TimeAttack").GetComponent(TimeAttack);
 
 
 
@@ -55,7 +66,7 @@ function Awake()
 
 
 function Start () {
-	InactiveAllContents();
+	InactivateAllContents();
 }
 
 function Update () {
@@ -63,20 +74,53 @@ function Update () {
 	//各種壓住、推倒。
 
 	if (defense.tapped) {
-		InactiveAllContents();
+		//button animation control
+		InactivateAllContents();
 		defense_about.SetActive(true);
-		DefenseMode.SetUpLevel(level);
-		DefenseMode.ModeActive();
 
+		//啟用Defense模式
+		InactivateAllModes();
+		DefenseMd.activate = true;
 	}
+
 	if (kill.tapped) {
-		InactiveAllContents();
+		//button animation control
+		InactivateAllContents();
 		kill_about.SetActive(true);
+
+		//啟用TimeAttack模式
+		InactivateAllModes();
+		TimeMd.activate = true;
 	}
 
 	if (back.tapped) {
 		Application.LoadLevel("Title");
 	}
+	
+	if (play.tapped) {
+		//Load Level Here and Setup up Objects According to activated mode
+		
+		//Application.LoadLevel("City");
+
+		if (DefenseMd.activate)
+		{			
+			DefenseMd.SetUpLevel(level);
+			DefenseMd.Activate();
+		}
+
+		if (TimeMd.activate)
+		{
+			TimeMd.SetUpLevel(level);
+			TimeMd.Activate();
+		}
+	}
+
+
+	if (levelEasy.tapped) level = Level.Easy;
+	if (levelHard.tapped) level = Level.Hard;
+	if (levelInsane.tapped) level = Level.Insane;
+
+
 
 	controlButtons = GameObject.FindGameObjectsWithTag("ControlButton");
 
@@ -90,11 +134,17 @@ function Update () {
 
 }
 
-function InactiveAllContents(){
+function InactivateAllContents(){
 	var contents : GameObject[];
 	contents = GameObject.FindGameObjectsWithTag("Content");
 	for (var wtf in contents)
 	{
 		wtf.SetActive(false);
 	}
+}
+
+function InactivateAllModes() {
+	DefenseMd.activate = false;
+	TimeMd.activate = false;
+	/* if there are other modes write here */
 }
