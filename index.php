@@ -1,16 +1,6 @@
 <?php define('PAGE', true); ?>
-<!--
-<html>
-  <head>
-    <title>-->
-      <?php $page_title = "飛ぶの翼．立體機動裝置遊戲"; ?><!---->
-<!--</title>
-  </head>
-  <body>
-    <nav>-->
-      <?php $page_nav = "home"; ?>
-<!--</nav>
--->
+<?php $page_title = "飛ぶの翼．立體機動裝置遊戲"; ?>
+<?php $page_nav = "home"; ?>
 <?php include('head.php'); ?>
 
     <!-- Hero
@@ -32,7 +22,7 @@
           <div class="brief">
             <p><span>立體機動裝置，</span><span>尖端科技的結晶，</span><span>是一套人性化的萬能交通工具，</span><span>出現在我們這個充滿巨人的世界。</span><span>精銳士兵米卡莎，</span><span>充滿正義感，</span><span>是一個英勇的肉塊削手，</span><span>他以無比的勇氣，</span><span>超人的智慧，</span><span>擊殺巨人，</span><span>拯救善良無助的受害者。</span></p>
             <p><span>在「飛ぶの翼」，</span><span>你也可以。</span><span>穿戴上立體機動裝置，</span><span>選擇你的角色，</span><span>駕著鋼索與氣體，</span><span>飛翔穿梭在那不存在之人的危險世界，</span><span>戰勝那無辜、絕望、弱勢的禍首吧！</span></p>
-            <a href="#" class="btn btn-default btn-lg" role="button"><span class ="glyphicon glyphicon-arrow-down"></span> 下載 .apk 安裝檔<small style="font-size: 6px;"><br>開發中，請向開發者索取密碼</small></a>
+            <a href="https://drive.google.com/uc?id=0B3LRxs-tE0F3UTRPMjZwNGxyX1k&export=download" class="btn btn-default btn-lg" role="button"><span class ="glyphicon glyphicon-arrow-down"></span> 下載 .apk 安裝檔<small style="font-size: 6px;"><br>開發中，請向開發者索取密碼</small></a>
           </div>
         </li>
       </ul>
@@ -60,12 +50,12 @@
 
       <div class="row">
         <div class="col-lg-7 youtube">
-          <iframe width="720" height="400" src="//www.youtube-nocookie.com/embed/42mRD632jBs?rel=0" frameborder="0" allowfullscreen></iframe>
+          <iframe width="720" height="400" src="//www.youtube-nocookie.com/embed/M86y1_B9ycI?rel=0" frameborder="0" allowfullscreen></iframe>
         </div>
         <div class="col-lg-5">
           <h2>Just for Android</h2>
           <p>建議系統需求：Android™ 4.0，1.7GHz 雙核心，1 GB RAM 以上，備有重力感應器 (G-Sensor) 之智慧型手機或平板電腦*。</p>
-          <p><a class="btn btn-default" href="#" role="button">下載遊戲 &raquo;<small style="font-size: 6px;"><br>開發中，歡迎協助試玩，請向開發者索取解壓縮密碼。</small></a></p>
+          <p><a class="btn btn-default" href="https://drive.google.com/uc?id=0B3LRxs-tE0F3UTRPMjZwNGxyX1k&export=download" role="button">下載遊戲 &raquo;<small style="font-size: 6px;"><br>開發中，歡迎協助試玩，請向開發者索取解壓縮密碼。</small></a></p>
           <p>* 設備需設定為接受不明來源應用程式。</p>
         </div>
       </div><!-- /.row -->
