@@ -20,13 +20,17 @@ function Awake () {
 	if (Screen.width > baseScreenWidth || scaleBelow) {
 		var GUIScales = Screen.width/baseScreenWidth;
 
-		guiTexture.pixelInset.x *= GUIScales;
-		guiTexture.pixelInset.y *= GUIScales;
-		guiTexture.pixelInset.width *= GUIScales;
-		guiTexture.pixelInset.height *= GUIScales;
+		if (guiTexture) {
+			guiTexture.pixelInset.x *= GUIScales;
+			guiTexture.pixelInset.y *= GUIScales;
+			guiTexture.pixelInset.width *= GUIScales;
+			guiTexture.pixelInset.height *= GUIScales;
+		}
 
-		guiText.fontSize *= GUIScales;
-		guiText.pixelOffset.x *= GUIScales;
-		guiText.pixelOffset.y *= GUIScales;
+		if (guiText) {
+			guiText.fontSize *= GUIScales;
+			guiText.pixelOffset.x *= GUIScales;
+			guiText.pixelOffset.y *= GUIScales;
+		}
 	}
 }

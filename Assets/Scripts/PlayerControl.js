@@ -774,7 +774,7 @@ function FixedUpdate () {
 
 	if (!freeze && !disableGUI) {
 
-		if (MButton_status == 0 && (MButton.tapped || (use_mouse_input && Input.GetMouseButton(0)))) {  // Fire!
+		if (MButton_status == 0 && (MButton.tapped || MButton.held || (use_mouse_input && Input.GetMouseButton(0)))) {  // Fire!
 			TDMG.audio.PlayOneShot(TDMG_Fire_sound, 1);
 			TDMG_fire_start_time = Time.time;
 			if (tdmg_use_hook_l) {
@@ -1090,6 +1090,7 @@ function LateUpdate () {
 			if (TDMG_Wire_L_Length < 16) vai *= (Mathf.Sqrt(TDMG_Wire_L_Length)-2)/4;
 			if (vai > 1) vai = 1;
 			else if (vai < 0) vai = 0;
+			if (TDMG_Hook_L_state == 1) vai *= 1.4;
 			mo = Vector3.zero;
 			mo += TDMG_Wire_L_up*Mathf.Sin((i/4.0+1))*vai*0.4*TDMG_Hook_Wire_L_Rand2;
 			mo += TDMG_Wire_L_left*Mathf.Sin((i/4.0+1)*(0.75+TDMG_Hook_Wire_L_Rand*0.5))*vai*0.2*TDMG_Hook_Wire_L_Rand2;
