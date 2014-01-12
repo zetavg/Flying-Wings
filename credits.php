@@ -20,9 +20,25 @@
     ================================================== -->
     <!-- Wrap the rest of the page in another container to center all the content. -->
 
-    <div class="story game-scene" style="background-image: url(/img/btsbg.jpg); background-attachment: fixed; background-size: cover; background-position: 50% 0%; text-align: center; padding-top: 100px; padding-bottom: 100px; text-shadow: 0 0 12px rgba(0,0,0, 1)">
-      <h1 style="color: #dedede;">BTS</h1>
-      <p style="color: #ddd;">　</p>
+    <div class="story game-scene" style="background-image: url(/img/btsbg.jpg); background-attachment: fixed; background-size: cover; background-position: 50% 0%; text-align: center; padding-top: 100px; padding-bottom: 100px; text-shadow: 0 0 12px rgba(0,0,0, 1), 0 0 12px rgba(0,0,0, 1);">
+
+      <h1 style="color: #fff;">Tools &amp; Technique</h1>
+      <p style="color: #eee;">　</p>
+      <ul class="ne" style="color: #eee; list-style-type: disc;">
+        <li>Unity</li>
+        <li>Unity</li>
+        <li>3dsMax</li>
+        <li>Logic Studio</li>
+        <li>Photoshop</li>
+      </ul>
+      <p style="color: #eee;">- - -</p>
+      <ul class="ne" style="color: #eee; list-style-type: disc;">
+        <li>iTween</li>
+      </ul>
+      <p style="color: #eee;">　</p>
+      <p style="color: #eee;">　</p>
+      <h1 style="color: #fff;">BTS</h1>
+      <p style="color: #eee;">　</p>
       <div class="row">
         <div class="col-xs-6 col-md-4">
           <a href="/img/btsimg/2014-01-08_9.45.38.png" target="_blank" class="thumbnail">
