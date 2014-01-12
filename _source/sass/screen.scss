@@ -13,7 +13,11 @@ $developers-in-row: 5;
 
 body {
 	color: #5a5a5a;
-	background-image: url('../img/bbg.jpg')
+	background-image: url('../img/bbg.jpg');
+	// overflow-x: hidden;
+	> * {
+		overflow: hidden;
+	}
 }
 
 a {
@@ -334,15 +338,19 @@ hr {
 
 .footer-container {
 	border-top: 1px solid #444;
-	background-color: #555;
+	background-color: #0f0f0f;
 	padding-top: 10px;
 	padding-bottom: 30px;
 	footer, footer * {
-		color: #000;
+		color: #6f6f6f;
 	}
 	footer {
 
 	}
+}
+
+.footer-comments {
+	background-color: #363636;
 }
 
 /* RESPONSIVE CSS
