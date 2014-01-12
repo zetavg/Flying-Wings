@@ -46,8 +46,8 @@ var levelInsane : TapButton;
 var controlButtons : GameObject[];
 
 //Set Default value for difficulty and gamemode
-var GameMode : GameMode.Defense;
-var level : Level.Easy;
+var GameMode : GameMode = GameMode.Defense;
+var level : Level = Level.Easy;
 
 
 //mode scripts

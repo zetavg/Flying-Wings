@@ -1,6 +1,26 @@
 /*
-	a trial ... = =
-	Game Controller (各 Game Mode 各一)：負責遊戲流程控制、記分、傳送通知、叫 Player 移動攝影機
+Game Controller (各 Game Mode 各一)：負責遊戲流程控制、記分、傳送通知、叫 Player 移動攝影機
+參數：
+	activate：判斷模式是否啟動
+	巨人強度：
+	（以瑪利亞之牆血量100相對來計）
+		Easy：每次扣2，巨人攻擊CD時間五秒。
+		Hard：每次扣4，巨人攻擊CD時間三秒。
+		Insane：每次扣10，巨人攻擊CD時間一秒。（幹好像太難了）
+
+	巨人移動速度：
+		Easy：慢
+		Hard：稍快
+		Insane：稍快（我好仁慈）
+
+	每一波巨人數量（好吧得承認真的沒完過塔防）
+		遞增(X)
+
+		與難度正相關：
+		Easy：四波，每次五隻，每波打完CD時間十秒
+		Hard：五波，每次七隻，每波打完CD時間十秒
+		Insane：十波，每次十二隻，無CD醬。顆。
+
 */
 var activate = false;
 
@@ -8,8 +28,6 @@ var titanAttack : float; //攻擊強度
 var titanNumber : int;	//巨人數量
 var titanSpeed : float;	//巨人移動速度（應該越快月難打吧）
 
-var CountTime : int; //	倒數秒數
-var countState = false;
 
 function Awake()
 {
@@ -17,13 +35,9 @@ function Awake()
 }
 
 function Activate()
-{
-	activate = true;
+{	
+	//var gateLife = 100;
 	
-	var gateLife = 100;
-	
-	CountTime = 180;
-	countState = true;
 
 
 }
@@ -58,19 +72,6 @@ function Failed()
 
 }
 
-function CountDown()
-{
-	if (CountTime > 0)
-	{
-		CountTime -= Time.deltaTime;
-		//Debug.Log(Countdown);
-		//Timer.guiText.text = Countdown.ToString("F1"); 
-	}
-	//else if (Countdown == 0)
-	//load score level here
-
-}
-
 function SetUpLevel(level : Level)
 {
 	switch(level)
@@ -92,10 +93,4 @@ function SetUpLevel(level : Level)
 			titanSpeed = 5;
 			break;
 	}
-}
-
-function Update()
-{
-	if (countState) CountDown();
-
 }
