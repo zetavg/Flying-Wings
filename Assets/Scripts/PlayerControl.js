@@ -88,9 +88,12 @@ private var AimCrosshairR : GameObject;
 // Status
 //////////////////////////////////////////////////////////////////////
 
+public var freeze = false;
+public var disableGUI = false;
 public var on_ground = 0;  // 是否在地上? 0: 否, n>0: 接觸到 n 個地面物件. 由 playerFoot 維護.
 private var pre_on_ground = 0;  // 上一次 update 時是否在地上?
 private var pre_position : Vector3;  // 上一次 update 時的坐標
+private var pre_rotation : Quaternion;  // 上一次 update 時的 rotation
 private var prev_MButton_status : int;
 private var kill_mode = 0;  // 0: not killing, 1: prepare killing, 2: kill
 private var hit_thing = false;  // 是否有接觸到物體?
@@ -129,7 +132,8 @@ private var fixupdate_count = 0;
 
 private var mouse_wheel = 4.0;
 
-public var disableGUI = false;
+private var debug_key_cd = 0;
+
 
 
 // Controls
@@ -156,6 +160,7 @@ for (i=0 ; i<gravity_buffer_rate ; i++) {  // 緩衝區歸零
 function GetInputAngle_y() {
 	if (++gravity_buffer_i_x >= gravity_buffer_rate) gravity_buffer_i_x = 0;
 	var input_acceleration_x = Input.acceleration.x;
+	if (disableGUI) input_acceleration_x = 0;
 	if (input_acceleration_x > 1) input_acceleration_x = 1;
 	else if (input_acceleration_x < -1) input_acceleration_x = -1;
 	InputAngle_x_buffer[gravity_buffer_i_x] = (Mathf.Asin(input_acceleration_x)/(Mathf.PI)-0)*gravitySensitivity;
@@ -175,6 +180,7 @@ function GetInputAngle_y() {
 function GetInputAngle_x() {
 	if (++gravity_buffer_i_y >= gravity_buffer_rate) gravity_buffer_i_y = 0;
 	var input_acceleration_y = Input.acceleration.y;
+	if (disableGUI) input_acceleration_y = -0.7 - rigidbody.velocity.y/100;
 	if (input_acceleration_y > 1) input_acceleration_y = 1;
 	else if (input_acceleration_y < -1) input_acceleration_y = -1;
 	InputAngle_y_buffer[gravity_buffer_i_y] = (Mathf.Asin(-input_acceleration_y)/(Mathf.PI)-0.2)*2*gravitySensitivity;  // 導正
@@ -221,6 +227,19 @@ function SetGUITPixelInsetToCenter(myGUTTexture : GameObject, steps : float) {
 
 // Initialize
 //////////////////////////////////////////////////////////////////////
+
+
+function Awake () {
+
+	// Initialize Variables //
+
+	prev_y = transform.position.y;
+	prev_velocity = rigidbody.velocity;
+	pre_on_ground = 0;
+	pre_position = transform.position;
+	pre_rotation = transform.rotation;
+	hit_thing = false;
+}
 
 function Start () {
 
@@ -309,92 +328,95 @@ function FixedUpdate () {
 	// Basic Controls and Controls SFX
 	//////////////////////////////////////////////////////////////////
 
-	// Use mouse? //
-	var use_mouse_input = false;
-	/*if (Input.mousePosition.x > 0 && Input.mousePosition.y > 0 && Input.mousePosition.x < Screen.width && Input.mousePosition.y < Screen.height) {
-		use_mouse_input = true;
-		Screen.showCursor = false;
-		if(Input.GetMouseButton(0))
-					Debug.Log("Pressed left click.");
-				if(Input.GetMouseButton(1))
-					Debug.Log("Pressed right click.");
-				if(Input.GetMouseButton(2))
-					Debug.Log("Pressed middle click.");
-	}*/
+	if (!freeze) {
+		// Use mouse? //
+		var use_mouse_input = false;
+		/*if (Input.mousePosition.x > 0 && Input.mousePosition.y > 0 && Input.mousePosition.x < Screen.width && Input.mousePosition.y < Screen.height) {
+			use_mouse_input = true;
+			Screen.showCursor = false;
+			if(Input.GetMouseButton(0))
+						Debug.Log("Pressed left click.");
+					if(Input.GetMouseButton(1))
+						Debug.Log("Pressed right click.");
+					if(Input.GetMouseButton(2))
+						Debug.Log("Pressed middle click.");
+		}*/
 
-	// Rotation (Gravity) //
+		// Rotation (Gravity) //
 
-	// Y (left & right)
-	var input_rotate_y = GetInputAngle_y();
-	if (use_mouse_input) {
-		input_rotate_y = (Input.mousePosition.x - (Screen.width/2))/500;
-		if (input_rotate_y > 1) input_rotate_y = 1;
-		else if (input_rotate_y < -1) input_rotate_y = -1;
-	}
-	var rotate_dead_zone = 0.0;
-	if (on_ground) rotate_dead_zone = 0.1;
-	else rotate_dead_zone = 0.04;
-
-	if (input_rotate_y > 0.25) input_rotate_y = 0.25;  // limit
-	else if (input_rotate_y < -0.25) input_rotate_y = -0.25;
-
-	TargetW.transform.localRotation.eulerAngles.y = input_rotate_y*200;
-	MainCamW.transform.localRotation.eulerAngles.y = input_rotate_y*100;
-	MainCam.transform.localRotation.eulerAngles.y = input_rotate_y*-50;
-	// if (on_ground || (TDMG_Hook_L_state != 2  && TDMG_Hook_R_state != 2)) {
-		if (input_rotate_y > rotate_dead_zone) {
-			transform.Rotate(Vector3.up, ((input_rotate_y*characterFlexibility)-rotate_dead_zone)*20);
-		} else if (input_rotate_y < -rotate_dead_zone) {
-			transform.Rotate(Vector3.up, ((input_rotate_y*characterFlexibility)+rotate_dead_zone)*20);
+		// Y (left & right)
+		var input_rotate_y = GetInputAngle_y();
+		if (use_mouse_input) {
+			input_rotate_y = (Input.mousePosition.x - (Screen.width/2))/500;
+			if (input_rotate_y > 1) input_rotate_y = 1;
+			else if (input_rotate_y < -1) input_rotate_y = -1;
 		}
-	// }
+		var rotate_dead_zone = 0.0;
+		if (on_ground) rotate_dead_zone = 0.1;
+		else rotate_dead_zone = 0.04;
 
-	// X (up & down)
-	var input_rotate_x = GetInputAngle_x();
-	if (use_mouse_input) {
-		input_rotate_x = (Input.mousePosition.y - (Screen.height/2))/500;
-		if (input_rotate_x > 1) input_rotate_x = 1;
-		else if (input_rotate_x < -1) input_rotate_x = -1;
-	}
+		if (input_rotate_y > 0.25) input_rotate_y = 0.25;  // limit
+		else if (input_rotate_y < -0.25) input_rotate_y = -0.25;
 
-	if (input_rotate_x > 0.25) input_rotate_x = 0.25;  // limit
-	else if (input_rotate_x < -0.25) input_rotate_x = -0.25;
+		TargetW.transform.localRotation.eulerAngles.y = input_rotate_y*200;
+		MainCamW.transform.localRotation.eulerAngles.y = input_rotate_y*100;
+		MainCam.transform.localRotation.eulerAngles.y = input_rotate_y*-50;
+		// if (on_ground || (TDMG_Hook_L_state != 2  && TDMG_Hook_R_state != 2)) {
+			if (input_rotate_y > rotate_dead_zone) {
+				transform.Rotate(Vector3.up, ((input_rotate_y*characterFlexibility)-rotate_dead_zone)*20);
+			} else if (input_rotate_y < -rotate_dead_zone) {
+				transform.Rotate(Vector3.up, ((input_rotate_y*characterFlexibility)+rotate_dead_zone)*20);
+			}
+		// }
 
-	TargetW.transform.localRotation.eulerAngles.x = -input_rotate_x*200;
-	MainCamW.transform.localRotation.eulerAngles.x = -input_rotate_x*100;
-
-	// Debug
-	//print("x " + input_rotate_x + " y " + input_rotate_y);
-
-	// Forward (Joystick:Thrust Lever) //
-	var input_forward = (ThrustLever.position.y+1)*4;  // 0~8
-	if (use_mouse_input) {
-		input_forward = mouse_wheel;
-		ThrustLever.position.y = (mouse_wheel/4) - 1;
-		if (Input.GetAxis("Mouse ScrollWheel") > 0) mouse_wheel++;
-		if (Input.GetAxis("Mouse ScrollWheel") < 0) mouse_wheel--;
-		if (mouse_wheel > 8) mouse_wheel = 8;
-		else if (mouse_wheel < 0) mouse_wheel = 0;
-	}
-	if (input_forward < 1) input_forward = 0;
-	if (on_ground) {  // 地上走
-		if (input_forward == 0 && Mathf.Abs(input_rotate_y) > 0.10) {  // 禁止在地面定點旋轉，若要旋轉，則強制加力前進
-			input_forward = 0.9 + Mathf.Abs(input_rotate_y)*2;
+		// X (up & down)
+		var input_rotate_x = GetInputAngle_x();
+		if (use_mouse_input) {
+			input_rotate_x = (Input.mousePosition.y - (Screen.height/2))/500;
+			if (input_rotate_x > 1) input_rotate_x = 1;
+			else if (input_rotate_x < -1) input_rotate_x = -1;
 		}
-		rigidbody.AddForce(transform.forward * ((input_forward*characterSpeed)-transform.InverseTransformDirection(rigidbody.velocity).z), ForceMode.VelocityChange);  // 前進
-		rigidbody.AddForce((-1) * transform.right * (transform.InverseTransformDirection(rigidbody.velocity).x), ForceMode.VelocityChange);  // 消除左右滑動
-		if (!pre_on_ground) {
-			audio.PlayOneShot(Land_sound, 1);  // 落地音效
-			EffectsEmitter_LandingDust.particleEmitter.Emit();
+
+		if (input_rotate_x > 0.25) input_rotate_x = 0.25;  // limit
+		else if (input_rotate_x < -0.25) input_rotate_x = -0.25;
+
+		TargetW.transform.localRotation.eulerAngles.x = -input_rotate_x*200;
+		MainCamW.transform.localRotation.eulerAngles.x = -input_rotate_x*100;
+
+		// Debug
+		//print("x " + input_rotate_x + " y " + input_rotate_y);
+
+		// Forward (Joystick:Thrust Lever) //
+		var input_forward = (ThrustLever.position.y+1)*4;  // 0~8
+		if (use_mouse_input) {
+			input_forward = mouse_wheel;
+			ThrustLever.position.y = (mouse_wheel/4) - 1;
+			if (Input.GetAxis("Mouse ScrollWheel") > 0) mouse_wheel++;
+			if (Input.GetAxis("Mouse ScrollWheel") < 0) mouse_wheel--;
+			if (mouse_wheel > 8) mouse_wheel = 8;
+			else if (mouse_wheel < 0) mouse_wheel = 0;
 		}
-		if (TDMG_Jet.GetComponent(AudioSource).volume > 0) TDMG_Jet.GetComponent(AudioSource).volume -= 0.05;  // 關閉噴氣音效
-	} else {  // 天上飛
-		rigidbody.AddForce(transform.forward * ((input_forward*characterSpeed)*1.6-transform.InverseTransformDirection(rigidbody.velocity).z) /16, ForceMode.VelocityChange);  // 前進, x1.6 /16
-		rigidbody.AddForce((-1) * transform.right * (transform.InverseTransformDirection(rigidbody.velocity).x) /16, ForceMode.VelocityChange);  // 消除左右移動, /16
-		if (!hit_thing) rigidbody.AddForce(transform.up * input_forward*0.6, ForceMode.Acceleration);  // 推升
+		if (input_forward < 1) input_forward = 0;
+		if (disableGUI) input_forward = 4;
+		if (on_ground) {  // 地上走
+			if (input_forward == 0 && Mathf.Abs(input_rotate_y) > 0.10) {  // 禁止在地面定點旋轉，若要旋轉，則強制加力前進
+				input_forward = 0.9 + Mathf.Abs(input_rotate_y)*2;
+			}
+			rigidbody.AddForce(transform.forward * ((input_forward*characterSpeed)-transform.InverseTransformDirection(rigidbody.velocity).z), ForceMode.VelocityChange);  // 前進
+			rigidbody.AddForce((-1) * transform.right * (transform.InverseTransformDirection(rigidbody.velocity).x), ForceMode.VelocityChange);  // 消除左右滑動
+			if (!pre_on_ground) {
+				audio.PlayOneShot(Land_sound, 1);  // 落地音效
+				EffectsEmitter_LandingDust.particleEmitter.Emit();
+			}
+			if (TDMG_Jet.GetComponent(AudioSource).volume > 0) TDMG_Jet.GetComponent(AudioSource).volume -= 0.05;  // 關閉噴氣音效
+		} else {  // 天上飛
+			rigidbody.AddForce(transform.forward * ((input_forward*characterSpeed)*1.6-transform.InverseTransformDirection(rigidbody.velocity).z) /16, ForceMode.VelocityChange);  // 前進, x1.6 /16
+			rigidbody.AddForce((-1) * transform.right * (transform.InverseTransformDirection(rigidbody.velocity).x) /16, ForceMode.VelocityChange);  // 消除左右移動, /16
+			if (!hit_thing) rigidbody.AddForce(transform.up * input_forward*0.6, ForceMode.Acceleration);  // 推升
 
-		TDMG_Jet.GetComponent(AudioSource).volume += (input_forward/100 - TDMG_Jet.GetComponent(AudioSource).volume)/10;
+			TDMG_Jet.GetComponent(AudioSource).volume += (input_forward/100 - TDMG_Jet.GetComponent(AudioSource).volume)/10;
 
+		}
 	}
 
 	// Debug
@@ -745,86 +767,89 @@ function FixedUpdate () {
 		GUIAnimateGear.GetComponent(GUITextureHelper).LRotateV( tdmg_pull_to_v/2 );
 	}
 
-	if (MButton_status == 0 && (MButton.tapped || (use_mouse_input && Input.GetMouseButton(0)))) {  // Fire!
-		TDMG.audio.PlayOneShot(TDMG_Fire_sound, 1);
-		TDMG_fire_start_time = Time.time;
-		if (tdmg_use_hook_l) {
-			TDMG_Attacher_L.transform.position = TDMG_Aimer_L.transform.position;  // 將 TDMG_Attacher 移至擊中點
-			TDMG_Attacher_L.transform.parent = tdmg_aimed_trans_l;  // 將 TDMG_Attacher 的 parent 設為被擊中物件，等同將 TDMG_Attacher attach 到被擊中物件上
-			TDMG_Hook_L_state = 3;
-		}
+	if (!freeze && !disableGUI) {
 
-		if (tdmg_use_hook_r) {
-			TDMG_Attacher_R.transform.position = TDMG_Aimer_R.transform.position;  // 將 TDMG_Attacher 移至擊中點
-			TDMG_Attacher_R.transform.parent = tdmg_aimed_trans_r;  // 將 TDMG_Attacher 的 parent 設為被擊中物件，等同將 TDMG_Attacher attach 到被擊中物件上
-			TDMG_Hook_R_state = 3;
-		}
-
-	}
-
-	if (MButton_status == 1 && (MButton.held || (use_mouse_input && Input.GetMouseButton(0)))) {  // Pull!
-
-		// Force
-		if (!hit_thing) rigidbody.AddForce(transform.up * input_forward*0.4, ForceMode.Acceleration);  // 推升
-
-		// Pull
-		if ((transform.position - TDMG_pull_target).magnitude > 0.1) {
-			var tdmg_pull_direction = (TDMG_pull_target - TDMG.transform.position).normalized;
-			var tdmg_pull_fgain = input_forward - 4;
-			if (tdmg_pull_fgain < 0) tdmg_pull_fgain = 0;
-			if (tdmg_pull_to_v < 0) rigidbody.AddForce(Vector3.Project(-rigidbody.velocity, (TDMG.transform.position - TDMG_pull_target).normalized) + (TDMG.transform.position - TDMG_pull_target).normalized*-1, ForceMode.VelocityChange);
-			rigidbody.AddForce(tdmg_pull_direction*(16-tdmg_pull_to_v)/12, ForceMode.VelocityChange);  // 向繩索方向加力
-
-			if (!(TDMG_Hook_L_state == 2 && TDMG_Attacher_L.transform.root.gameObject.tag == "Titan") && !(TDMG_Hook_R_state == 2 && TDMG_Attacher_R.transform.root.gameObject.tag == "Titan")) {
-				rigidbody.AddForce(Vector3.up*(tdmg_pull_direction.y)*(16+tdmg_pull_fgain-tdmg_pull_to_v)/12, ForceMode.VelocityChange);  // y 軸輔助
-			} else {
-				rigidbody.AddForce(Vector3.up*(tdmg_pull_direction.y)*(16+tdmg_pull_fgain-tdmg_pull_to_v)/12, ForceMode.VelocityChange);  // y 軸輔助
+		if (MButton_status == 0 && (MButton.tapped || (use_mouse_input && Input.GetMouseButton(0)))) {  // Fire!
+			TDMG.audio.PlayOneShot(TDMG_Fire_sound, 1);
+			TDMG_fire_start_time = Time.time;
+			if (tdmg_use_hook_l) {
+				TDMG_Attacher_L.transform.position = TDMG_Aimer_L.transform.position;  // 將 TDMG_Attacher 移至擊中點
+				TDMG_Attacher_L.transform.parent = tdmg_aimed_trans_l;  // 將 TDMG_Attacher 的 parent 設為被擊中物件，等同將 TDMG_Attacher attach 到被擊中物件上
+				TDMG_Hook_L_state = 3;
 			}
 
-		/*
-			var tdmg_wire_speed_d : float;
-			if (tdmg_pull_to_v < 0) tdmg_wire_speed_d = (12 + Vector3.Project(rigidbody.velocity, (TDMG_pull_target - transform.position).normalized).magnitude);
-			else tdmg_wire_speed_d = (12 - Vector3.Project(rigidbody.velocity, (TDMG_pull_target - transform.position).normalized).magnitude);
-			print(tdmg_wire_speed_d);
-			if (tdmg_wire_speed_d < 0) tdmg_wire_speed_d = 0;
-			if (((pre_position.y-TDMG_pull_target.y) > (transform.position.y - ((TDMG_Hook_LC.transform.position + TDMG_Hook_RC.transform.position)/2).y) && (transform.position.y-TDMG_pull_target.y) < (transform.position.y - ((TDMG_Hook_LC.transform.position + TDMG_Hook_RC.transform.position)/2).y)) || ((pre_position.y-TDMG_pull_target.y) < (transform.position.y - ((TDMG_Hook_LC.transform.position + TDMG_Hook_RC.transform.position)/2).y) && (transform.position.y-TDMG_pull_target.y) > (transform.position.y - ((TDMG_Hook_LC.transform.position + TDMG_Hook_RC.transform.position)/2).y)) || ((TDMG_pull_target - (TDMG_Hook_LC.transform.position + TDMG_Hook_RC.transform.position)/2).magnitude < 0.1)) {
-				TDMG_pull_y_cd = 40;
-				TDMG_pull_y_count++;
+			if (tdmg_use_hook_r) {
+				TDMG_Attacher_R.transform.position = TDMG_Aimer_R.transform.position;  // 將 TDMG_Attacher 移至擊中點
+				TDMG_Attacher_R.transform.parent = tdmg_aimed_trans_r;  // 將 TDMG_Attacher 的 parent 設為被擊中物件，等同將 TDMG_Attacher attach 到被擊中物件上
+				TDMG_Hook_R_state = 3;
 			}
-			if (TDMG_pull_y_count < 2) {
-				if (!TDMG_pull_y_cd) {
-					rigidbody.AddForce((TDMG_pull_target - (TDMG_Hook_LC.transform.position + TDMG_Hook_RC.transform.position)/2).normalized * tdmg_wire_speed_d, ForceMode.VelocityChange);  // 向繩索方向加力
+
+		}
+
+		if (MButton_status == 1 && (MButton.held || (use_mouse_input && Input.GetMouseButton(0)))) {  // Pull!
+
+			// Force
+			if (!hit_thing) rigidbody.AddForce(transform.up * input_forward*0.4, ForceMode.Acceleration);  // 推升
+
+			// Pull
+			if ((transform.position - TDMG_pull_target).magnitude > 0.1) {
+				var tdmg_pull_direction = (TDMG_pull_target - TDMG.transform.position).normalized;
+				var tdmg_pull_fgain = input_forward - 4;
+				if (tdmg_pull_fgain < 0) tdmg_pull_fgain = 0;
+				if (tdmg_pull_to_v < 0) rigidbody.AddForce(Vector3.Project(-rigidbody.velocity, (TDMG.transform.position - TDMG_pull_target).normalized) + (TDMG.transform.position - TDMG_pull_target).normalized*-1, ForceMode.VelocityChange);
+				rigidbody.AddForce(tdmg_pull_direction*(16-tdmg_pull_to_v)/12, ForceMode.VelocityChange);  // 向繩索方向加力
+
+				if (!(TDMG_Hook_L_state == 2 && TDMG_Attacher_L.transform.root.gameObject.tag == "Titan") && !(TDMG_Hook_R_state == 2 && TDMG_Attacher_R.transform.root.gameObject.tag == "Titan")) {
+					rigidbody.AddForce(Vector3.up*(tdmg_pull_direction.y)*(16+tdmg_pull_fgain-tdmg_pull_to_v)/12, ForceMode.VelocityChange);  // y 軸輔助
 				} else {
-					rigidbody.AddForce(((TDMG_pull_target - (TDMG_Hook_LC.transform.position + TDMG_Hook_RC.transform.position)/2).normalized - Vector3.up*(TDMG_pull_target - (TDMG_Hook_LC.transform.position + TDMG_Hook_RC.transform.position)/2).normalized.y) * tdmg_wire_speed_d, ForceMode.VelocityChange);  // 向繩索方向加力
-					TDMG_pull_y_cd--;
+					rigidbody.AddForce(Vector3.up*(tdmg_pull_direction.y)*(16+tdmg_pull_fgain-tdmg_pull_to_v)/12, ForceMode.VelocityChange);  // y 軸輔助
 				}
-			} else {  // 避免出現 Y 軸簡諧運動
-				rigidbody.AddForce(((TDMG_pull_target - (TDMG_Hook_LC.transform.position + TDMG_Hook_RC.transform.position)/2).normalized - Vector3.up*(TDMG_pull_target - (TDMG_Hook_LC.transform.position + TDMG_Hook_RC.transform.position)/2).normalized.y) * tdmg_wire_speed_d, ForceMode.VelocityChange);  // 向繩索方向加力
-				var yfa = (TDMG_pull_target.y - ((TDMG_Hook_LC.transform.position + TDMG_Hook_RC.transform.position)/2).y)/3;
-				yfa -= rigidbody.velocity.y/12;
-				rigidbody.AddForce(transform.up*(yfa), ForceMode.VelocityChange);
-			}*/
 
-			TDMG_Gear.GetComponent(AudioSource).volume += (tdmg_pull_to_v/10 - (TDMG_Gear.GetComponent(AudioSource).volume))/10;  // 音效
+			/*
+				var tdmg_wire_speed_d : float;
+				if (tdmg_pull_to_v < 0) tdmg_wire_speed_d = (12 + Vector3.Project(rigidbody.velocity, (TDMG_pull_target - transform.position).normalized).magnitude);
+				else tdmg_wire_speed_d = (12 - Vector3.Project(rigidbody.velocity, (TDMG_pull_target - transform.position).normalized).magnitude);
+				print(tdmg_wire_speed_d);
+				if (tdmg_wire_speed_d < 0) tdmg_wire_speed_d = 0;
+				if (((pre_position.y-TDMG_pull_target.y) > (transform.position.y - ((TDMG_Hook_LC.transform.position + TDMG_Hook_RC.transform.position)/2).y) && (transform.position.y-TDMG_pull_target.y) < (transform.position.y - ((TDMG_Hook_LC.transform.position + TDMG_Hook_RC.transform.position)/2).y)) || ((pre_position.y-TDMG_pull_target.y) < (transform.position.y - ((TDMG_Hook_LC.transform.position + TDMG_Hook_RC.transform.position)/2).y) && (transform.position.y-TDMG_pull_target.y) > (transform.position.y - ((TDMG_Hook_LC.transform.position + TDMG_Hook_RC.transform.position)/2).y)) || ((TDMG_pull_target - (TDMG_Hook_LC.transform.position + TDMG_Hook_RC.transform.position)/2).magnitude < 0.1)) {
+					TDMG_pull_y_cd = 40;
+					TDMG_pull_y_count++;
+				}
+				if (TDMG_pull_y_count < 2) {
+					if (!TDMG_pull_y_cd) {
+						rigidbody.AddForce((TDMG_pull_target - (TDMG_Hook_LC.transform.position + TDMG_Hook_RC.transform.position)/2).normalized * tdmg_wire_speed_d, ForceMode.VelocityChange);  // 向繩索方向加力
+					} else {
+						rigidbody.AddForce(((TDMG_pull_target - (TDMG_Hook_LC.transform.position + TDMG_Hook_RC.transform.position)/2).normalized - Vector3.up*(TDMG_pull_target - (TDMG_Hook_LC.transform.position + TDMG_Hook_RC.transform.position)/2).normalized.y) * tdmg_wire_speed_d, ForceMode.VelocityChange);  // 向繩索方向加力
+						TDMG_pull_y_cd--;
+					}
+				} else {  // 避免出現 Y 軸簡諧運動
+					rigidbody.AddForce(((TDMG_pull_target - (TDMG_Hook_LC.transform.position + TDMG_Hook_RC.transform.position)/2).normalized - Vector3.up*(TDMG_pull_target - (TDMG_Hook_LC.transform.position + TDMG_Hook_RC.transform.position)/2).normalized.y) * tdmg_wire_speed_d, ForceMode.VelocityChange);  // 向繩索方向加力
+					var yfa = (TDMG_pull_target.y - ((TDMG_Hook_LC.transform.position + TDMG_Hook_RC.transform.position)/2).y)/3;
+					yfa -= rigidbody.velocity.y/12;
+					rigidbody.AddForce(transform.up*(yfa), ForceMode.VelocityChange);
+				}*/
+
+				TDMG_Gear.GetComponent(AudioSource).volume += (tdmg_pull_to_v/10 - (TDMG_Gear.GetComponent(AudioSource).volume))/10;  // 音效
+			}
+		} else {
+			TDMG_pull_y_cd = 0;
+			TDMG_pull_y_count = 0;
+			TDMG_Gear.GetComponent(AudioSource).volume = 0;
 		}
-	} else {
-		TDMG_pull_y_cd = 0;
-		TDMG_pull_y_count = 0;
-		TDMG_Gear.GetComponent(AudioSource).volume = 0;
-	}
 
-	if (HoldButton.tapped || (use_mouse_input && Input.GetMouseButtonDown(2))) {  // Hold!
-		TDMG_hold_dist = (TDMG.transform.position - TDMG_pull_target).magnitude;
-	}
-	if (HoldButton.held || (use_mouse_input && Input.GetMouseButton(2))) {  // Hold!
-		if ((TDMG.transform.position - TDMG_pull_target).magnitude > TDMG_hold_dist) {
-			rigidbody.AddForce(Vector3.Project(-rigidbody.velocity, (TDMG.transform.position - TDMG_pull_target).normalized) + (TDMG.transform.position - TDMG_pull_target).normalized*-1, ForceMode.VelocityChange);
+		if (HoldButton.tapped || (use_mouse_input && Input.GetMouseButtonDown(2))) {  // Hold!
+			TDMG_hold_dist = (TDMG.transform.position - TDMG_pull_target).magnitude;
 		}
-	}
+		if (HoldButton.held || (use_mouse_input && Input.GetMouseButton(2))) {  // Hold!
+			if ((TDMG.transform.position - TDMG_pull_target).magnitude > TDMG_hold_dist) {
+				rigidbody.AddForce(Vector3.Project(-rigidbody.velocity, (TDMG.transform.position - TDMG_pull_target).normalized) + (TDMG.transform.position - TDMG_pull_target).normalized*-1, ForceMode.VelocityChange);
+			}
+		}
 
-	if (ReleaseButton.tapped || (use_mouse_input && Input.GetMouseButtonDown(1))) {  // Release!
-		if (TDMG_Hook_L_state == 2) TDMG_Hook_L_state = 1;
-		if (TDMG_Hook_R_state == 2) TDMG_Hook_R_state = 1;
+		if (ReleaseButton.tapped || (use_mouse_input && Input.GetMouseButtonDown(1))) {  // Release!
+			if (TDMG_Hook_L_state == 2) TDMG_Hook_L_state = 1;
+			if (TDMG_Hook_R_state == 2) TDMG_Hook_R_state = 1;
+		}
 	}
 
 	// Hook Behavior //
@@ -966,15 +991,27 @@ function FixedUpdate () {
 	}
 
 
-
 	// Update var
 	//////////////////////////////////////////////////////////////////
 
+	if (freeze) {
+		transform.position = pre_position;
+		transform.rotation = pre_rotation;
+		rigidbody.velocity = Vector3.zero;
+	} else {
+		prev_y = transform.position.y;
+		prev_velocity = rigidbody.velocity;
+		pre_on_ground = on_ground;
+		pre_position = transform.position;
+		pre_rotation = transform.rotation;
+	}
+
 	fixupdate_count++;
 	if (fixupdate_count > 1000) fixupdate_count = 0;
-	prev_y = transform.position.y;
-	prev_velocity = rigidbody.velocity;
+
 	prev_MButton_status = MButton_status;
+
+	hit_thing = false;
 
 	if (TDMG_aim_scan_act) TDMG_aim_scan_preact = true;
 	else TDMG_aim_scan_preact = false;
@@ -983,9 +1020,6 @@ function FixedUpdate () {
 	if (kill_cd) kill_cd--;
 	if (kill_mode == 2) kill_cd = 50;
 	kill_mode = 0;
-	pre_on_ground = on_ground;
-	pre_position = transform.position;
-	hit_thing = false;
 
 	// 被動避免失速
 	if(rigidbody.velocity.magnitude > MAX_SPEED) {
@@ -1000,6 +1034,26 @@ function FixedUpdate () {
 		transform.position.y = -MIN_HEIGHT*2;
 		rigidbody.velocity = Vector3.zero;
 	}
+
+
+	// Debug
+	//////////////////////////////////////////////////////////////////
+	if (debug_key_cd) {
+		debug_key_cd--;
+	} else {
+		if (Input.GetKeyUp(KeyCode.F)) {
+			print("freeze");
+			debug_key_cd = 10;
+			if (!freeze) Freeze();
+			else UnFreeze();
+		} else if (Input.GetKeyUp(KeyCode.D)) {
+			print("freeze");
+			debug_key_cd = 10;
+			if (!disableGUI) DisableGUI();
+			else EnableGUI();
+		}
+	}
+
 }
 
 
@@ -1115,4 +1169,20 @@ function OnCollisionStay(what : Collision) {
 	}
 }
 
+function Freeze() {
+	freeze = true;
+}
 
+function UnFreeze() {
+	freeze = false;
+	rigidbody.velocity = prev_velocity;
+}
+
+function DisableGUI() {
+	disableGUI = true;
+}
+
+
+function EnableGUI() {
+	disableGUI = false;
+}

@@ -52930,11 +52930,12 @@ MonoBehaviour:
   playerName: 
   characterSpeed: 1
   characterFlexibility: 1
+  freeze: 0
+  disableGUI: 0
   on_ground: 0
   prev_y: 0
   prev_velocity: {x: 0, y: 0, z: 0}
   TDMG_fire_start_time: 0
-  disableGUI: 0
   gravitySensitivity: 1
   TDMG_Fire_sound: {fileID: 8300000, guid: 208fd5c2510a24fb99458441f94b45ea, type: 3}
   TDMG_Hooked_sound: {fileID: 8300000, guid: feacf5aac7ff34bf8b187213f28a09d4, type: 3}
