@@ -59,7 +59,7 @@
                 </li>
               </ul>
               <ul class="nav navbar-nav navbar-right">
-                <li><a href="/cs/">Contact</a></li>
+                <li><a href="https://www.facebook.com/flyingWingsGame">Facebook</a></li>
                 <li><a href="/credits/">Credits</a></li>
               </ul>
             </div>

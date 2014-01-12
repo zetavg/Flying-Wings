@@ -25,7 +25,8 @@
             <p>A [ NTUST Mobile Game Design ] Project. 此為向「進撃の巨人」高度致敬之作 (業)，絕無侵權之意。</p>
           </div>
           <div class="col-lg-2">
-            <p class="pull-right"><a href="#">Back to top</a></p>
+            <iframe src="//www.facebook.com/plugins/like.php?href=https%3A%2F%2Fwww.facebook.com%2FflyingWingsGame%2F&amp;width&amp;layout=button_count&amp;action=like&amp;show_faces=false&amp;share=true&amp;height=21&amp;appId=762384840457498" scrolling="no" frameborder="0" style="border:none; overflow:hidden; height:21px;" allowTransparency="true"></iframe>
+            <!-- p class="pull-right"><a href="#">Back to top</a></p -->
           </div>
         <p>　</p>
         </div>
