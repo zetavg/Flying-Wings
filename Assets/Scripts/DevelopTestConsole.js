@@ -3,6 +3,12 @@
 var status = "Ready.";
 var FBisInit = false;
 var FBisLogin = false;
+var FBUserID : String;
+var FBUserProfile = new JSONObject();
+var FBUserName : String;
+var FBProfilePic : Texture2D;
+var UserID : String;
+var UserName : String;
 var buttonHeight = 60;
 var mainWindowWidth = Screen.width - 30;
 var mainWindowFullWidth = Screen.width;
@@ -18,10 +24,55 @@ private function Button(label : String) {
 
 function Start () {
 
+
 }
 
 function OnInitComplete () {
 	FBisInit = true;
+	LoadFBUserData();
+}
+
+function OnGotFBName (response : FBResult) {
+	print(response);
+	FBUserName = response.Text;
+}
+
+function LoadFBUserData () {
+	if (FB.IsLoggedIn) {
+
+		FBisLogin = true;
+		FBUserID = FB.UserId;
+		if (!FBUserID) FBUserID = "0";
+		var ppurl = "https" + "://graph.facebook.com/"+ FBUserID +"/picture";
+		ppurl += "?access_token=" + FB.AccessToken;
+		var ppwww = WWW(ppurl);
+		yield ppwww;
+		FBProfilePic = ppwww.texture;
+		gameObject.Find("/PPhoto").guiTexture.texture = FBProfilePic;
+
+
+		var fpurl = "https" + "://graph.facebook.com/"+ FBUserID;
+		fpurl += "?access_token=" + FB.AccessToken;
+		var fpwww = WWW(fpurl);
+		yield fpwww;
+		FBUserProfile = new JSONObject(fpwww.data, -2, false, false);
+		FBUserName = FBUserProfile['first_name'].str;
+
+		var sform = new WWWForm();
+		sform.AddField("data", FBUserID);
+		sform.AddField("FBUserName", FBUserName);
+		sform.AddField("idf_hash", ServerConfig.MakeIdfHash(FBUserID));
+		var swww = WWW(ServerConfig.GetUserByFBIDURL, sform);
+		yield swww;
+		if (swww.error) {
+			status = "SWWW ERROR: " + swww.error;
+		} else {
+			status = "SWWW REPLY: " + swww.data;
+		}
+
+	} else {
+		FBisLogin = false;
+	}
 }
 
 function OnHideUnity (isGameShown : boolean) {
@@ -71,6 +122,25 @@ function OnGUI () {
 
 	GUILayout.BeginHorizontal();
 
+	GUI.enabled = false;
+	if (Button("FBONAME " + FBUserName))
+	{
+	}
+
+	GUI.enabled = FB.IsLoggedIn;
+	if (Button("F"))
+	{
+	}
+
+	GUI.enabled = FB.IsLoggedIn;
+	if (Button("F"))
+	{
+	}
+
+	GUILayout.EndHorizontal();
+
+	GUILayout.BeginHorizontal();
+
 	GUI.enabled = FBisInit;
 	if (Button("FBLogin"))
 	{
@@ -83,6 +153,13 @@ function OnGUI () {
 	{
 		FB.Logout();
 		status = "FBLogout called";
+	}
+
+	GUI.enabled = FB.IsLoggedIn;
+	if (Button("LoadFBUserData"))
+	{
+		status = "Load FB User Data With " + FBUserID;
+		LoadFBUserData();
 	}
 
 	GUILayout.EndHorizontal();
