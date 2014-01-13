@@ -30,10 +30,13 @@ var countState = false;
 var killNumber : int = 0;
 
 var instantiateTitan = false;
+var titanKilled = false;
 
 var score : GUIText;
 
 var titan : GameObject;
+
+var _level : Level;
 
 //var mother : GameObject;
 //mother = GameObject.Find("SceneController");
@@ -54,6 +57,8 @@ function Activate(level : Level)
 
 	SetUpLevel(level);
 
+	_level = level;
+
 	TitanGo();	
 
 
@@ -61,18 +66,7 @@ function Activate(level : Level)
 
 function SetUpLevel(level : Level)
 {
-	switch(level)
-	{
-		case Level.Easy:
-			countTime = 90;
-			break;
-		case Level.Hard:
-			countTime = 180;
-			break;
-		case Level.Insane:
-			countTime = 300;
-			break;
-	}
+	countTime = 45;
 }
 
 //Instantiate Titan in random autowaypoint
@@ -94,11 +88,23 @@ function Update()
 		instantiateTitan = false;
 	}
 
-	/*
-	if (Titan got killed)
+	
+	if (titanKilled) {
 		killNumber++;
 		instantiateTitan = true;
-	*/
+		
+		switch(_level){
+			case Level.Easy:
+				countTime += 20;
+				break;
+			case Level.Hard:
+				countTime += 10;
+				break;
+			case Level.Insane:
+				countTime += 5;
+		}
+	}
+	
 }
 
 function CountDown()

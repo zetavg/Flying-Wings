@@ -121,8 +121,8 @@ function Update () {
 			Application.LoadLevel("Title");
 		}
 		
-		if (play.tapped || play.held || play.released) {
-			//Load Level Here and Setup up Objects According to activated mode
+		//Load Level Here and Setup up Objects when play button pressed
+		if (play.tapped || play.held || play.released) {		
 			
 			Application.LoadLevel("City");
 			//或者load「載入中」畫面。
