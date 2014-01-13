@@ -1,7 +1,9 @@
 /*
 Game Controller (各 Game Mode 各一)：負責遊戲流程控制、記分、傳送通知、叫 Player 移動攝影機
 參數：
-	activate：判斷模式是否啟動
+	<del>activate：判斷模式是否啟動</del>no need anymore
+
+
 	巨人強度：
 	（以瑪利亞之牆血量100相對來計）
 		Easy：每次扣2，巨人攻擊CD時間五秒。
@@ -21,8 +23,13 @@ Game Controller (各 Game Mode 各一)：負責遊戲流程控制、記分、傳
 		Hard：五波，每次七隻，每波打完CD時間十秒
 		Insane：十波，每次十二隻，無CD醬。顆。
 
+計分標準：
+	時間、城牆血量
+
+
 */
-var activate = false;
+
+//var activate = false;
 
 var titanAttack : float; //攻擊強度
 var titanNumber : int;	//巨人數量
@@ -47,6 +54,7 @@ function StartAnime()
 {
 	//主角由某個位置跑動到門下守備位置的動畫
 	//鏡頭繞主角而旋轉拉遠拉近之類的。
+	//理想啦。
 }
 
 
@@ -64,7 +72,8 @@ function Failed()
 		//popup 選單，Replay/Menu等等
 
 
-	activate = false;
+	//這行應該不用了。
+	//activate = false;
 
 	//切到計分scene
 	//......

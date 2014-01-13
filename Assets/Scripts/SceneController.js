@@ -124,8 +124,10 @@ function Update () {
 		if (play.tapped || play.held || play.released) {
 			//Load Level Here and Setup up Objects According to activated mode
 			
-			//Application.LoadLevel("City");
+			Application.LoadLevel("City");
 			//或者load「載入中」畫面。
+
+			Wait(10);
 
 			//用gameMode參數來啟動模式
 			switch(gameMode)
@@ -187,4 +189,8 @@ function InactivateLevelTextures() {
 
 function ByeeeeMi() {
 	Destroy(gameObject);
+}
+
+function Wait(t : int) {
+	yield WaitForSeconds(t);
 }

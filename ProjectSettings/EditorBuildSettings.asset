@@ -17,3 +17,5 @@ EditorBuildSettings:
     path: Assets/Scenes/Title.unity
   - enabled: 1
     path: Assets/Scenes/stage.unity
+  - enabled: 1
+    path: Assets/Scenes/Score.unity
