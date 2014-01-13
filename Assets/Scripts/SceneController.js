@@ -133,8 +133,7 @@ function Update () {
 			switch(gameMode)
 			{
 				case GameMode.Defense:
-					DefenseMd.SetUpLevel(level);
-					DefenseMd.Activate();
+					DefenseMd.Activate(level);
 					break;
 
 				case GameMode.Killing:	
@@ -142,8 +141,7 @@ function Update () {
 					break;	
 
 				case GameMode.TimeAttack:
-					TimeMd.SetUpLevel(level);
-					TimeMd.Activate();
+					TimeMd.Activate(level);
 					break;
 			}
 

@@ -958,7 +958,10 @@ MonoBehaviour:
   countTime: 0
   countState: 0
   killNumber: 0
+  instantiateTitan: 0
   score: {fileID: 0}
+  titan: {fileID: 100062, guid: 003719265abdc4b1b831d37c2436c3dc, type: 2}
+  AutoWayPoints: []
 --- !u!1 &1219992352
 GameObject:
   m_ObjectHideFlags: 0

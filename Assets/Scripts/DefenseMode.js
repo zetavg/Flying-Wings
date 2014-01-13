@@ -41,9 +41,10 @@ function Awake()
 	DontDestroyOnLoad(gameObject);
 }
 
-function Activate()
+function Activate(level : Level)
 {	
 	//var gateLife = 100;
+	SetUpLevel(level);
 	
 
 

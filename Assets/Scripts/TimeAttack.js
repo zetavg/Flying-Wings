@@ -29,12 +29,17 @@ var countState = false;
 
 var killNumber : int = 0;
 
+var instantiateTitan = false;
+
 var score : GUIText;
-score = GameObject.Find("Score").GetComponent(GUIText);
-score.gameObject.SetActive(false);
+
+var titan : GameObject;
 
 //var mother : GameObject;
 //mother = GameObject.Find("SceneController");
+
+/* 巨人產生的位置 */
+var AutoWayPoints : AutoWayPoint[];
 
 
 function Awake()
@@ -42,28 +47,58 @@ function Awake()
 	DontDestroyOnLoad(gameObject);
 }
 
-function Start()
-{
-	//Set Default Playing Time.
-	countTime = 15;
-}
-
-function Activate()
+function Activate(level : Level)
 {
 	//intantiate objects here
 	countState = true;
+
+	SetUpLevel(level);
+
+	TitanGo();	
+
 
 }
 
 function SetUpLevel(level : Level)
 {
+	switch(level)
+	{
+		case Level.Easy:
+			countTime = 90;
+			break;
+		case Level.Hard:
+			countTime = 180;
+			break;
+		case Level.Insane:
+			countTime = 300;
+			break;
+	}
+}
 
+//Instantiate Titan in random autowaypoint
+function TitanGo(){
+	var titanPos = AutoWayPoints[Random.Range(0, AutoWayPoints.length-1)].gameObject.transform.position;
+	Instantiate(titan, titanPos, transform.rotation);
 }
 
 function Update()
 {
 	if (countState) CountDown();
+	
 
+	AutoWayPoints = FindObjectsOfType(AutoWayPoint);
+
+	if (instantiateTitan) 
+	{
+		TitanGo();
+		instantiateTitan = false;
+	}
+
+	/*
+	if (Titan got killed)
+		killNumber++;
+		instantiateTitan = true;
+	*/
 }
 
 function CountDown()
