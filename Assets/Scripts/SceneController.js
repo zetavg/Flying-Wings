@@ -46,7 +46,7 @@ var levelInsane : TapButton;
 var controlButtons : GameObject[];
 
 //Set Default value for difficulty and gamemode
-var GameMode : GameMode = GameMode.Defense;
+var gameMode : GameMode = GameMode.Defense;
 var level : Level = Level.Easy;
 
 
@@ -57,7 +57,7 @@ DefenseMd = GameObject.Find("DefenseMode").GetComponent(DefenseMode);
 var TimeMd : TimeAttack;
 TimeMd = GameObject.Find("TimeAttack").GetComponent(TimeAttack);
 
-
+//var KillMd : Killing;
 
 function Awake()
 {
@@ -67,6 +67,12 @@ function Awake()
 
 function Start () {
 	InactivateAllContents();
+
+	//default choose EASY level
+	levelEasy.guiTexture.texture = levelEasy.held_texture[0];
+
+	//default play defense mode
+	defense_about.SetActive(true);
 }
 
 function Update () {
@@ -79,8 +85,9 @@ function Update () {
 		defense_about.SetActive(true);
 
 		//啟用Defense模式
-		InactivateAllModes();
-		DefenseMd.activate = true;
+		//InactivateAllModes();
+		//DefenseMd.activate = true;
+		gameMode = GameMode.Defense;
 	}
 
 	if (kill.tapped) {
@@ -89,11 +96,20 @@ function Update () {
 		kill_about.SetActive(true);
 
 		//啟用TimeAttack模式
-		InactivateAllModes();
-		TimeMd.activate = true;
+		//InactivateAllModes();
+		//TimeMd.activate = true;
+		gameMode = GameMode.Killing;
+	}
+
+	if (timeattack.tapped) {
+		InactivateAllContents();
+		timeattack_about.SetActive(true);
+
+		gameMode = GameMode.TimeAttack;
 	}
 
 	if (back.tapped) {
+		Destroy(gameObject);
 		Application.LoadLevel("Title");
 	}
 	
@@ -102,23 +118,45 @@ function Update () {
 		
 		//Application.LoadLevel("City");
 
-		if (DefenseMd.activate)
-		{			
-			DefenseMd.SetUpLevel(level);
-			DefenseMd.Activate();
+		switch(gameMode)
+		{
+			case GameMode.Defense:
+				DefenseMd.SetUpLevel(level);
+				DefenseMd.Activate();
+				break;
+
+			case GameMode.Killing:	
+				//,.......
+				break;	
+
+			case GameMode.TimeAttack:
+				TimeMd.SetUpLevel(level);
+				TimeMd.Activate();
+				break;
 		}
 
-		if (TimeMd.activate)
-		{
-			TimeMd.SetUpLevel(level);
-			TimeMd.Activate();
-		}
 	}
 
 
-	if (levelEasy.tapped) level = Level.Easy;
-	if (levelHard.tapped) level = Level.Hard;
-	if (levelInsane.tapped) level = Level.Insane;
+	if (levelEasy.tapped || levelEasy.released || levelEasy.held) 
+	{
+		print("Good");
+		InactiveLevelTextures();
+		level = Level.Easy;
+		levelEasy.UseSet(1);
+	}
+	if (levelHard.tapped || levelHard.released || levelHard.held)
+	{
+		InactiveLevelTextures();
+		level = Level.Hard;
+		levelHard.UseSet(1);
+	}
+	if (levelInsane.tapped || levelInsane.released || levelInsane.held)
+	{
+		InactiveLevelTextures();
+		level = Level.Insane;
+		levelInsane.UseSet(1);
+	}
 
 
 
@@ -147,4 +185,10 @@ function InactivateAllModes() {
 	DefenseMd.activate = false;
 	TimeMd.activate = false;
 	/* if there are other modes write here */
+}
+
+function InactiveLevelTextures() {
+	levelEasy.UseSet(0);
+	levelHard.UseSet(0);
+	levelInsane.UseSet(0);
 }
