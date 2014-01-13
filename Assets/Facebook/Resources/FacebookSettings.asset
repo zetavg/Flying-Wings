@@ -8,7 +8,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 461bfb74be57ce74eac44498472f0ad0, type: 3}
+  m_Script: {fileID: 11500000, guid: 40c3656e4c8d54cb0936ce397e73b5b3, type: 3}
   m_Name: FacebookSettings
   m_EditorClassIdentifier: 
   selectedAppIndex: 0
