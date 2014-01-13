@@ -13,6 +13,11 @@
 	砍殺數：
 		恩。
 
+	巨人範圍：
+		整個城市都是我的屠宰場^_<~*
+		隨機Instantiate?
+		挑出waypoint的array吧。
+
 產生巨人：無限制產生，幹掉一隻生一支，場內二十隻？
 
 */
@@ -22,7 +27,7 @@
 var countTime : float;
 var countState = false;
 
-var killNumber : int;
+var killNumber : int = 0;
 
 var score : GUIText;
 score = GameObject.Find("Score").GetComponent(GUIText);
@@ -69,7 +74,7 @@ function CountDown()
 		//Debug.Log(countTime);
 		//Timer.guiText.text = countTime.ToString("F1"); 
 	}
-	else
+	else //Time's up!
 	{
 		//Load Score Level
 		Application.LoadLevel("Score");
@@ -84,6 +89,6 @@ function End(){
 	//score.gameObject.SetActive(true);
 	score = GameObject.Find("Score").GetComponent(GUIText);
 
-	score.text = "HA HA";
+	score.text = killNumber.ToString();
 
 }
