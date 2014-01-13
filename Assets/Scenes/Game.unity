@@ -186,10 +186,10 @@ MonoBehaviour:
   splashLogo: {fileID: 2800000, guid: cd67f6b1aeab047519dda8c161b23bd7, type: 3}
   fadeSpeed: 1
   waitTime: 0
-  waitForInput: 1
+  waitForInput: 0
   startAutomatically: 1
   timeFadingInFinished: 0
-  logoPositioning: 2
+  logoPositioning: 0
   splashType: 0
 --- !u!4 &2072118042
 Transform:
