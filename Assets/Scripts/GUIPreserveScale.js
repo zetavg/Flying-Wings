@@ -7,7 +7,10 @@
 
 public var ignoreCustomSet = true;
 public var baseScreenWidth = 600.0;
+public var baseScreenHeight = 400.0;
 public var scaleBelow = true;
+enum sbmode { height, width };
+public var scaleBase = sbmode.width;
 
 function Awake () {
 
@@ -17,8 +20,10 @@ function Awake () {
 		scaleBelow = true;
 	}
 
+	var GUIScales = 0.0;
+
 	if (Screen.width > baseScreenWidth || scaleBelow) {
-		var GUIScales = Screen.width/baseScreenWidth;
+		GUIScales = Screen.width/baseScreenWidth;
 
 		if (guiTexture) {
 			guiTexture.pixelInset.x *= GUIScales;
