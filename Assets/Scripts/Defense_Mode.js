@@ -49,6 +49,8 @@ var timeInterval : float;
 
 var score : GUIText;
 
+var first = true;
+
 
 function Awake()
 {
@@ -59,24 +61,33 @@ function Activate()
 {	
 	//var gateLife = 100;
 	titanAttack = 50;
-	titanNumber = 100;
+	titanNumber = 5;
 	titanSpeed = 5;
 
-	playerControl = GameObject.FindWithTag("Player").GetComponent(PlayerControl);
-	
+		
 	startTime = Time.time;
 
 	titans = new GameObject[titanNumber];
-	
-	for (var i = 0; i < titanNumber; i++) {
-		titans[i] = Instantiate(titan, new Vector3(3.5, 0, 275), transform.rotation);
-		titans[i].GetComponent(TitanAI).MoveToPoint(new Vector3(-0.3, 0, -188));
-	}
+
 
 
 }
 
 function Update() {
+	playerControl = GameObject.Find("Player").GetComponent(PlayerControl);
+	
+	if (first) {
+		for (var i = 0; i < titanNumber; i++) {
+			var newtitan : GameObject = Instantiate(titan, new Vector3(3.5 + Random.Range(-20.0, 20.0), 0, 275+ Random.Range(-20.0, 20.0)), transform.rotation);
+			titans[i] = newtitan;	
+		}
+		first = false;	
+	}
+	for (var each in titans) each.GetComponent(TitanAI).MoveToPoint(new Vector3(-0.3, 0, -188));
+
+
+	
+
 	if (playerControl.killNumber == titanNumber)
 	{
 		Application.LoadLevel("Score");

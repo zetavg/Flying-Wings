@@ -10,6 +10,7 @@ var target : Transform;
 var curWayPoint : AutoWayPoint;
 var nav = false;
 var navDes : Vector3;
+var Des : Vector3;
 
 
 
@@ -179,6 +180,8 @@ function Update () {
 
 	}
 	if (nav) MoveToPoint(navDes);
+	Des = gameObject.GetComponent(NavMeshAgent).destination;
+
 }
 
 function MoveToPoint(destination : Vector3){

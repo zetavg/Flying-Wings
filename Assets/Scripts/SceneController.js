@@ -1,4 +1,4 @@
-﻿//負責接收場景起始訊息，讀取設定，傳遞設定給各物件，建立網路連線，產生並同步網路連線物件，呼叫 Game Controller 開始遊戲。
+//負責接收場景起始訊息，讀取設定，傳遞設定給各物件，建立網路連線，產生並同步網路連線物件，呼叫 Game Controller 開始遊戲。
 
 /*
 起始訊息定義：
@@ -70,7 +70,7 @@ function Update () {
 
 	//遊戲按鈕行為：
 	{
-		if (defense.tapped || defense.held || defense.released) {
+		if (defense.tapped || defense.held || defense.released || Input.GetMouseButton(0) && defense.gameObject.guiTexture.HitTest(Input.mousePosition) ) {
 			//button animation control
 			InactivateAllContents();
 			defense_about.gameObject.SetActive(true);
@@ -79,7 +79,7 @@ function Update () {
 			gameMode = GameMode.Defense;
 		}
 
-		if (kill.tapped || kill.held || kill.released) {
+		if (kill.tapped || kill.held || kill.released  || Input.GetMouseButton(0) && kill.gameObject.guiTexture.HitTest(Input.mousePosition)) {
 			//button animation control
 			InactivateAllContents();
 			kill_about.gameObject.SetActive(true);
@@ -88,7 +88,7 @@ function Update () {
 			gameMode = GameMode.Killing;
 		}
 
-		if (timeattack.tapped || timeattack.held || timeattack.released) {
+		if (timeattack.tapped || timeattack.held || timeattack.released  || Input.GetMouseButton(0) && timeattack.gameObject.guiTexture.HitTest(Input.mousePosition)) {
 			InactivateAllContents();
 			timeattack_about.gameObject.SetActive(true);
 
@@ -102,13 +102,13 @@ function Update () {
 			gameMode = GameMode.Tutorial;
 		}
 
-		if (back.tapped || back.held || back.released) {
+		if (back.tapped || back.held || back.released  || Input.GetMouseButton(0) && back.gameObject.guiTexture.HitTest(Input.mousePosition)) {
 			Destroy(gameObject);
 			Application.LoadLevel("Menu");
 		}
 		
 		//Load Level Here and Setup up Objects when play button pressed
-		if (play.tapped || play.held || play.released) {		
+		if (play.tapped || play.held || play.released  || Input.GetMouseButton(0) && play.gameObject.guiTexture.HitTest(Input.mousePosition)) {		
 			
 			Application.LoadLevel("City");
 			//或者load「載入中」畫面。

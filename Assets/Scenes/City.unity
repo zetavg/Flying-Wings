@@ -53076,6 +53076,7 @@ MonoBehaviour:
   characterSpeed: 1
   characterFlexibility: 1
   killNumber: 0
+  TimeMd: {fileID: 0}
   on_ground: 0
   prev_y: 0
   prev_velocity: {x: 0, y: 0, z: 0}
@@ -72281,6 +72282,7 @@ GameObject:
   m_Component:
   - 4: {fileID: 1937422329}
   - 135: {fileID: 1937422328}
+  - 114: {fileID: 1937422330}
   m_Layer: 0
   m_Name: EndZone
   m_TagString: Untagged
@@ -72311,6 +72313,18 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
+--- !u!114 &1937422330
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1937422327}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5b2cab6f987881448b7e35c1788f9fd8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  DefenseMd: {fileID: 0}
 --- !u!1 &1939275652
 GameObject:
   m_ObjectHideFlags: 0
