@@ -69,6 +69,8 @@ function Die () {
 			}
 		}
 	}
+	gameObject.GetComponent(NavMeshAgent).Stop(true);
+	gameObject.GetComponent(NavMeshAgent).speed = 0;
 }
 
 

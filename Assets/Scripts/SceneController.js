@@ -70,7 +70,7 @@ function Update () {
 
 	//遊戲按鈕行為：
 	{
-		if (defense.tapped || defense.held || defense.released || Input.GetMouseButton(0) && defense.gameObject.guiTexture.HitTest(Input.mousePosition) ) {
+		if (defense.tapped || defense.held || defense.released || (Input.GetMouseButton(0) && defense.gameObject.guiTexture.HitTest(Input.mousePosition) )) {
 			//button animation control
 			InactivateAllContents();
 			defense_about.gameObject.SetActive(true);
@@ -79,7 +79,7 @@ function Update () {
 			gameMode = GameMode.Defense;
 		}
 
-		if (kill.tapped || kill.held || kill.released  || Input.GetMouseButton(0) && kill.gameObject.guiTexture.HitTest(Input.mousePosition)) {
+		if (kill.tapped || kill.held || kill.released  || (Input.GetMouseButton(0) && kill.gameObject.guiTexture.HitTest(Input.mousePosition))) {
 			//button animation control
 			InactivateAllContents();
 			kill_about.gameObject.SetActive(true);
@@ -88,7 +88,7 @@ function Update () {
 			gameMode = GameMode.Killing;
 		}
 
-		if (timeattack.tapped || timeattack.held || timeattack.released  || Input.GetMouseButton(0) && timeattack.gameObject.guiTexture.HitTest(Input.mousePosition)) {
+		if (timeattack.tapped || timeattack.held || timeattack.released  || (Input.GetMouseButton(0) && timeattack.gameObject.guiTexture.HitTest(Input.mousePosition))) {
 			InactivateAllContents();
 			timeattack_about.gameObject.SetActive(true);
 
@@ -102,13 +102,13 @@ function Update () {
 			gameMode = GameMode.Tutorial;
 		}
 
-		if (back.tapped || back.held || back.released  || Input.GetMouseButton(0) && back.gameObject.guiTexture.HitTest(Input.mousePosition)) {
+		if (back.tapped || back.held || back.released  || (Input.GetMouseButton(0) && back.gameObject.guiTexture.HitTest(Input.mousePosition))) {
 			Destroy(gameObject);
 			Application.LoadLevel("Menu");
 		}
 		
 		//Load Level Here and Setup up Objects when play button pressed
-		if (play.tapped || play.held || play.released  || Input.GetMouseButton(0) && play.gameObject.guiTexture.HitTest(Input.mousePosition)) {		
+		if (play.tapped || play.held || play.released  || (Input.GetMouseButton(0) && play.gameObject.guiTexture.HitTest(Input.mousePosition))) {		
 			
 			Application.LoadLevel("City");
 			//或者load「載入中」畫面。
@@ -117,8 +117,6 @@ function Update () {
 			switch(gameMode)
 			{
 				case GameMode.Defense:
-					//TimeMd.gameObject.SetActive(false);
-					//KillMd.gameObject.SetActive(false);
 					DefenseMd.Activate();
 					break;
 
@@ -127,8 +125,6 @@ function Update () {
 					break;	
 
 				case GameMode.TimeAttack:
-					//DefenseMd.gameObject.SetActive(false);
-					//KillMd.gameObject.SetActive(false);
 					TimeMd.Activate();
 					break;
 			}

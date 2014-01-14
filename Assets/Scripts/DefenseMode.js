@@ -51,7 +51,7 @@ var timeInterval : float;
 
 var score : GUIText;
 
-var first = true;
+var first = false;
 
 
 function Awake()
@@ -65,7 +65,8 @@ function Activate()
 		
 	startTime = Time.time;
 
-	titans = new GameObject[titanNumber];
+	//titans = new GameObject[titanNumber];
+	first = true;
 
 
 
@@ -76,18 +77,13 @@ function Update() {
 	
 	if (first) {
 		for (var i = 0; i < titanNumber; i++) {
-			var Pos = new Vector3(Random.Range(-200.0, 200.0), 0, Random.Range(-200.0, 200.0));
-			//var Dir = 
-
-			var newtitan : GameObject = Instantiate(titan, Pos, transform.rotation);
-			titans[i] = newtitan;	
+			var Pos = new Vector3(Random.Range(-200.0, 200.0), 0, Random.Range(-110.0, 180.0));
+			titans[i] = Instantiate(titan, Pos, transform.rotation);	
 		}
 		first = false;	
 	}
 	for (var each in titans) each.GetComponent(TitanAI).MoveToPoint(TargetPos);
 
-
-	
 
 	if (playerControl.killNumber == titanNumber)
 	{

@@ -1664,7 +1664,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 100062}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -1.71931076, y: 0, z: -120.138412}
+  m_LocalPosition: {x: -1.71931076, y: .300000012, z: -120.138412}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 400134}
@@ -2491,6 +2491,8 @@ MonoBehaviour:
   curWayPoint: {fileID: 0}
   nav: 0
   navDes: {x: 0, y: 0, z: 0}
+  Des: {x: 0, y: 0, z: 0}
+  disabled: 0
 --- !u!114 &11400002
 MonoBehaviour:
   m_ObjectHideFlags: 1

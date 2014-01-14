@@ -25,9 +25,9 @@
 
 
 //Default Playing Time
-var countTime : float = 0;
+var countTime : float = 45;
 var countState = false;
-var killNumber : int = 0;
+var killNumber : int = 40;
 var instantiateTitan = false;
 var titanKilled = false;
 var score : GUIText;
@@ -39,6 +39,9 @@ var startTime : float;
 var endTime : float;
 var timeInterval : float;
 var addedTime : int = 10;
+
+//控制參數
+var first = true;
 
 
 //var mother : GameObject;
@@ -67,7 +70,7 @@ function Activate()
 	}
 
 	countState = true;
-	countTime = 45;
+	//countTime = 45;
 	startTime = Time.time;
 }
 

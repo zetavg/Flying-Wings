@@ -37,26 +37,27 @@ function Update ()
 
 	}
 	
-	if (yes.tapped == true)
+	if (yes.tapped || yes.held || yes.released)
 	{
 		//quit.animation.Play();
 		dialog_group.animation.Play();
 		//Application LoadLevel("Tutorial");
 	}
-	if (no.tapped == true)
+	if (no.tapped || no.held || no.released)
 	{
 		dialog_group.animation.Play();			
 		Delay1sAndInactive();
 		menu_group.SetActive(true);
 	}
 
-	if (play.tapped)
+	if (play.tapped || play.held || play.released)
 	{
 		Application.LoadLevel("stage");
 	}
 
 
 	//Texture Control
+	/*
 	controlButtons = GameObject.FindGameObjectsWithTag("ControlButton");
 
 	for (var each in controlButtons)
@@ -65,6 +66,7 @@ function Update ()
 		if (tb.released || !tb.held) tb.guiTexture.texture = tb.normal_texture[0];
 		if (tb.held) tb.guiTexture.texture = tb.held_texture[0];
 	}
+	*/
 }
 
 function Awake() {

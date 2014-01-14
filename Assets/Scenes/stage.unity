@@ -787,7 +787,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4254659a1de214e5db6c9c889253d7ba, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  countTime: 0
+  countTime: 45
   countState: 0
   killNumber: 0
   instantiateTitan: 0
@@ -798,6 +798,7 @@ MonoBehaviour:
   endTime: 0
   timeInterval: 0
   addedTime: 10
+  first: 1
   AutoWayPoints: []
   titans: []
 --- !u!1 &1219992352
@@ -905,10 +906,35 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   titanAttack: 50
-  titanNumber: 20
+  titanNumber: 25
   titanSpeed: 5
   titan: {fileID: 100062, guid: 003719265abdc4b1b831d37c2436c3dc, type: 2}
-  titans: []
+  titans:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
   TargetPos: {x: -.300000012, y: 0, z: -188}
   playerControl: {fileID: 0}
   killNumber: 0
@@ -916,7 +942,7 @@ MonoBehaviour:
   endTime: 0
   timeInterval: 0
   score: {fileID: 0}
-  first: 1
+  first: 0
 --- !u!4 &1511231325
 Transform:
   m_ObjectHideFlags: 0

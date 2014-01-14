@@ -1,7 +1,8 @@
 var DefenseMd : DefenseMode;
 
 function OnTriggerEnter(other : Collider){
-	if (other.gameObject.tag != "Player")
+	if (other.gameObject.tag == "Titan")
+		Destroy(other.gameObject);
 		DefenseMd.Failed();
 }
 
