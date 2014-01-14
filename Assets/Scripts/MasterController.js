@@ -172,6 +172,8 @@ function FBTakingScreenshot () : IEnumerator {
 }
 
 
+// Initialize
+//////////////////////////////////////////////////////////////////////
 
 function Start () {
 
@@ -209,6 +211,10 @@ function Start () {
 
 }
 
+
+// Update
+//////////////////////////////////////////////////////////////////////
+
 function FixedUpdate () {
 
 	switch (Mode) {
@@ -217,8 +223,6 @@ function FixedUpdate () {
 		case mode.game:
 		break;
 	}
-
-
 
 	// FB Actions
 	//////////////////////////////////////////////////////////////////
@@ -242,7 +246,6 @@ function FixedUpdate () {
 		}
 	}
 }
-
 
 
 // Development Functions
