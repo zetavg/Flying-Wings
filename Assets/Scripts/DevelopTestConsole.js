@@ -4,7 +4,8 @@ var status = "Ready.";
 var FBisInit = false;
 var FBisLogin = false;
 var FBUserID : String;
-var FBUserProfile = new JSONObject();
+var FBUserProfile : JSONObject;
+var ServerUserProfile : JSONObject;
 var FBUserName : String;
 var FBProfilePic : Texture2D;
 var UserID : String;
@@ -65,9 +66,10 @@ function LoadFBUserData () {
 		var swww = WWW(ServerConfig.GetUserByFBIDURL, sform);
 		yield swww;
 		if (swww.error) {
-			status = "SWWW ERROR: " + swww.error;
+			status = "GameServer ERROR: " + swww.error;
 		} else {
-			status = "SWWW REPLY: " + swww.data;
+			ServerUserProfile = new JSONObject(swww.data, -2, false, false);
+			status = "GameServer REPLY: " + swww.data;
 		}
 
 	} else {
