@@ -118,7 +118,7 @@ function Update () {
 
 		if (back.tapped || back.held || back.released) {
 			Destroy(gameObject);
-			Application.LoadLevel("Title");
+			Application.LoadLevel("Menu");
 		}
 		
 		//Load Level Here and Setup up Objects when play button pressed

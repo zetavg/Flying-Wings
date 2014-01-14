@@ -8,6 +8,8 @@ var dontComeCloserRange = 5.0;
 var pickNextWaypointDistance = 2.0;
 var target : Transform;
 var curWayPoint : AutoWayPoint;
+var nav = false;
+var navDes : Vector3;
 
 
 function Die () {
@@ -163,7 +165,7 @@ function Start () {
 
 function Update () {
 
-	if (!died) {
+	if (!died && !nav) {
 		var waypointPosition = curWayPoint.transform.position;
 
 		// Are we close to a waypoint? -> pick the next one!
@@ -175,4 +177,15 @@ function Update () {
 		//yield;
 
 	}
+	if (nav) MoveToPoint(navDes);
+}
+
+function MoveToPoint(destination : Vector3){
+	navDes = destination;
+	nav = true;
+	//overpowered function wwwwwwwww
+	gameObject.GetComponent(NavMeshAgent).SetDestination(destination);
+}
+function SetSpeed(){
+
 }
