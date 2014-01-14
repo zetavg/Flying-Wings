@@ -33,11 +33,12 @@ var titanKilled = false;
 var score : GUIText;
 
 var titan : GameObject;
-var _level : Level;
 
+//時間參數
 var startTime : float;
 var endTime : float;
 var timeInterval : float;
+var addedTime : int = 10;
 
 
 //var mother : GameObject;
@@ -53,14 +54,14 @@ function Awake()
 	DontDestroyOnLoad(gameObject);
 }
 
-function Activate(level : Level)
+function Activate()
 {
 	
 	//intantiate objects here
 	var i = 0;
 	titans = new GameObject[50];
 
-	for (each in AutoWayPoints) {
+	for (var each in AutoWayPoints) {
 		titans[i] = Instantiate(titan, each.gameObject.transform.position, transform.rotation);
 		i++;
 	}
@@ -68,18 +69,14 @@ function Activate(level : Level)
 
 	countState = true;
 
-	SetUpLevel(level);
-
-	_level = level;
+	SetUpLevel();
 
 	TitanGo();
 
 	startTime = Time.time;
-
-
 }
 
-function SetUpLevel(level : Level)
+function SetUpLevel()
 {
 	countTime = 45;
 }
@@ -107,16 +104,10 @@ function Update()
 	if (titanKilled) {
 		instantiateTitan = true;
 		
-		switch(_level){
-			case Level.Easy:
-				countTime += 20;
-				break;
-			case Level.Hard:
-				countTime += 10;
-				break;
-			case Level.Insane:
-				countTime += 5;
-		}
+		if (Time.time - startTime < 40)
+			countTime += addedTime;
+		else
+			countTime += addedTime/2;
 	}
 	
 }
@@ -152,7 +143,7 @@ function End(){
 	var totalTime = PlayerPrefs.GetFloat("Total Playing Time", 0.0F);
 	PlayerPrefs.SetFloat("Total Playing Time", totalTime + timeInterval);
 
-	killNumber = GameObject.FindWithTag("Player").Getcomponent(PlayerControl).killNumber;
+	killNumber = GameObject.FindWithTag("Player").GetComponent(PlayerControl).killNumber;
 
 	var totalKills = PlayerPrefs.GetInt("Total Kills", 0);
 	PlayerPrefs.SetInt("Total Kills", totalKills + killNumber);

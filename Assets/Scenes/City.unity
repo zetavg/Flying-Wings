@@ -53075,6 +53075,7 @@ MonoBehaviour:
   playerName: 
   characterSpeed: 1
   characterFlexibility: 1
+  killNumber: 0
   on_ground: 0
   prev_y: 0
   prev_velocity: {x: 0, y: 0, z: 0}
@@ -72271,6 +72272,45 @@ Transform:
   m_LocalScale: {x: -1, y: -1, z: -1}
   m_Children: []
   m_Father: {fileID: 566996604}
+--- !u!1 &1937422327
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 1937422329}
+  - 135: {fileID: 1937422328}
+  m_Layer: 0
+  m_Name: EndZone
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!135 &1937422328
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1937422327}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 20
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!4 &1937422329
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1937422327}
+  m_LocalRotation: {x: 0, y: -.0498956852, z: 0, w: .998754442}
+  m_LocalPosition: {x: 2.44108009, y: 7.45626497, z: -193.237137}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
 --- !u!1 &1939275652
 GameObject:
   m_ObjectHideFlags: 0

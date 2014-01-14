@@ -18,13 +18,6 @@ public enum GameMode
 	Tutorial
 };
 
-public enum Level 
-{
-	Easy, 
-	Hard, 
-	Insane
-};
-
 //關卡按鈕
 var defense : TapButton;
 var kill : TapButton;
@@ -41,14 +34,8 @@ var tutorial_about : GUITexture;
 var back : TapButton;
 var play : TapButton;
 
-//難度設定按鈕
-var levelEasy : TapButton;
-var levelHard : TapButton;
-var levelInsane : TapButton;
-
 //Set Default value for difficulty and gamemode
 var gameMode : GameMode = GameMode.Defense;
-var level : Level = Level.Easy;
 
 
 //mode scripts
@@ -71,10 +58,6 @@ function Awake()
 
 
 function Start () {
-
-	//default choose EASY level
-	InactivateLevelTextures();
-	levelEasy.UseSet(1);
 
 	//Inactivate Mode Contents with tag "Content"
 	InactivateAllContents();
@@ -130,13 +113,11 @@ function Update () {
 			Application.LoadLevel("City");
 			//或者load「載入中」畫面。
 
-			Wait(10);
-
 			//用gameMode參數來啟動模式
 			switch(gameMode)
 			{
 				case GameMode.Defense:
-					DefenseMd.Activate(level);
+					DefenseMd.Activate();
 					break;
 
 				case GameMode.Killing:	
@@ -144,30 +125,10 @@ function Update () {
 					break;	
 
 				case GameMode.TimeAttack:
-					TimeMd.Activate(level);
+					TimeMd.Activate();
 					break;
 			}
 
-		}
-		if (levelEasy.tapped || levelEasy.held || levelHard.released) 
-		{
-			level = Level.Easy;
-			InactivateLevelTextures();
-			levelEasy.UseSet(1);		
-			
-		}
-		if (levelHard.tapped || levelHard.held || levelHard.released)
-		{
-			level = Level.Hard;
-			InactivateLevelTextures();
-			levelHard.UseSet(1);
-
-		}
-		if (levelInsane.tapped || levelInsane.held || levelInsane.released)
-		{
-			level = Level.Insane;
-			InactivateLevelTextures();
-			levelInsane.UseSet(1);
 		}
 	}
 }
@@ -182,16 +143,6 @@ function InactivateAllContents(){
 }
 
 
-function InactivateLevelTextures() {
-	levelEasy.UseSet(0);
-	levelHard.UseSet(0);
-	levelInsane.UseSet(0);
-}
-
 function ByeeeeMi() {
 	Destroy(gameObject);
-}
-
-function Wait(t : int) {
-	yield WaitForSeconds(t);
 }

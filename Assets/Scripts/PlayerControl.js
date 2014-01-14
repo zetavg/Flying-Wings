@@ -1009,7 +1009,6 @@ function OnTriggerEnter(what : Collider) {
 		else kill_crd = -1;
 		what.transform.root.gameObject.GetComponent(TitanAI).Die();
 		killNumber++;
-
 	}
 }
 

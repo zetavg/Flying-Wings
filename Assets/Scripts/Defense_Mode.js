@@ -33,14 +33,21 @@ Game Controller (各 Game Mode 各一)：負責遊戲流程控制、記分、傳
 //var activate = false;
 
 var titanAttack : float; //攻擊強度
-var titanNumber : int;	//巨人數量
+var titanNumber : int = 30;	//巨人數量
 var titanSpeed : float;	//巨人移動速度（應該越快月難打吧）
+var titan : GameObject;
+var titans : GameObject[]; //巨人們
+
+var playerControl : PlayerControl;
 
 var killNumber : int;
 
+//時間
 var startTime : float;
 var endTime : float;
 var timeInterval : float;
+
+var score : GUIText;
 
 
 function Awake()
@@ -48,13 +55,32 @@ function Awake()
 	DontDestroyOnLoad(gameObject);
 }
 
-function Activate(level : Level)
+function Activate()
 {	
 	//var gateLife = 100;
-	SetUpLevel(level);
+	SetUpLevel();
+
+	playerControl = GameObject.FindWithTag("Player").GetComponent(PlayerControl);
 	
 	startTime = Time.time;
 
+	titans = new GameObject[titanNumber];
+	
+	for (var i = 0; i < titanNumber; i++) {
+		titans[i] = Instantiate(titan, new Vector3(3.5, 0, 275), transform.rotation);
+		titans[i].GetComponent(TitanAI).MoveToPoint(new Vector3(-0.3, 0, -188));
+		titans[i].GetComponent(TitanAI).nav = true;
+	}
+
+
+}
+
+function Update() {
+	if (playerControl.killNumber == titanNumber)
+	{
+		Application.LoadLevel("Score");
+		End();
+	}
 }
 
 //Additional
@@ -89,31 +115,16 @@ function Failed()
 
 }
 
-function SetUpLevel(level : Level)
+function SetUpLevel()
 {
-	switch(level)
-	{
-		//假如血量100的話辣
-		case Level.Easy:
-			titanAttack = 5;
-			titanNumber = 10;
-			titanSpeed = 1;
-			break;
-		case Level.Hard:
-			titanAttack = 10;
-			titanNumber = 30;
-			titanSpeed = 2;
-			break;
-		case Level.Insane:
-			titanAttack = 50;
-			titanNumber = 100;
-			titanSpeed = 5;
-			break;
-	}
+	titanAttack = 50;
+	titanNumber = 100;
+	titanSpeed = 5;
 }
 
 function End(){
 
+	score = GameObject.Find("Score").GetComponent(GUIText);
 
 	endTime = Time.time;
 	timeInterval = endTime - startTime;
@@ -121,8 +132,7 @@ function End(){
 	var totalTime = PlayerPrefs.GetFloat("Total Playing Time", 0.0F);
 	PlayerPrefs.SetFloat("Total Playing Time", totalTime + timeInterval);
 
-	killNumber = GameObject.FindWithTag("Player").Getcomponent(PlayerControl).killNumber;
-
+	killNumber = playerControl.killNumber;
 
 	var totalKills = PlayerPrefs.GetInt("Total Kills", 0);
 	PlayerPrefs.SetInt("Total Kills", totalKills + killNumber);

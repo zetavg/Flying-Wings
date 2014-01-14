@@ -959,9 +959,15 @@ MonoBehaviour:
   countState: 0
   killNumber: 0
   instantiateTitan: 0
+  titanKilled: 0
   score: {fileID: 0}
   titan: {fileID: 100062, guid: 003719265abdc4b1b831d37c2436c3dc, type: 2}
+  startTime: 0
+  endTime: 0
+  timeInterval: 0
+  addedTime: 10
   AutoWayPoints: []
+  titans: []
 --- !u!1 &1219992352
 GameObject:
   m_ObjectHideFlags: 0
@@ -1208,6 +1214,12 @@ MonoBehaviour:
   titanAttack: 0
   titanNumber: 0
   titanSpeed: 0
+  titan: {fileID: 100062, guid: 003719265abdc4b1b831d37c2436c3dc, type: 2}
+  titans: []
+  killNumber: 0
+  startTime: 0
+  endTime: 0
+  timeInterval: 0
 --- !u!4 &1511231325
 Transform:
   m_ObjectHideFlags: 0
@@ -1454,13 +1466,10 @@ MonoBehaviour:
   tutorial_about: {fileID: 2098543525}
   back: {fileID: 1095786510}
   play: {fileID: 939352966}
-  levelEasy: {fileID: 1660713969}
-  levelHard: {fileID: 1501642951}
-  levelInsane: {fileID: 1155515134}
   gameMode: 0
-  level: 0
   DefenseMd: {fileID: 0}
   TimeMd: {fileID: 0}
+  KillMd: {fileID: 0}
 --- !u!1 &2031983419
 GameObject:
   m_ObjectHideFlags: 0
