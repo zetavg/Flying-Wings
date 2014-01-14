@@ -12,6 +12,7 @@ var nav = false;
 var navDes : Vector3;
 
 
+
 function Die () {
 	died = true;
 	animation.CrossFade("TitanDie", 0.5);

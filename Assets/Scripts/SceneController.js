@@ -52,11 +52,14 @@ var level : Level = Level.Easy;
 
 
 //mode scripts
-var DefenseMd : DefenseMode;
-DefenseMd = GameObject.Find("DefenseMode").GetComponent(DefenseMode);
+var DefenseMd : Defense_Mode;
+DefenseMd = GameObject.Find("DefenseMode").GetComponent(Defense_Mode);
 
-var TimeMd : TimeAttack;
-TimeMd = GameObject.Find("TimeAttack").GetComponent(TimeAttack);
+var TimeMd : Time_Attack;
+TimeMd = GameObject.Find("TimeAttack").GetComponent(Time_Attack);
+
+var KillMd : Killing_Mode;
+//
 
 //var KillMd : Killing;
 //KillMd = GameObject.Find("Killing").GetComponent(Killing);

@@ -56,7 +56,7 @@
      <Compile Include="Assets\Scripts\AIAnimation.js" />
      <Compile Include="Assets\Scripts\AimPoint.js" />
      <Compile Include="Assets\Scripts\AutoWayPoint.js" />
-     <Compile Include="Assets\Scripts\DefenseMode.js" />
+     <Compile Include="Assets\Scripts\Defense_Mode.js" />
      <Compile Include="Assets\Scripts\Destroy1.js" />
      <Compile Include="Assets\Scripts\Destroy10.js" />
      <Compile Include="Assets\Scripts\Destroy3.js" />
@@ -66,7 +66,7 @@
      <Compile Include="Assets\Scripts\GUIScale.js" />
      <Compile Include="Assets\Scripts\GUITextureHelper.js" />
      <Compile Include="Assets\Scripts\Joystick.js" />
-     <Compile Include="Assets\Scripts\Killing.js" />
+     <Compile Include="Assets\Scripts\Killing_Mode.js" />
      <Compile Include="Assets\Scripts\Move to Player Control GUI.js" />
      <Compile Include="Assets\Scripts\ObjectLabel.js" />
      <Compile Include="Assets\Scripts\OneSideGUI.js" />
@@ -76,7 +76,7 @@
      <Compile Include="Assets\Scripts\SceneController.js" />
      <Compile Include="Assets\Scripts\SmoothFollow.js" />
      <Compile Include="Assets\Scripts\TapButton.js" />
-     <Compile Include="Assets\Scripts\TimeAttack.js" />
+     <Compile Include="Assets\Scripts\Time_Attack.js" />
      <Compile Include="Assets\Scripts\TitanAI.js" />
      <Compile Include="Assets\Scripts\TitanKillPoint.js" />
      <Compile Include="Assets\Scripts\TubeRenderer.js" />

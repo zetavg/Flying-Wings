@@ -1,10 +1,11 @@
 /*
-時間挑戰模式：在限定時間內砍殺最多的巨人
+時間挑戰模式：Endless，多砍一隻時間加時間，初始時間45秒
 
 參數：
 	朕賜你不死，所以沒有血量ㄏㄏ（明明就是懶得寫）
 
-	遊戲時間：90sec 180sec 300sec
+	遊戲時間：
+		初始時間45秒
 
 	巨人強度：
 		恩。
@@ -26,23 +27,25 @@
 //Default Playing Time
 var countTime : float;
 var countState = false;
-
 var killNumber : int = 0;
-
 var instantiateTitan = false;
 var titanKilled = false;
-
 var score : GUIText;
 
 var titan : GameObject;
-
 var _level : Level;
+
+var startTime : float;
+var endTime : float;
+var timeInterval : float;
+
 
 //var mother : GameObject;
 //mother = GameObject.Find("SceneController");
 
 /* 巨人產生的位置 */
 var AutoWayPoints : AutoWayPoint[];
+var titans : GameObject[];
 
 
 function Awake()
@@ -52,14 +55,26 @@ function Awake()
 
 function Activate(level : Level)
 {
+	
 	//intantiate objects here
+	var i = 0;
+	titans = new GameObject[50];
+
+	for (each in AutoWayPoints) {
+		titans[i] = Instantiate(titan, each.gameObject.transform.position, transform.rotation);
+		i++;
+	}
+
+
 	countState = true;
 
 	SetUpLevel(level);
 
 	_level = level;
 
-	TitanGo();	
+	TitanGo();
+
+	startTime = Time.time;
 
 
 }
@@ -90,7 +105,6 @@ function Update()
 
 	
 	if (titanKilled) {
-		killNumber++;
 		instantiateTitan = true;
 		
 		switch(_level){
@@ -131,5 +145,16 @@ function End(){
 	score = GameObject.Find("Score").GetComponent(GUIText);
 
 	score.text = killNumber.ToString();
+
+	endTime = Time.time;
+	timeInterval = endTime - startTime;
+
+	var totalTime = PlayerPrefs.GetFloat("Total Playing Time", 0.0F);
+	PlayerPrefs.SetFloat("Total Playing Time", totalTime + timeInterval);
+
+	killNumber = GameObject.FindWithTag("Player").Getcomponent(PlayerControl).killNumber;
+
+	var totalKills = PlayerPrefs.GetInt("Total Kills", 0);
+	PlayerPrefs.SetInt("Total Kills", totalKills + killNumber);
 
 }

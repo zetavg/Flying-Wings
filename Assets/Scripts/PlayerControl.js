@@ -84,6 +84,11 @@ private var TargetCrosshair : GameObject;
 private var AimCrosshairL : GameObject;
 private var AimCrosshairR : GameObject;
 
+//Game Variables
+//////////////////////////////////////////////////////////////////////
+
+public var killNumber : int;
+
 
 // Status
 //////////////////////////////////////////////////////////////////////
@@ -1003,6 +1008,8 @@ function OnTriggerEnter(what : Collider) {
 		if (Random.value > 0.5) kill_crd = 1;
 		else kill_crd = -1;
 		what.transform.root.gameObject.GetComponent(TitanAI).Die();
+		killNumber++;
+
 	}
 }
 

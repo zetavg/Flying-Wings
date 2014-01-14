@@ -26,7 +26,8 @@ Game Controller (各 Game Mode 各一)：負責遊戲流程控制、記分、傳
 計分標準：
 	時間、城牆血量
 
-
+	start time
+	end time等
 */
 
 //var activate = false;
@@ -34,6 +35,12 @@ Game Controller (各 Game Mode 各一)：負責遊戲流程控制、記分、傳
 var titanAttack : float; //攻擊強度
 var titanNumber : int;	//巨人數量
 var titanSpeed : float;	//巨人移動速度（應該越快月難打吧）
+
+var killNumber : int;
+
+var startTime : float;
+var endTime : float;
+var timeInterval : float;
 
 
 function Awake()
@@ -46,7 +53,7 @@ function Activate(level : Level)
 	//var gateLife = 100;
 	SetUpLevel(level);
 	
-
+	startTime = Time.time;
 
 }
 
@@ -103,4 +110,20 @@ function SetUpLevel(level : Level)
 			titanSpeed = 5;
 			break;
 	}
+}
+
+function End(){
+
+
+	endTime = Time.time;
+	timeInterval = endTime - startTime;
+
+	var totalTime = PlayerPrefs.GetFloat("Total Playing Time", 0.0F);
+	PlayerPrefs.SetFloat("Total Playing Time", totalTime + timeInterval);
+
+	killNumber = GameObject.FindWithTag("Player").Getcomponent(PlayerControl).killNumber;
+
+
+	var totalKills = PlayerPrefs.GetInt("Total Kills", 0);
+	PlayerPrefs.SetInt("Total Kills", totalKills + killNumber);
 }
