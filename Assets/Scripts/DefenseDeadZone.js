@@ -1,4 +1,4 @@
-var DefenseMd : Defense_Mode;
+var DefenseMd : DefenseMode;
 
 function OnCollisionEnter(){
 	DefenseMd.Failed();
@@ -6,5 +6,5 @@ function OnCollisionEnter(){
 
 
 function Update() {
-	var DefenseMd = GameObject.Find("DefenseMode").GetComponent(Defense_Mode);
+	DefenseMd = GameObject.Find("DefenseMode").GetComponent(DefenseMode);
 }

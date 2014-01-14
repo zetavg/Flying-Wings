@@ -32,9 +32,9 @@ Game Controller (各 Game Mode 各一)：負責遊戲流程控制、記分、傳
 
 //var activate = false;
 
-var titanAttack : float; //攻擊強度
-var titanNumber : int = 30;	//巨人數量
-var titanSpeed : float;	//巨人移動速度（應該越快月難打吧）
+var titanAttack = 50.0; //攻擊強度
+var titanNumber = 20;	//巨人數量
+var titanSpeed = 5.0;	//巨人移動速度（應該越快月難打吧）
 var titan : GameObject;
 var titans : GameObject[]; //巨人們
 
@@ -60,10 +60,6 @@ function Awake()
 function Activate()
 {	
 	//var gateLife = 100;
-	titanAttack = 50;
-	titanNumber = 5;
-	titanSpeed = 5;
-
 		
 	startTime = Time.time;
 
@@ -90,8 +86,9 @@ function Update() {
 
 	if (playerControl.killNumber == titanNumber)
 	{
-		Application.LoadLevel("Score");
 		End();
+		Application.LoadLevel("Score");
+		
 	}
 }
 

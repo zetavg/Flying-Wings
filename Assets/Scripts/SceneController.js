@@ -39,13 +39,13 @@ var gameMode : GameMode = GameMode.Defense;
 
 
 //mode scripts
-var DefenseMd : Defense_Mode;
-DefenseMd = GameObject.Find("DefenseMode").GetComponent(Defense_Mode);
+var DefenseMd : DefenseMode;
+DefenseMd = GameObject.Find("DefenseMode").GetComponent(DefenseMode);
 
-var TimeMd : Time_Attack;
-TimeMd = GameObject.Find("TimeAttack").GetComponent(Time_Attack);
+var TimeMd : TimeAttack;
+TimeMd = GameObject.Find("TimeAttack").GetComponent(TimeAttack);
 
-var KillMd : Killing_Mode;
+var KillMd : KillingMode;
 //
 
 //var KillMd : Killing;
@@ -117,6 +117,8 @@ function Update () {
 			switch(gameMode)
 			{
 				case GameMode.Defense:
+					//TimeMd.gameObject.SetActive(false);
+					//KillMd.gameObject.SetActive(false);
 					DefenseMd.Activate();
 					break;
 
@@ -125,6 +127,8 @@ function Update () {
 					break;	
 
 				case GameMode.TimeAttack:
+					//DefenseMd.gameObject.SetActive(false);
+					//KillMd.gameObject.SetActive(false);
 					TimeMd.Activate();
 					break;
 			}

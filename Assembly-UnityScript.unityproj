@@ -19,7 +19,7 @@
 	<DebugType>full</DebugType>
 	<Optimize>false</Optimize>
 	<OutputPath>Temp\bin\Debug\</OutputPath>
-	<DefineConstants>DEBUG;TRACE;UNITY_ANDROID;ENABLE_MICROPHONE;ENABLE_TEXTUREID_MAP;ENABLE_AUDIO_FMOD;ENABLE_MONO;ENABLE_SPRITES;ENABLE_TERRAIN;ENABLE_GENERICS;ENABLE_SUBSTANCE;INCLUDE_WP8SUPPORT;ENABLE_WWW;ENABLE_IMAGEEFFECTS;ENABLE_WEBCAM;INCLUDE_METROSUPPORT;RENDER_SOFTWARE_CURSOR;ENABLE_NETWORK;ENABLE_PHYSICS;ENABLE_CACHING;ENABLE_CLOTH;UNITY_ANDROID_API;ENABLE_2D_PHYSICS;ENABLE_SHADOWS;ENABLE_AUDIO;ENABLE_NAVMESH_CARVING;ENABLE_SINGLE_INSTANCE_BUILD_SETTING;UNITY_4_3_0;UNITY_4_3;ENABLE_PROFILER;UNITY_EDITOR;UNITY_EDITOR_WIN</DefineConstants>
+	<DefineConstants>DEBUG;TRACE;UNITY_ANDROID;ENABLE_MICROPHONE;ENABLE_TEXTUREID_MAP;ENABLE_AUDIO_FMOD;ENABLE_MONO;ENABLE_SPRITES;ENABLE_TERRAIN;ENABLE_GENERICS;ENABLE_SUBSTANCE;INCLUDE_WP8SUPPORT;ENABLE_WWW;ENABLE_IMAGEEFFECTS;ENABLE_WEBCAM;INCLUDE_METROSUPPORT;RENDER_SOFTWARE_CURSOR;ENABLE_NETWORK;ENABLE_PHYSICS;ENABLE_CACHING;ENABLE_CLOTH;UNITY_ANDROID_API;ENABLE_2D_PHYSICS;ENABLE_SHADOWS;ENABLE_AUDIO;ENABLE_NAVMESH_CARVING;ENABLE_SINGLE_INSTANCE_BUILD_SETTING;UNITY_4_3_1;UNITY_4_3;ENABLE_PROFILER;UNITY_EDITOR;UNITY_EDITOR_OSX</DefineConstants>
 	<ErrorReport>prompt</ErrorReport>
 	<WarningLevel>4</WarningLevel>
 	<NoWarn>0169</NoWarn>
@@ -39,10 +39,10 @@
 	<Reference Include="System.Core" />
 	<Reference Include="System.Xml.Linq" />
 	<Reference Include="UnityEngine">
-	  <HintPath>C:/Program Files (x86)/Unity/Editor/Data/Managed/UnityEngine.dll</HintPath>
+	  <HintPath>/Applications/Unity/Unity.app/Contents/Frameworks/Managed/UnityEngine.dll</HintPath>
 	</Reference>
 	<Reference Include="UnityEditor">
-	  <HintPath>C:/Program Files (x86)/Unity/Editor/Data/Managed/UnityEditor.dll</HintPath>
+	  <HintPath>/Applications/Unity/Unity.app/Contents/Frameworks/Managed/UnityEditor.dll</HintPath>
 	</Reference>
   </ItemGroup>
   <ItemGroup>
@@ -57,7 +57,7 @@
      <Compile Include="Assets\Scripts\AimPoint.js" />
      <Compile Include="Assets\Scripts\AutoWayPoint.js" />
      <Compile Include="Assets\Scripts\DefenseDeadZone.js" />
-     <Compile Include="Assets\Scripts\Defense_Mode.js" />
+     <Compile Include="Assets\Scripts\DefenseMode.js" />
      <Compile Include="Assets\Scripts\Destroy1.js" />
      <Compile Include="Assets\Scripts\Destroy10.js" />
      <Compile Include="Assets\Scripts\Destroy3.js" />
@@ -67,7 +67,7 @@
      <Compile Include="Assets\Scripts\GUIScale.js" />
      <Compile Include="Assets\Scripts\GUITextureHelper.js" />
      <Compile Include="Assets\Scripts\Joystick.js" />
-     <Compile Include="Assets\Scripts\Killing_Mode.js" />
+     <Compile Include="Assets\Scripts\KillingMode.js" />
      <Compile Include="Assets\Scripts\Move to Player Control GUI.js" />
      <Compile Include="Assets\Scripts\ObjectLabel.js" />
      <Compile Include="Assets\Scripts\OneSideGUI.js" />
@@ -77,7 +77,7 @@
      <Compile Include="Assets\Scripts\SceneController.js" />
      <Compile Include="Assets\Scripts\SmoothFollow.js" />
      <Compile Include="Assets\Scripts\TapButton.js" />
-     <Compile Include="Assets\Scripts\Time_Attack.js" />
+     <Compile Include="Assets\Scripts\TimeAttack.js" />
      <Compile Include="Assets\Scripts\TitanAI.js" />
      <Compile Include="Assets\Scripts\TitanKillPoint.js" />
      <Compile Include="Assets\Scripts\TubeRenderer.js" />

@@ -904,9 +904,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 22538328c900248988d3ae5fb4c2b449, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  titanAttack: 0
-  titanNumber: 0
-  titanSpeed: 0
+  titanAttack: 50
+  titanNumber: 20
+  titanSpeed: 5
   titan: {fileID: 100062, guid: 003719265abdc4b1b831d37c2436c3dc, type: 2}
   titans: []
   playerControl: {fileID: 0}
@@ -915,6 +915,7 @@ MonoBehaviour:
   endTime: 0
   timeInterval: 0
   score: {fileID: 0}
+  first: 1
 --- !u!4 &1511231325
 Transform:
   m_ObjectHideFlags: 0

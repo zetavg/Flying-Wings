@@ -25,7 +25,7 @@
 
 
 //Default Playing Time
-var countTime : float;
+var countTime : float = 0;
 var countState = false;
 var killNumber : int = 0;
 var instantiateTitan = false;
@@ -106,7 +106,7 @@ function Update()
 
 function CountDown()
 {
-	if (countTime > 0)
+	if (countTime >= 0)
 	{
 		countTime -= Time.deltaTime;
 		//Debug.Log(countTime);
@@ -115,8 +115,9 @@ function CountDown()
 	else //Time's up!
 	{
 		//Load Score Level
-		Application.LoadLevel("Score");
 		End();
+		Application.LoadLevel("Score");
+		
 	}
 	
 
@@ -135,7 +136,7 @@ function End(){
 	var totalTime = PlayerPrefs.GetFloat("Total Playing Time", 0.0F);
 	PlayerPrefs.SetFloat("Total Playing Time", totalTime + timeInterval);
 
-	killNumber = GameObject.FindWithTag("Player").GetComponent(PlayerControl).killNumber;
+	killNumber = GameObject.Find("Player").GetComponent(PlayerControl).killNumber;
 
 	var totalKills = PlayerPrefs.GetInt("Total Kills", 0);
 	PlayerPrefs.SetInt("Total Kills", totalKills + killNumber);

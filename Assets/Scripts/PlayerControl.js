@@ -88,7 +88,7 @@ private var AimCrosshairR : GameObject;
 //////////////////////////////////////////////////////////////////////
 
 public var killNumber : int;
-var TimeMd : Time_Attack;
+var TimeMd : TimeAttack;
 
 
 // Status
@@ -1026,7 +1026,7 @@ function OnCollisionStay(what : Collision) {
 }
 
 function Update() {
-	TimeMd = GameObject.Find("TimeAttack").GetComponent(Time_Attack);
+	TimeMd = GameObject.Find("TimeAttack").GetComponent(TimeAttack);
 }
 
 
