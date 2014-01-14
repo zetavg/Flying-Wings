@@ -909,6 +909,7 @@ MonoBehaviour:
   titanSpeed: 5
   titan: {fileID: 100062, guid: 003719265abdc4b1b831d37c2436c3dc, type: 2}
   titans: []
+  TargetPos: {x: -.300000012, y: 0, z: -188}
   playerControl: {fileID: 0}
   killNumber: 0
   startTime: 0

@@ -1,7 +1,8 @@
 var DefenseMd : DefenseMode;
 
-function OnCollisionEnter(){
-	DefenseMd.Failed();
+function OnTriggerEnter(other : Collider){
+	if (other.gameObject.tag != "Player")
+		DefenseMd.Failed();
 }
 
 

@@ -33,10 +33,12 @@ Game Controller (各 Game Mode 各一)：負責遊戲流程控制、記分、傳
 //var activate = false;
 
 var titanAttack = 50.0; //攻擊強度
-var titanNumber = 20;	//巨人數量
+var titanNumber = 100;	//巨人數量
 var titanSpeed = 5.0;	//巨人移動速度（應該越快月難打吧）
 var titan : GameObject;
 var titans : GameObject[]; //巨人們
+
+var TargetPos : Vector3 = new Vector3(-0.3, 0, -188);
 
 var playerControl : PlayerControl;
 
@@ -74,12 +76,15 @@ function Update() {
 	
 	if (first) {
 		for (var i = 0; i < titanNumber; i++) {
-			var newtitan : GameObject = Instantiate(titan, new Vector3(3.5 + Random.Range(-20.0, 20.0), 0, 275+ Random.Range(-20.0, 20.0)), transform.rotation);
+			var Pos = new Vector3(Random.Range(-200.0, 200.0), 0, Random.Range(-200.0, 200.0));
+			//var Dir = 
+
+			var newtitan : GameObject = Instantiate(titan, Pos, transform.rotation);
 			titans[i] = newtitan;	
 		}
 		first = false;	
 	}
-	for (var each in titans) each.GetComponent(TitanAI).MoveToPoint(new Vector3(-0.3, 0, -188));
+	for (var each in titans) each.GetComponent(TitanAI).MoveToPoint(TargetPos);
 
 
 	
@@ -106,6 +111,7 @@ function StartAnime()
 //if Titan break the gate then end the mode
 function Failed()
 {
+	print("喔no");
 	//Additional:
 		//一堆巨人衝入城牆GG惹的畫面
 		//直接錄製...吧
