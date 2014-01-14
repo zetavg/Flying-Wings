@@ -56,6 +56,7 @@
      <Compile Include="Assets\Scripts\AIAnimation.js" />
      <Compile Include="Assets\Scripts\AimPoint.js" />
      <Compile Include="Assets\Scripts\AutoWayPoint.js" />
+     <Compile Include="Assets\Scripts\DefenseDeadZone.js" />
      <Compile Include="Assets\Scripts\Defense_Mode.js" />
      <Compile Include="Assets\Scripts\Destroy1.js" />
      <Compile Include="Assets\Scripts\Destroy10.js" />

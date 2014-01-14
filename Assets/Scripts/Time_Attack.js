@@ -66,20 +66,11 @@ function Activate()
 		i++;
 	}
 
-
 	countState = true;
-
-	SetUpLevel();
-
-	TitanGo();
-
+	countTime = 45;
 	startTime = Time.time;
 }
 
-function SetUpLevel()
-{
-	countTime = 45;
-}
 
 //Instantiate Titan in random autowaypoint
 function TitanGo(){
@@ -108,6 +99,7 @@ function Update()
 			countTime += addedTime;
 		else
 			countTime += addedTime/2;
+		titanKilled = false;
 	}
 	
 }

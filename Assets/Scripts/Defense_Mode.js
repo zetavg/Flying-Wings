@@ -58,7 +58,9 @@ function Awake()
 function Activate()
 {	
 	//var gateLife = 100;
-	SetUpLevel();
+	titanAttack = 50;
+	titanNumber = 100;
+	titanSpeed = 5;
 
 	playerControl = GameObject.FindWithTag("Player").GetComponent(PlayerControl);
 	
@@ -69,7 +71,6 @@ function Activate()
 	for (var i = 0; i < titanNumber; i++) {
 		titans[i] = Instantiate(titan, new Vector3(3.5, 0, 275), transform.rotation);
 		titans[i].GetComponent(TitanAI).MoveToPoint(new Vector3(-0.3, 0, -188));
-		titans[i].GetComponent(TitanAI).nav = true;
 	}
 
 
@@ -115,12 +116,6 @@ function Failed()
 
 }
 
-function SetUpLevel()
-{
-	titanAttack = 50;
-	titanNumber = 100;
-	titanSpeed = 5;
-}
 
 function End(){
 

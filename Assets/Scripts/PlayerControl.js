@@ -1009,6 +1009,7 @@ function OnTriggerEnter(what : Collider) {
 		else kill_crd = -1;
 		what.transform.root.gameObject.GetComponent(TitanAI).Die();
 		killNumber++;
+		TimeMd.titanKilled = true;
 	}
 }
 
@@ -1021,6 +1022,10 @@ function OnCollisionStay(what : Collision) {
 		if (TDMG_Hook_L_state == 2 && TDMG_Attacher_L.transform.root.gameObject.tag == "Titan") TDMG_Hook_L_state = 1;
 		if (TDMG_Hook_R_state == 2 && TDMG_Attacher_R.transform.root.gameObject.tag == "Titan") TDMG_Hook_R_state = 1;
 	}
+}
+
+function Update() {
+	var TimeMd = GameObject.Find("TimeAttack").GetComponent(Time_Attack);
 }
 
 
