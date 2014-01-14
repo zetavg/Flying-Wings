@@ -117,7 +117,8 @@ function OnGUI () {
 
 	if (Button("FB.Init")) {
 		FB.Init(OnInitComplete, OnHideUnity, null);
-		status = "FB.Init() called with " + FB.AppId;
+		//status = "FB.Init() called with " + FB.AppId;
+		status = "FB.Init() called.";
 	}
 
 	GUILayout.BeginHorizontal();

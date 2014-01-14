@@ -22,8 +22,9 @@ function Awake () {
 
 	var GUIScales = 0.0;
 
-	if (Screen.width > baseScreenWidth || scaleBelow) {
-		GUIScales = Screen.width/baseScreenWidth;
+	if ((scaleBase == sbmode.width && (Screen.width > baseScreenWidth || scaleBelow)) || (scaleBase == sbmode.height && (Screen.height > baseScreenHeight || scaleBelow)) ) {
+		if (scaleBase == sbmode.width) GUIScales = Screen.width/baseScreenWidth;
+		else GUIScales = Screen.height/baseScreenHeight;
 
 		if (guiTexture) {
 			guiTexture.pixelInset.x *= GUIScales;

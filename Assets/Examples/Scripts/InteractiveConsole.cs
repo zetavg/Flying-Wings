@@ -245,11 +245,11 @@ public sealed class InteractiveConsole : MonoBehaviour
         if (CenterHorizontal && CenterVertical)
         {
             FB.Canvas.SetResolution(width, height, false, 0, FBScreen.CenterVertical(), FBScreen.CenterHorizontal());
-        } 
-        else if (CenterHorizontal) 
+        }
+        else if (CenterHorizontal)
         {
             FB.Canvas.SetResolution(width, height, false, 0, FBScreen.Top(top), FBScreen.CenterHorizontal());
-        } 
+        }
         else if (CenterVertical)
         {
             FB.Canvas.SetResolution(width, height, false, 0, FBScreen.CenterVertical(), FBScreen.Left(left));
@@ -535,7 +535,7 @@ public sealed class InteractiveConsole : MonoBehaviour
         }
     }
 
-    private IEnumerator TakeScreenshot() 
+    private IEnumerator TakeScreenshot()
     {
         yield return new WaitForEndOfFrame();
 
@@ -557,8 +557,8 @@ public sealed class InteractiveConsole : MonoBehaviour
     private bool Button(string label)
     {
         return GUILayout.Button(
-          label, 
-          GUILayout.MinHeight(buttonHeight), 
+          label,
+          GUILayout.MinHeight(buttonHeight),
           GUILayout.MaxWidth(mainWindowWidth)
         );
     }
