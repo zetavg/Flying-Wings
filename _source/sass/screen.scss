@@ -15,8 +15,12 @@ body {
 	color: #5a5a5a;
 	background-image: url('../img/bbg.jpg');
 	// overflow-x: hidden;
-	> * {
+	> div {
 		overflow: hidden;
+	}
+
+	.navbar-wrapper {
+		overflow: visible;
 	}
 }
 
