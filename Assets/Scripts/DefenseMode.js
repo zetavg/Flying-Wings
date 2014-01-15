@@ -67,7 +67,7 @@ function Activate()
 	startTime = Time.time;
 
 	//titans = new GameObject[titanNumber];
-	//first = true;
+	first = true;
 
 
 

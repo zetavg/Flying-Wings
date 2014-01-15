@@ -253,7 +253,7 @@ function Awake () {
 }
 
 function Start () {
-	DefenseMd.first = true;
+	//DefenseMd.first = true;
 
 	// Initialize Variables //
 
