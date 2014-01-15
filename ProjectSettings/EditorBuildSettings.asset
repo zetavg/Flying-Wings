@@ -6,16 +6,24 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
+    path: Assets/Scenes/legacy_menu.unity
+  - enabled: 0
+    path: Assets/Scenes/DevelopTestConsole.unity
+  - enabled: 0
+    path: Assets/Examples/InteractiveConsole.unity
+  - enabled: 0
+    path: Assets/Scenes/Game.unity
+  - enabled: 0
     path: Assets/Scenes/City.unity
   - enabled: 0
-    path: Assets/Scenes/menu.unity
+    path: Assets/Scenes/legacy_menu.unity
   - enabled: 0
     path: Assets/Scenes/test.unity
   - enabled: 0
     path: Assets/Scenes/test2.unity
-  - enabled: 1
-    path: Assets/Scenes/Title.unity
-  - enabled: 1
+  - enabled: 0
+    path: Assets/Scenes/legacy_menu.unity
+  - enabled: 0
     path: Assets/Scenes/stage.unity
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Score.unity
