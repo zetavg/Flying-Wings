@@ -66,7 +66,7 @@ function Activate()
 		
 	startTime = Time.time;
 
-	titans = new GameObject[titanNumber];
+	//titans = new GameObject[titanNumber];
 	first = true;
 
 
@@ -101,11 +101,11 @@ function Update() {
 		endTime = Time.time;
 		timeInterval = endTime - startTime;
 
-		var totalTime = PlayerPrefs.GetFloat("Total Playing Time", 0.0F);
-		PlayerPrefs.SetFloat("Total Playing Time", totalTime + timeInterval);
+		var totalTime = PlayerPrefs.GetFloat("Points_PlayTime", 0.0F);
+		PlayerPrefs.SetFloat("Points_PlayTime", totalTime + timeInterval);
 
-		var totalKills = PlayerPrefs.GetInt("Total Kills", 0);
-		PlayerPrefs.SetInt("Total Kills", totalKills + killNumber);
+		var totalKills = PlayerPrefs.GetInt("Points_Kill", 0);
+		PlayerPrefs.SetInt("Points_Kill", totalKills + killNumber);
 
 		
 	}
@@ -125,7 +125,19 @@ function StartAnime()
 //if Titan break the gate then end the mode
 function Failed()
 {
-	//Application.LoadLevel("Failed");
+	Application.LoadLevel("Score");
+
+
+	score = GameObject.Find("Score").GetComponent(GUIText);
+	score.text = "還是掰";
+
+	endTime = Time.time;
+	timeInterval = endTime - startTime;
+
+	var totalTime = PlayerPrefs.GetFloat("Points_PlayTime", 0.0F);
+	PlayerPrefs.SetFloat("Points_PlayTime", totalTime + timeInterval);
+
+
 
 	//Additional:
 		//一堆巨人衝入城牆GG惹的畫面

@@ -112,7 +112,7 @@ function Update () {
 			
 			Application.LoadLevel("Game");
 			//或者load「載入中」畫面。
-
+			
 			//用gameMode參數來啟動模式
 			switch(gameMode)
 			{
