@@ -27,7 +27,8 @@
 //Default Playing Time
 var countTime : float = 45;
 var countState = false;
-var killNumber : int = 40;
+var killNumber : int = 0;
+var titanNumber : int = 40;
 var instantiateTitan = false;
 var titanKilled = false;
 var score : GUIText;
@@ -43,7 +44,7 @@ var nextTime : float;
 
 //控制參數
 var first = true;
-
+var playerControl : PlayerControl;
 
 //var mother : GameObject;
 //mother = GameObject.Find("SceneController");
@@ -72,8 +73,8 @@ function Activate()
 
 //Instantiate Titan in random autowaypoint
 function TitanGo(){
-	var titanPos = AutoWayPoints[Random.Range(0, AutoWayPoints.length-1)].gameObject.transform.position;
-	Instantiate(titan, titanPos, transform.rotation);
+	//var titanPos = AutoWayPoints[Random.Range(0, AutoWayPoints.length-1)].gameObject.transform.position;
+	//Instantiate(titan, titanPos, transform.rotation);
 }
 
 function Update()
@@ -92,18 +93,20 @@ function Update()
 
 	if (Time.time > nextTime + 15.0)
 	{
-		TargetPos = new Vector3(Random.Range(-200, 200), 0, Random.Range(-200, 200))
+		var TargetPos = new Vector3(Random.Range(-200, 200), 0, Random.Range(-200, 200));
 		for (var each in titans) each.GetComponent(TitanAI).MoveToPoint(TargetPos);
 	}
 	
 
 	//AutoWayPoints = FindObjectsOfType(AutoWayPoint);
 
+/*
 	if (instantiateTitan) 
 	{
 		TitanGo();
 		instantiateTitan = false;
 	}
+	*/
 
 	
 	if (titanKilled) {
