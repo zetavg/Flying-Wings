@@ -40,6 +40,9 @@ var FBUserID : String;
 var FBUserProfile : JSONObject;
 var FBUserName : String;
 
+// //
+var GameSuspend = false;
+
 
 
 // GameObjects
@@ -143,7 +146,6 @@ function FBInit () {
 function FBOnInitComplete () {
 	FBisInit = true;
 	consolelog("FB init complete.");
-	FBLoadUserData();
 }
 
 function FBLoadUserData () {
@@ -153,7 +155,7 @@ function FBLoadUserData () {
 	if (FB.IsLoggedIn) {
 
 		FBisLogin = true;
-		FBUserID = FB.UserId;
+		FBUserID = FB.UserId.ToString();
 
 		if (!FBUserID) FBUserID = "0";
 
@@ -181,91 +183,102 @@ function FBLoadUserData () {
 			FBUserProfile = new JSONObject(fpwww.data, -2, false, false);
 			FBUserName = FBUserProfile['first_name'].str;
 		}
-
-		UserNav_PlayerAvatar.active = true;
-		UserNav_PlayerGreetings.active = true;
 		UserNav_PlayerGreetings.guiText.text = "Hello, " + UserName + "!";
-		UserNav_PlayerFBLogin.active = false;
 
 	} else {
 		consolelog("FB not logged in.");
-		UserNav_PlayerFBLogin.active = true;
-		FBisLogin = false;
 	}
 }
 
 function FBSyncUserData () {
-	consolelog("FBSyncUserData() called");
-	var sform = new WWWForm();
-	sform.AddField("data", FBUserID);
-	sform.AddField("FBUserName", FBUserName);
-	sform.AddField("idf_hash", ServerConfig.MakeIdfHash(FBUserID));
-	var swww = WWW(ServerConfig.GetUserByFBIDURL, sform);
-	yield swww;
-	if (swww.error) {
-		consolelog("GameServer ERROR: " + swww.error);
-	} else {
-		consolelog("GameServer REPLY: " + swww.data);
-		consolelog("decode json ... ");
-		ServerUserProfile = new JSONObject(swww.data, -2, false, false);
+	consolelog("FBSyncUserData() called wuth FBUserID: " + FBUserID);
 
-		if (ServerUserProfile['LastUpdate']) {
+	if (UserisLogin) {
+
+		var sform = new WWWForm();
+		sform.AddField("data", FBUserID);
+		sform.AddField("FBUserName", FBUserName);
+		sform.AddField("idf_hash", ServerConfig.MakeIdfHash(FBUserID));
+		var swww = WWW(ServerConfig.GetUserByFBIDURL, sform);
+		yield swww;
+		if (swww.error) {
+			consolelog("GameServer ERROR: " + swww.error);
+		} else {
+			consolelog("GameServer REPLY: " + swww.data);
+			consolelog("decode json ... ");
+			ServerUserProfile = new JSONObject(swww.data, -2, false, false);
+
+			if (ServerUserProfile['LastUpdate']) {
 
 
-			consolelog("Local LastSync: " + UserProfileLastsync + ", GameServer LastUpdate: " + parseInt(ServerUserProfile['LastUpdate'].str));
-			if (UserProfileLastsync > parseInt(ServerUserProfile['LastUpdate'].str)) {  // 覆寫伺服器
-				consolelog("Overwrite serverside");
-				sform = new WWWForm();
-				sform.AddField("data", UserID);
-				sform.AddField("UserName", UserName);
-				sform.AddField("Settings_GravitySensitivity", Settings_GravitySensitivity);
-				sform.AddField("Points_Kill", Points_Kill);
-				sform.AddField("Points_PlayTime", Points_PlayTime);
-				sform.AddField("Points_Score", Points_Score);
-				sform.AddField("Points_Achievement", Points_Achievement);
-				sform.AddField("idf_hash", ServerConfig.MakeIdfHash(UserID.ToString()));
-				swww = WWW(ServerConfig.UpdateUserByIDURL, sform);
-				yield swww;
-				if (swww.error) {
-					consolelog("GameServer ERROR: " + swww.error);
-				} else {
-					consolelog("GameServer REPLY: " + swww.data);
+				consolelog("Local LastSync: " + UserProfileLastsync + ", GameServer LastUpdate: " + parseInt(ServerUserProfile['LastUpdate'].str));
+				if (UserProfileLastsync > parseInt(ServerUserProfile['LastUpdate'].str)) {  // 覆寫伺服器
+					consolelog("Overwrite serverside");
+					sform = new WWWForm();
+					sform.AddField("data", UserID);
+					sform.AddField("UserName", UserName);
+					sform.AddField("Settings_GravitySensitivity", Settings_GravitySensitivity);
+					sform.AddField("Points_Kill", Points_Kill);
+					sform.AddField("Points_PlayTime", Points_PlayTime);
+					sform.AddField("Points_Score", Points_Score);
+					sform.AddField("Points_Achievement", Points_Achievement);
+					sform.AddField("idf_hash", ServerConfig.MakeIdfHash(UserID.ToString()));
+					swww = WWW(ServerConfig.UpdateUserByIDURL, sform);
+					yield swww;
+					if (swww.error) {
+						consolelog("GameServer ERROR: " + swww.error);
+					} else {
+						consolelog("GameServer REPLY: " + swww.data);
 
-					if (!swww.data == 'error') {
-						consolelog((parseInt(swww.data)+1).ToString());
-						UserProfileLastsync = parseInt(swww.data)+1;
-						SaveLocalProfile();
+						if (!swww.data == 'error') {
+							consolelog((parseInt(swww.data)+1).ToString());
+							UserProfileLastsync = parseInt(swww.data)+1;
+							SaveLocalProfile();
+						}
 					}
+
+
+				} else {  // 覆寫 Local
+					consolelog("Overwrite local");
+
+					UserID = parseInt(ServerUserProfile['UserID'].str);
+					UserName = ServerUserProfile['UserName'].str;
+					Settings_GravitySensitivity = parseFloat(ServerUserProfile['Settings_GravitySensitivity'].str);
+					Points_Kill = parseInt(ServerUserProfile['Points_Kill'].str);
+					Points_PlayTime = parseInt(ServerUserProfile['Points_PlayTime'].str);
+					Points_Score = parseInt(ServerUserProfile['Points_Score'].str);
+					Points_Achievement = ServerUserProfile['Points_Achievement'].str;
+					UserProfileLastsync = parseInt(ServerUserProfile['NowTime'].str)+1;
+					SaveLocalProfile();
+					consolelog("UserID: " + UserID + " UserName: " + UserName);
 				}
 
-
-			} else {  // 覆寫 Local
-				consolelog("Overwrite local");
-
-				UserID = parseInt(ServerUserProfile['UserID'].str);
-				UserName = ServerUserProfile['UserName'].str;
-				Settings_GravitySensitivity = parseFloat(ServerUserProfile['Settings_GravitySensitivity'].str);
-				Points_Kill = parseInt(ServerUserProfile['Points_Kill'].str);
-				Points_PlayTime = parseInt(ServerUserProfile['Points_PlayTime'].str);
-				Points_Score = parseInt(ServerUserProfile['Points_Score'].str);
-				Points_Achievement = ServerUserProfile['Points_Achievement'].str;
-				UserProfileLastsync = parseInt(ServerUserProfile['NowTime'].str)+1;
-				SaveLocalProfile();
-				consolelog("UserID: " + UserID + " UserName: " + UserName);
+			} else {
+				consolelog("GameServer time error: has error");
 			}
-
-			consolelog("UserProfileLastsync: " + UserProfileLastsync);
-
-		} else {
-			consolelog("GameServer time error: has error");
 		}
-
-
+	} else {
+		consolelog("UserNotLogIn");
 
 	}
+	consolelog("UserProfileLastsync: " + UserProfileLastsync);
+	consolelog("UserID: " + UserID);
+	consolelog("UserName: " + UserName);
+	consolelog("Settings_GravitySensitivity: " + Settings_GravitySensitivity);
+	consolelog("Points_Kill: " + Points_Kill);
+	consolelog("Points_PlayTime: " + Points_PlayTime);
+	consolelog("Points_Score: " + Points_Score);
+	consolelog("Points_Achievement: " + Points_Achievement);
+
 }
 
 function OnHideUnity (isGameShown : boolean) {
+
+	if (isGameShown) {
+
+	} else {
+
+	}
 
 }
 
@@ -281,6 +294,8 @@ function FBLoginCallback (result : FBResult) {
 		SaveLocalProfile();
 		FBLoadUserData();
 		FBSyncUserData();
+		ReadProfile();
+		SaveLocalProfile();
 	}
 }
 
@@ -336,7 +351,7 @@ function Start () {
 
 	UserNav_PlayerFBLogin = gameObject.Find("User Nav/Player FB Login");
 	UserNav_PlayerFBLoginB = UserNav_PlayerFBLogin.GetComponent("TapButton");
-	UserNav_PlayerFBLogin.active = true;
+	UserNav_PlayerFBLogin.active = false;
 	UserNav_PlayerAvatar = gameObject.Find("User Nav/Player Avatar");
 	UserNav_PlayerAvatarB = UserNav_PlayerAvatar.GetComponent("TapButton");
 	UserNav_PlayerAvatar.active = false;
@@ -356,8 +371,8 @@ function Start () {
 
 	FBInit();
 	ReadProfile();
-
-// For Data Debug
+/*
+// For Data Debuggg
 UserisLogin = 1;
 UserID = 1;
 FBUserID = "12212";
@@ -367,7 +382,7 @@ Points_Kill = 10;
 Points_PlayTime = 20;
 Points_Score = 123;
 Points_Achievement = "";
-UserProfileLastsync = 0;
+UserProfileLastsync = 0;*/
 
 	if (UserisLogin) {
 		FBLoadUserData();
@@ -382,34 +397,39 @@ UserProfileLastsync = 0;
 
 function FixedUpdate () {
 
-	switch (Mode) {
-		case mode.menu:
-		break;
-		case mode.game:
-		break;
-	}
+	if (!GameSuspend) {
 
-	// FB Actions
-	//////////////////////////////////////////////////////////////////
 
-	if (UserNav_PlayerFBLoginB.tapped) {
-		FBLogin();
-	}
-	if (UserNav_PlayerAvatarB.tapped) {
-		UserLogout();
-	}
-
-	// Update Var
-	//////////////////////////////////////////////////////////////////
-
-	// Development
-	//////////////////////////////////////////////////////////////////
-	if (DevelopmentMode) {
-		if (develop_takeScreenShotToFB.tapped) {
-			consolelog("Taking screen shot and upload to FB ...");
-			FBTakeScreenshot();
-			FBSyncUserData();
+		switch (Mode) {
+			case mode.menu:
+			break;
+			case mode.game:
+			break;
 		}
+
+		// FB Actions
+		//////////////////////////////////////////////////////////////////
+
+		if (UserNav_PlayerFBLoginB.active && UserNav_PlayerFBLoginB.tapped) {
+			FBLogin();
+		}
+		if (UserNav_PlayerAvatar.active && UserNav_PlayerAvatarB.tapped) {
+			UserLogout();
+		}
+
+		// Update Var
+		//////////////////////////////////////////////////////////////////
+
+		// Development
+		//////////////////////////////////////////////////////////////////
+		if (DevelopmentMode) {
+			if (develop_takeScreenShotToFB.tapped) {
+				consolelog("Taking screen shot and upload to FB ...");
+				FBTakeScreenshot();
+				FBSyncUserData();
+			}
+		}
+
 	}
 }
 

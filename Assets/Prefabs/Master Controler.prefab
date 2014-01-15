@@ -419,9 +419,16 @@ MonoBehaviour:
   DevelopmentMode: 1
   Mode: 0
   consoleline: 
+  UserisLogin: 0
   FBProfilePic: {fileID: 0}
-  UserID: 
+  UserID: -1
   UserName: 
+  Settings_GravitySensitivity: 1
+  Points_Kill: 0
+  Points_PlayTime: 0
+  Points_Score: 0
+  Points_Achievement: 
+  UserProfileLastsync: 0
   FBisInit: 0
   FBisLogin: 0
   FBUserID: 
@@ -541,9 +548,9 @@ MonoBehaviour:
   held: 0
   released: 0
   effects:
-    sunkenWhenPressed: 0
+    sunkenWhenPressed: 1
     sunkenRate: .879999995
-    sunkenAnimation: 0
+    sunkenAnimation: 1
     sunkenAnimationInitialVelocity: 0
     sunkenAnimationVelocityAcceleration: .0199999996
     sunkenAnimationMinScale: .860000014
@@ -571,9 +578,9 @@ MonoBehaviour:
   held: 0
   released: 0
   effects:
-    sunkenWhenPressed: 0
+    sunkenWhenPressed: 1
     sunkenRate: .879999995
-    sunkenAnimation: 0
+    sunkenAnimation: 1
     sunkenAnimationInitialVelocity: 0
     sunkenAnimationVelocityAcceleration: .0199999996
     sunkenAnimationMinScale: .860000014
