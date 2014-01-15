@@ -8,6 +8,8 @@
 	//echo "hi " . $FBUserID;
 	$nowtime = time();
 
+	if(!$FBUserID) die('{"error":"FBID_Error}');
+
 	$SQL = "SELECT * FROM users WHERE FBUserID = '" . $FBUserID . "'";
 	$result_id = @mysql_query($SQL) or die('{"error":"database_error"}');
 	$total = mysql_num_rows($result_id);
@@ -15,7 +17,7 @@
 
 	} else {
 		$SQL = "INSERT INTO `users`(`UserName`, `FBUserID`, `FBUserName`, `lastupdate`) VALUES ('" . $FBUserName . "', '" . $FBUserID . "', '" . $FBUserName . "', " . $nowtime . ")";
-		$result_id = @mysql_query($SQL) or die('{"error":"database_error' + $SQL + '}');
+		$result_id = @mysql_query($SQL) or die('{"error":"database_error}');
 
 		$SQL = "SELECT * FROM users WHERE FBUserID = '" . $FBUserID . "'";
 		$result_id = @mysql_query($SQL) or die('{"error":"database_error"}');
