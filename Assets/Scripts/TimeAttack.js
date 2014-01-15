@@ -1,10 +1,11 @@
 /*
-時間挑戰模式：在限定時間內砍殺最多的巨人
+時間挑戰模式：Endless，多砍一隻時間加時間，初始時間45秒
 
 參數：
 	朕賜你不死，所以沒有血量ㄏㄏ（明明就是懶得寫）
 
-	遊戲時間：90sec 180sec 300sec
+	遊戲時間：
+		初始時間45秒
 
 	巨人強度：
 		恩。
@@ -24,25 +25,35 @@
 
 
 //Default Playing Time
-var countTime : float;
+var countTime : float = 45;
 var countState = false;
-
 var killNumber : int = 0;
-
+var titanNumber = 40;
 var instantiateTitan = false;
 var titanKilled = false;
-
 var score : GUIText;
 
 var titan : GameObject;
 
-var _level : Level;
+//時間參數
+var startTime : float;
+var endTime : float;
+var timeInterval : float;
+var addedTime : int = 10;
+var nextTime : float;
+
+//控制參數
+var first = false;
+var activated = false;
 
 //var mother : GameObject;
 //mother = GameObject.Find("SceneController");
 
 /* 巨人產生的位置 */
-var AutoWayPoints : AutoWayPoint[];
+//var AutoWayPoints : AutoWayPoint[];
+var titans : GameObject[];
+
+var playerControl : PlayerControl;
 
 
 function Awake()
@@ -50,66 +61,71 @@ function Awake()
 	DontDestroyOnLoad(gameObject);
 }
 
-function Activate(level : Level)
+function Activate()
 {
+	
 	//intantiate objects here
+	first = true;
+
 	countState = true;
-
-	SetUpLevel(level);
-
-	_level = level;
-
-	TitanGo();	
-
-
+	//countTime = 45;
+	startTime = Time.time;
 }
 
-function SetUpLevel(level : Level)
-{
-	countTime = 45;
-}
 
 //Instantiate Titan in random autowaypoint
 function TitanGo(){
-	var titanPos = AutoWayPoints[Random.Range(0, AutoWayPoints.length-1)].gameObject.transform.position;
-	Instantiate(titan, titanPos, transform.rotation);
+	//var titanPos = AutoWayPoints[Random.Range(0, AutoWayPoints.length-1)].gameObject.transform.position;
+	//Instantiate(titan, titanPos, transform.rotation);
 }
 
 function Update()
 {
+	if (activated) {	
 	if (countState) CountDown();
 	
-
-	AutoWayPoints = FindObjectsOfType(AutoWayPoint);
-
-	if (instantiateTitan) 
-	{
-		TitanGo();
-		instantiateTitan = false;
-	}
-
-	
-	if (titanKilled) {
-		killNumber++;
-		instantiateTitan = true;
-		
-		switch(_level){
-			case Level.Easy:
-				countTime += 20;
-				break;
-			case Level.Hard:
-				countTime += 10;
-				break;
-			case Level.Insane:
-				countTime += 5;
+		playerControl = GameObject.Find("Player").GetComponent(PlayerControl);
+		/*
+		if (first) {
+			for (var i = 0; i < titanNumber; i++) {
+				var Pos = new Vector3(Random.Range(-200.0, 200.0), 0, Random.Range(-110.0, 180.0));
+				titans[i] = Instantiate(titan, Pos, transform.rotation);	
+			}
+			first = false;	
 		}
-	}
+		*/
 	
+		if (Time.time > nextTime + 15.0)
+		{
+			var TargetPos = new Vector3(Random.Range(-200, 200), 0, Random.Range(-200, 200));
+			for (var each in titans) each.GetComponent(TitanAI).MoveToPoint(TargetPos);
+		}
+		
+	
+		//AutoWayPoints = FindObjectsOfType(AutoWayPoint);
+	
+		if (instantiateTitan) 
+		{
+			TitanGo();
+			instantiateTitan = false;
+		}
+	
+		
+		if (titanKilled) {
+			instantiateTitan = true;
+			
+			if (Time.time - startTime < 40)
+				countTime += addedTime;
+			else
+				countTime += addedTime/2;
+			titanKilled = false;
+		}
+	}	
 }
 
 function CountDown()
 {
-	if (countTime > 0)
+	if (countTime >= 0)
 	{
 		countTime -= Time.deltaTime;
 		//Debug.Log(countTime);
@@ -118,18 +134,24 @@ function CountDown()
 	else //Time's up!
 	{
 		//Load Score Level
+		killNumber = GameObject.Find("Player").GetComponent(PlayerControl).killNumber;
+
 		Application.LoadLevel("Score");
-		End();
+
+		score = GameObject.Find("Score").GetComponent(GUIText);
+		score.text = killNumber.ToString();
+
+		endTime = Time.time;
+		timeInterval = endTime - startTime;
+
+		var totalTime = PlayerPrefs.GetFloat("Total Playing Time", 0.0F);
+		PlayerPrefs.SetFloat("Total Playing Time", totalTime + timeInterval);
+
+		var totalKills = PlayerPrefs.GetInt("Total Kills", 0);
+		PlayerPrefs.SetInt("Total Kills", totalKills + killNumber);
+		
+		
 	}
 	
-
-}
-
-function End(){
-	//work in 結算 scene
-	//score.gameObject.SetActive(true);
-	score = GameObject.Find("Score").GetComponent(GUIText);
-
-	score.text = killNumber.ToString();
 
 }

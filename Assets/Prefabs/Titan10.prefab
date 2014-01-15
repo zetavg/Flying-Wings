@@ -501,6 +501,7 @@ GameObject:
   - 114: {fileID: 11400000}
   - 143: {fileID: 14300006}
   - 143: {fileID: 14300000}
+  - 195: {fileID: 19500000}
   m_Layer: 0
   m_Name: Titan10
   m_TagString: Titan
@@ -2488,6 +2489,9 @@ MonoBehaviour:
   pickNextWaypointDistance: 2
   target: {fileID: 0}
   curWayPoint: {fileID: 0}
+  nav: 0
+  navDes: {x: 0, y: 0, z: 0}
+  Des: {x: 0, y: 0, z: 0}
 --- !u!114 &11400002
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -3101,6 +3105,26 @@ CharacterController:
   m_SkinWidth: .0799999982
   m_MinMoveDistance: 0
   m_Center: {x: 0, y: .0199999996, z: 0}
+--- !u!195 &19500000
+NavMeshAgent:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 100062}
+  m_Enabled: 1
+  m_Radius: .5
+  m_Speed: 3.5
+  m_Acceleration: 8
+  avoidancePriority: 50
+  m_AngularSpeed: 120
+  m_StoppingDistance: 0
+  m_AutoTraverseOffMeshLink: 1
+  m_AutoBraking: 1
+  m_AutoRepath: 1
+  m_Height: 2
+  m_BaseOffset: 0
+  m_WalkableMask: 1
+  m_ObstacleAvoidanceType: 4
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1

@@ -1,4 +1,4 @@
-﻿//負責接收場景起始訊息，讀取設定，傳遞設定給各物件，建立網路連線，產生並同步網路連線物件，呼叫 Game Controller 開始遊戲。
+//負責接收場景起始訊息，讀取設定，傳遞設定給各物件，建立網路連線，產生並同步網路連線物件，呼叫 Game Controller 開始遊戲。
 
 /*
 起始訊息定義：
@@ -18,13 +18,6 @@ public enum GameMode
 	Tutorial
 };
 
-public enum Level 
-{
-	Easy, 
-	Hard, 
-	Insane
-};
-
 //關卡按鈕
 var defense : TapButton;
 var kill : TapButton;
@@ -41,14 +34,8 @@ var tutorial_about : GUITexture;
 var back : TapButton;
 var play : TapButton;
 
-//難度設定按鈕
-var levelEasy : TapButton;
-var levelHard : TapButton;
-var levelInsane : TapButton;
-
 //Set Default value for difficulty and gamemode
 var gameMode : GameMode = GameMode.Defense;
-var level : Level = Level.Easy;
 
 
 //mode scripts
@@ -57,6 +44,9 @@ DefenseMd = GameObject.Find("DefenseMode").GetComponent(DefenseMode);
 
 var TimeMd : TimeAttack;
 TimeMd = GameObject.Find("TimeAttack").GetComponent(TimeAttack);
+
+var KillMd : KillingMode;
+//
 
 //var KillMd : Killing;
 //KillMd = GameObject.Find("Killing").GetComponent(Killing);
@@ -69,10 +59,6 @@ function Awake()
 
 function Start () {
 
-	//default choose EASY level
-	InactivateLevelTextures();
-	levelEasy.UseSet(1);
-
 	//Inactivate Mode Contents with tag "Content"
 	InactivateAllContents();
 
@@ -84,7 +70,7 @@ function Update () {
 
 	//遊戲按鈕行為：
 	{
-		if (defense.tapped || defense.held || defense.released) {
+		if (defense.tapped || defense.held || defense.released || (Input.GetMouseButton(0) && defense.gameObject.guiTexture.HitTest(Input.mousePosition) )) {
 			//button animation control
 			InactivateAllContents();
 			defense_about.gameObject.SetActive(true);
@@ -93,7 +79,7 @@ function Update () {
 			gameMode = GameMode.Defense;
 		}
 
-		if (kill.tapped || kill.held || kill.released) {
+		if (kill.tapped || kill.held || kill.released  || (Input.GetMouseButton(0) && kill.gameObject.guiTexture.HitTest(Input.mousePosition))) {
 			//button animation control
 			InactivateAllContents();
 			kill_about.gameObject.SetActive(true);
@@ -102,7 +88,7 @@ function Update () {
 			gameMode = GameMode.Killing;
 		}
 
-		if (timeattack.tapped || timeattack.held || timeattack.released) {
+		if (timeattack.tapped || timeattack.held || timeattack.released  || (Input.GetMouseButton(0) && timeattack.gameObject.guiTexture.HitTest(Input.mousePosition))) {
 			InactivateAllContents();
 			timeattack_about.gameObject.SetActive(true);
 
@@ -116,24 +102,22 @@ function Update () {
 			gameMode = GameMode.Tutorial;
 		}
 
-		if (back.tapped || back.held || back.released) {
+		if (back.tapped || back.held || back.released  || (Input.GetMouseButton(0) && back.gameObject.guiTexture.HitTest(Input.mousePosition))) {
 			Destroy(gameObject);
-			Application.LoadLevel("Title");
+			Application.LoadLevel("Menu");
 		}
 		
 		//Load Level Here and Setup up Objects when play button pressed
-		if (play.tapped || play.held || play.released) {		
+		if (play.tapped || play.held || play.released  || (Input.GetMouseButton(0) && play.gameObject.guiTexture.HitTest(Input.mousePosition))) {		
 			
 			Application.LoadLevel("City");
 			//或者load「載入中」畫面。
-
-			Wait(10);
 
 			//用gameMode參數來啟動模式
 			switch(gameMode)
 			{
 				case GameMode.Defense:
-					DefenseMd.Activate(level);
+					DefenseMd.Activate();
 					break;
 
 				case GameMode.Killing:	
@@ -141,30 +125,10 @@ function Update () {
 					break;	
 
 				case GameMode.TimeAttack:
-					TimeMd.Activate(level);
+					TimeMd.Activate();
 					break;
 			}
 
-		}
-		if (levelEasy.tapped || levelEasy.held || levelHard.released) 
-		{
-			level = Level.Easy;
-			InactivateLevelTextures();
-			levelEasy.UseSet(1);		
-			
-		}
-		if (levelHard.tapped || levelHard.held || levelHard.released)
-		{
-			level = Level.Hard;
-			InactivateLevelTextures();
-			levelHard.UseSet(1);
-
-		}
-		if (levelInsane.tapped || levelInsane.held || levelInsane.released)
-		{
-			level = Level.Insane;
-			InactivateLevelTextures();
-			levelInsane.UseSet(1);
 		}
 	}
 }
@@ -179,16 +143,6 @@ function InactivateAllContents(){
 }
 
 
-function InactivateLevelTextures() {
-	levelEasy.UseSet(0);
-	levelHard.UseSet(0);
-	levelInsane.UseSet(0);
-}
-
 function ByeeeeMi() {
 	Destroy(gameObject);
-}
-
-function Wait(t : int) {
-	yield WaitForSeconds(t);
 }

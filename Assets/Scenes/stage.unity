@@ -613,35 +613,6 @@ AudioSource:
       tangentMode: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
---- !u!1 &948112428
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  serializedVersion: 4
-  m_Component:
-  - 4: {fileID: 948112429}
-  m_Layer: 0
-  m_Name: difficulty
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &948112429
-Transform:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 948112428}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children:
-  - {fileID: 1660713968}
-  - {fileID: 1501642950}
-  - {fileID: 1155515133}
-  m_Father: {fileID: 0}
 --- !u!1 &1095786509
 GameObject:
   m_ObjectHideFlags: 0
@@ -778,145 +749,6 @@ Transform:
   m_LocalScale: {x: 0, y: 0, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
---- !u!1 &1155515131
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  serializedVersion: 4
-  m_Component:
-  - 4: {fileID: 1155515133}
-  - 131: {fileID: 1155515132}
-  - 82: {fileID: 1155515135}
-  - 114: {fileID: 1155515134}
-  m_Layer: 0
-  m_Name: insane
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!131 &1155515132
-GUITexture:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1155515131}
-  m_Enabled: 1
-  m_Texture: {fileID: 2800000, guid: 694fa214868d64143bd7694e609df226, type: 3}
-  m_Color: {r: .5, g: .5, b: .5, a: .5}
-  m_PixelInset:
-    serializedVersion: 2
-    x: 502
-    y: 153.600006
-    width: 116.900002
-    height: 30.7000008
-  m_LeftBorder: 0
-  m_RightBorder: 0
-  m_TopBorder: 0
-  m_BottomBorder: 0
---- !u!4 &1155515133
-Transform:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1155515131}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 1}
-  m_LocalScale: {x: 0, y: 0, z: 1}
-  m_Children: []
-  m_Father: {fileID: 948112429}
---- !u!114 &1155515134
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1155515131}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ad84a2fa37c1a45e5ab5b945a799e4fa, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  normal_texture:
-  - {fileID: 2800000, guid: 694fa214868d64143bd7694e609df226, type: 3}
-  - {fileID: 2800000, guid: 3e09c053321f54a16ba432f8175c68aa, type: 3}
-  disabled_texture:
-  - {fileID: 0}
-  - {fileID: 0}
-  held_texture:
-  - {fileID: 0}
-  - {fileID: 0}
-  tapped: 0
-  held: 0
-  released: 0
-  effects:
-    sunkenWhenPressed: 0
-    sunkenRate: .879999995
-    sunkenAnimation: 0
-    sunkenAnimationInitialVelocity: 0
-    sunkenAnimationVelocityAcceleration: .0199999996
-    sunkenAnimationMinScale: .860000014
-    sunkenAnimationMaxScale: 1.00999999
-    sunkenAnimationTime: 0
-    tapSFX: {fileID: 0}
---- !u!82 &1155515135
-AudioSource:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1155515131}
-  m_Enabled: 1
-  serializedVersion: 3
-  m_audioClip: {fileID: 0}
-  m_PlayOnAwake: 1
-  m_Volume: 1
-  m_Pitch: 1
-  Loop: 0
-  Mute: 0
-  Priority: 128
-  DopplerLevel: 1
-  MinDistance: 1
-  MaxDistance: 500
-  Pan2D: 0
-  rolloffMode: 0
-  BypassEffects: 0
-  BypassListenerEffects: 0
-  BypassReverbZones: 0
-  rolloffCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-    - time: 1
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-  panLevelCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-  spreadCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
 --- !u!1 &1196488518
 GameObject:
   m_ObjectHideFlags: 0
@@ -958,10 +790,20 @@ MonoBehaviour:
   countTime: 0
   countState: 0
   killNumber: 0
+  titanNumber: 40
   instantiateTitan: 0
+  titanKilled: 0
   score: {fileID: 0}
   titan: {fileID: 100062, guid: 003719265abdc4b1b831d37c2436c3dc, type: 2}
-  AutoWayPoints: []
+  startTime: 0
+  endTime: 0
+  timeInterval: 0
+  addedTime: 10
+  nextTime: 0
+  first: 1
+  activated: 0
+  titans: []
+  playerControl: {fileID: 0}
 --- !u!1 &1219992352
 GameObject:
   m_ObjectHideFlags: 0
@@ -1039,145 +881,6 @@ MonoBehaviour:
     sunkenAnimationMaxScale: 1.00999999
     sunkenAnimationTime: 0
     tapSFX: {fileID: 0}
---- !u!1 &1501642948
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  serializedVersion: 4
-  m_Component:
-  - 4: {fileID: 1501642950}
-  - 131: {fileID: 1501642949}
-  - 82: {fileID: 1501642952}
-  - 114: {fileID: 1501642951}
-  m_Layer: 0
-  m_Name: hard
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!131 &1501642949
-GUITexture:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1501642948}
-  m_Enabled: 1
-  m_Texture: {fileID: 2800000, guid: 01ab66bf267fc4fc4aeac0f2ef760bb1, type: 3}
-  m_Color: {r: .5, g: .5, b: .5, a: .5}
-  m_PixelInset:
-    serializedVersion: 2
-    x: 509.799988
-    y: 197.800003
-    width: 96
-    height: 30.2999992
-  m_LeftBorder: 0
-  m_RightBorder: 0
-  m_TopBorder: 0
-  m_BottomBorder: 0
---- !u!4 &1501642950
-Transform:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1501642948}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 1}
-  m_LocalScale: {x: 0, y: 0, z: 1}
-  m_Children: []
-  m_Father: {fileID: 948112429}
---- !u!114 &1501642951
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1501642948}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ad84a2fa37c1a45e5ab5b945a799e4fa, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  normal_texture:
-  - {fileID: 2800000, guid: 01ab66bf267fc4fc4aeac0f2ef760bb1, type: 3}
-  - {fileID: 2800000, guid: 3e09c053321f54a16ba432f8175c68aa, type: 3}
-  disabled_texture:
-  - {fileID: 0}
-  - {fileID: 0}
-  held_texture:
-  - {fileID: 0}
-  - {fileID: 0}
-  tapped: 0
-  held: 0
-  released: 0
-  effects:
-    sunkenWhenPressed: 0
-    sunkenRate: .879999995
-    sunkenAnimation: 0
-    sunkenAnimationInitialVelocity: 0
-    sunkenAnimationVelocityAcceleration: .0199999996
-    sunkenAnimationMinScale: .860000014
-    sunkenAnimationMaxScale: 1.00999999
-    sunkenAnimationTime: 0
-    tapSFX: {fileID: 0}
---- !u!82 &1501642952
-AudioSource:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1501642948}
-  m_Enabled: 1
-  serializedVersion: 3
-  m_audioClip: {fileID: 0}
-  m_PlayOnAwake: 1
-  m_Volume: 1
-  m_Pitch: 1
-  Loop: 0
-  Mute: 0
-  Priority: 128
-  DopplerLevel: 1
-  MinDistance: 1
-  MaxDistance: 500
-  Pan2D: 0
-  rolloffMode: 0
-  BypassEffects: 0
-  BypassListenerEffects: 0
-  BypassReverbZones: 0
-  rolloffCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-    - time: 1
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-  panLevelCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-  spreadCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
 --- !u!1 &1511231323
 GameObject:
   m_ObjectHideFlags: 0
@@ -1205,9 +908,37 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 22538328c900248988d3ae5fb4c2b449, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  titanAttack: 0
-  titanNumber: 0
-  titanSpeed: 0
+  titanNumber: 20
+  titan: {fileID: 100062, guid: 003719265abdc4b1b831d37c2436c3dc, type: 2}
+  titans:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  TargetPos: {x: -.300000012, y: 0, z: -188}
+  playerControl: {fileID: 0}
+  killNumber: 0
+  startTime: 0
+  endTime: 0
+  timeInterval: 0
+  score: {fileID: 0}
+  first: 0
 --- !u!4 &1511231325
 Transform:
   m_ObjectHideFlags: 0
@@ -1219,145 +950,6 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1962740441}
---- !u!1 &1660713966
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  serializedVersion: 4
-  m_Component:
-  - 4: {fileID: 1660713968}
-  - 131: {fileID: 1660713967}
-  - 82: {fileID: 1660713970}
-  - 114: {fileID: 1660713969}
-  m_Layer: 0
-  m_Name: easy
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!131 &1660713967
-GUITexture:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1660713966}
-  m_Enabled: 1
-  m_Texture: {fileID: 2800000, guid: b02c5fbf0315f409984b24c84493e2fa, type: 3}
-  m_Color: {r: .5, g: .5, b: .5, a: .5}
-  m_PixelInset:
-    serializedVersion: 2
-    x: 512.700012
-    y: 233.899994
-    width: 96
-    height: 43.2999992
-  m_LeftBorder: 0
-  m_RightBorder: 0
-  m_TopBorder: 0
-  m_BottomBorder: 0
---- !u!4 &1660713968
-Transform:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1660713966}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 1}
-  m_LocalScale: {x: 0, y: 0, z: 1}
-  m_Children: []
-  m_Father: {fileID: 948112429}
---- !u!114 &1660713969
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1660713966}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ad84a2fa37c1a45e5ab5b945a799e4fa, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  normal_texture:
-  - {fileID: 2800000, guid: b02c5fbf0315f409984b24c84493e2fa, type: 3}
-  - {fileID: 2800000, guid: 3e09c053321f54a16ba432f8175c68aa, type: 3}
-  disabled_texture:
-  - {fileID: 0}
-  - {fileID: 0}
-  held_texture:
-  - {fileID: 0}
-  - {fileID: 0}
-  tapped: 0
-  held: 0
-  released: 0
-  effects:
-    sunkenWhenPressed: 0
-    sunkenRate: .879999995
-    sunkenAnimation: 0
-    sunkenAnimationInitialVelocity: 0
-    sunkenAnimationVelocityAcceleration: .0199999996
-    sunkenAnimationMinScale: .860000014
-    sunkenAnimationMaxScale: 1.00999999
-    sunkenAnimationTime: 0
-    tapSFX: {fileID: 0}
---- !u!82 &1660713970
-AudioSource:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1660713966}
-  m_Enabled: 1
-  serializedVersion: 3
-  m_audioClip: {fileID: 0}
-  m_PlayOnAwake: 1
-  m_Volume: 1
-  m_Pitch: 1
-  Loop: 0
-  Mute: 0
-  Priority: 128
-  DopplerLevel: 1
-  MinDistance: 1
-  MaxDistance: 500
-  Pan2D: 0
-  rolloffMode: 0
-  BypassEffects: 0
-  BypassListenerEffects: 0
-  BypassReverbZones: 0
-  rolloffCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-    - time: 1
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-  panLevelCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-  spreadCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
 --- !u!1 &1683251747
 GameObject:
   m_ObjectHideFlags: 0
@@ -1454,13 +1046,10 @@ MonoBehaviour:
   tutorial_about: {fileID: 2098543525}
   back: {fileID: 1095786510}
   play: {fileID: 939352966}
-  levelEasy: {fileID: 1660713969}
-  levelHard: {fileID: 1501642951}
-  levelInsane: {fileID: 1155515134}
   gameMode: 0
-  level: 0
   DefenseMd: {fileID: 0}
   TimeMd: {fileID: 0}
+  KillMd: {fileID: 0}
 --- !u!1 &2031983419
 GameObject:
   m_ObjectHideFlags: 0
