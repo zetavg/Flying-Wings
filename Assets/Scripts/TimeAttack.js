@@ -39,6 +39,7 @@ var startTime : float;
 var endTime : float;
 var timeInterval : float;
 var addedTime : int = 10;
+var nextTime : float;
 
 //控制參數
 var first = true;
@@ -48,7 +49,7 @@ var first = true;
 //mother = GameObject.Find("SceneController");
 
 /* 巨人產生的位置 */
-var AutoWayPoints : AutoWayPoint[];
+//var AutoWayPoints : AutoWayPoint[];
 var titans : GameObject[];
 
 
@@ -61,13 +62,7 @@ function Activate()
 {
 	
 	//intantiate objects here
-	var i = 0;
-	titans = new GameObject[50];
 
-	for (var each in AutoWayPoints) {
-		titans[i] = Instantiate(titan, each.gameObject.transform.position, transform.rotation);
-		i++;
-	}
 
 	countState = true;
 	//countTime = 45;
@@ -84,9 +79,25 @@ function TitanGo(){
 function Update()
 {
 	if (countState) CountDown();
+
+	playerControl = GameObject.Find("Player").GetComponent(PlayerControl);
+	
+	if (first) {
+		for (var i = 0; i < titanNumber; i++) {
+			var Pos = new Vector3(Random.Range(-200.0, 200.0), 0, Random.Range(-110.0, 180.0));
+			titans[i] = Instantiate(titan, Pos, transform.rotation);	
+		}
+		first = false;	
+	}
+
+	if (Time.time > nextTime + 15.0)
+	{
+		TargetPos = new Vector3(Random.Range(-200, 200), 0, Random.Range(-200, 200))
+		for (var each in titans) each.GetComponent(TitanAI).MoveToPoint(TargetPos);
+	}
 	
 
-	AutoWayPoints = FindObjectsOfType(AutoWayPoint);
+	//AutoWayPoints = FindObjectsOfType(AutoWayPoint);
 
 	if (instantiateTitan) 
 	{
@@ -118,30 +129,24 @@ function CountDown()
 	else //Time's up!
 	{
 		//Load Score Level
-		End();
+		killNumber = GameObject.Find("Player").GetComponent(PlayerControl).killNumber;
+
 		Application.LoadLevel("Score");
+
+		score = GameObject.Find("Score").GetComponent(GUIText);
+		score.text = killNumber.ToString();
+
+		endTime = Time.time;
+		timeInterval = endTime - startTime;
+
+		var totalTime = PlayerPrefs.GetFloat("Total Playing Time", 0.0F);
+		PlayerPrefs.SetFloat("Total Playing Time", totalTime + timeInterval);
+
+		var totalKills = PlayerPrefs.GetInt("Total Kills", 0);
+		PlayerPrefs.SetInt("Total Kills", totalKills + killNumber);
+		
 		
 	}
 	
-
-}
-
-function End(){
-	//work in 結算 scene
-	//score.gameObject.SetActive(true);
-	score = GameObject.Find("Score").GetComponent(GUIText);
-
-	score.text = killNumber.ToString();
-
-	endTime = Time.time;
-	timeInterval = endTime - startTime;
-
-	var totalTime = PlayerPrefs.GetFloat("Total Playing Time", 0.0F);
-	PlayerPrefs.SetFloat("Total Playing Time", totalTime + timeInterval);
-
-	killNumber = GameObject.Find("Player").GetComponent(PlayerControl).killNumber;
-
-	var totalKills = PlayerPrefs.GetInt("Total Kills", 0);
-	PlayerPrefs.SetInt("Total Kills", totalKills + killNumber);
 
 }

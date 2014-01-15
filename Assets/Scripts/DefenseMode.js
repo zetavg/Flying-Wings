@@ -87,8 +87,22 @@ function Update() {
 
 	if (playerControl.killNumber == titanNumber)
 	{
-		End();
+		killNumber = GameObject.Find("Player").GetComponent(PlayerControl).killNumber;
+
 		Application.LoadLevel("Score");
+
+		score = GameObject.Find("Score").GetComponent(GUIText);
+		score.text = killNumber.ToString();
+
+		endTime = Time.time;
+		timeInterval = endTime - startTime;
+
+		var totalTime = PlayerPrefs.GetFloat("Total Playing Time", 0.0F);
+		PlayerPrefs.SetFloat("Total Playing Time", totalTime + timeInterval);
+
+		var totalKills = PlayerPrefs.GetInt("Total Kills", 0);
+		PlayerPrefs.SetInt("Total Kills", totalKills + killNumber);
+
 		
 	}
 }
@@ -107,7 +121,8 @@ function StartAnime()
 //if Titan break the gate then end the mode
 function Failed()
 {
-	print("喔no");
+	//Application.LoadLevel("Failed");
+
 	//Additional:
 		//一堆巨人衝入城牆GG惹的畫面
 		//直接錄製...吧
@@ -115,10 +130,6 @@ function Failed()
 
 		//popup 幾張崩潰圖幻燈片
 		//popup 選單，Replay/Menu等等
-
-
-	//這行應該不用了。
-	//activate = false;
 
 	//切到計分scene
 	//......
@@ -130,6 +141,7 @@ function Failed()
 function End(){
 
 	score = GameObject.Find("Score").GetComponent(GUIText);
+	killNumber = playerControl.killNumber;
 
 	endTime = Time.time;
 	timeInterval = endTime - startTime;
@@ -137,7 +149,6 @@ function End(){
 	var totalTime = PlayerPrefs.GetFloat("Total Playing Time", 0.0F);
 	PlayerPrefs.SetFloat("Total Playing Time", totalTime + timeInterval);
 
-	killNumber = playerControl.killNumber;
 
 	var totalKills = PlayerPrefs.GetInt("Total Kills", 0);
 	PlayerPrefs.SetInt("Total Kills", totalKills + killNumber);
