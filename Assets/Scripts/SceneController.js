@@ -110,7 +110,7 @@ function Update () {
 		//Load Level Here and Setup up Objects when play button pressed
 		if (play.tapped || play.held || play.released  || (Input.GetMouseButton(0) && play.gameObject.guiTexture.HitTest(Input.mousePosition))) {		
 			
-			Application.LoadLevel("City");
+			Application.LoadLevel("Game");
 			//或者load「載入中」畫面。
 
 			//用gameMode參數來啟動模式

@@ -52,6 +52,7 @@ var timeInterval : float;
 var score : GUIText;
 
 var first = false;
+var establishedSuccess = false;
 
 
 function Awake()
@@ -78,9 +79,12 @@ function Update() {
 	if (first) {
 		for (var i = 0; i < titanNumber; i++) {
 			var Pos = new Vector3(Random.Range(-200.0, 200.0), 0, Random.Range(-110.0, 180.0));
-			titans[i] = Instantiate(titan, Pos, transform.rotation);	
+			titans[i] = Instantiate(titan, Pos, transform.rotation);
+
 		}
-		first = false;	
+		establishedSuccess = true;
+			if (establishedSuccess)
+				first = false;	
 	}
 	for (var each in titans) each.GetComponent(TitanAI).MoveToPoint(TargetPos);
 
