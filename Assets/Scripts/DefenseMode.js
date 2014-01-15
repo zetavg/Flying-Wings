@@ -33,7 +33,7 @@ Game Controller (各 Game Mode 各一)：負責遊戲流程控制、記分、傳
 //var activate = false;
 
 var titanAttack = float; //攻擊強度
-var titanNumber : int;	//巨人數量
+var titanNumber : int = 1;	//巨人數量
 var titanSpeed = float;	//巨人移動速度（應該越快月難打吧）
 var titan : GameObject;
 var titans : GameObject[]; //巨人們
@@ -67,7 +67,7 @@ function Activate()
 	startTime = Time.time;
 
 	//titans = new GameObject[titanNumber];
-	first = true;
+	//first = true;
 
 
 
@@ -80,12 +80,16 @@ function Update() {
 		for (var i = 0; i < titanNumber; i++) {
 			var Pos = new Vector3(Random.Range(-200.0, 200.0), 0, Random.Range(-110.0, 180.0));
 			titans[i] = Instantiate(titan, Pos, transform.rotation);
+			titans[i].GetComponent(TitanAI).MoveToPoint(TargetPos);
 
 		}
+		
 		establishedSuccess = true;
-			if (establishedSuccess)
-				first = false;	
+		if (establishedSuccess)
+			first = false;	
 	}
+
+
 	for (var each in titans) each.GetComponent(TitanAI).MoveToPoint(TargetPos);
 
 

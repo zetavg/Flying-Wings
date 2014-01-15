@@ -5745,6 +5745,10 @@ Prefab:
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 29aa22aed289b4bc2899a5f8c3757c9a, type: 2}
+      propertyPath: disableGUI
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 29aa22aed289b4bc2899a5f8c3757c9a, type: 2}
   m_RootGameObject: {fileID: 1392255719}
@@ -20137,6 +20141,7 @@ MonoBehaviour:
   characterFlexibility: 1
   killNumber: 0
   TimeMd: {fileID: 0}
+  DefenseMd: {fileID: 0}
   freeze: 0
   disableGUI: 0
   on_ground: 0
@@ -30362,7 +30367,7 @@ SphereCollider:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 2091324352}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
   m_Radius: 18.4799995

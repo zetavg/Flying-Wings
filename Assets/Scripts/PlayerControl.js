@@ -90,6 +90,9 @@ private var AimCrosshairR : GameObject;
 
 public var killNumber : int;
 var TimeMd : TimeAttack;
+var DefenseMd : DefenseMode;
+DefenseMd = GameObject.Find("DefenseMode").GetComponent(DefenseMode);
+
 
 
 // Status
@@ -250,6 +253,7 @@ function Awake () {
 }
 
 function Start () {
+	DefenseMd.first = true;
 
 	// Initialize Variables //
 

@@ -973,7 +973,8 @@ Prefab:
       propertyPath: first
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 11400004, guid: 8f63d9f53d5e44dc79e7d3b2787d7f04, type: 2}
   m_ParentPrefab: {fileID: 100100000, guid: 8f63d9f53d5e44dc79e7d3b2787d7f04, type: 2}
   m_RootGameObject: {fileID: 2080899209}
   m_IsPrefabParent: 0
@@ -1012,6 +1013,10 @@ Prefab:
     - target: {fileID: 400000, guid: 94fb4a9e0ce0f463080ce4115f360f56, type: 2}
       propertyPath: m_LocalRotation.w
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 94fb4a9e0ce0f463080ce4115f360f56, type: 2}
+      propertyPath: DevelopmentMode
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 94fb4a9e0ce0f463080ce4115f360f56, type: 2}
@@ -2689,7 +2694,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 930b6b4acbe9d432b8463e8b32f77749, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  DevelopmentMode: 1
+  DevelopmentMode: 0
   Mode: 0
   consoleline: 
   UserisLogin: 0
@@ -3317,29 +3322,17 @@ GameObject:
 --- !u!114 &2080899210
 MonoBehaviour:
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 11400004, guid: 8f63d9f53d5e44dc79e7d3b2787d7f04,
-    type: 2}
-  m_PrefabInternal: {fileID: 899094450}
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 2080899209}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8d29dd12eb338413bac03836b3ff52a6, type: 3}
+  m_Script: {fileID: 11500000, guid: 2588e0188bf4c46abaebd47312dc11b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  defense: {fileID: 0}
-  kill: {fileID: 0}
-  timeattack: {fileID: 0}
-  tutorial: {fileID: 0}
-  defense_about: {fileID: 0}
-  kill_about: {fileID: 0}
-  timeattack_about: {fileID: 0}
-  tutorial_about: {fileID: 0}
-  back: {fileID: 0}
   play: {fileID: 1789838550}
-  gameMode: 0
   DefenseMd: {fileID: 0}
-  TimeMd: {fileID: 0}
-  KillMd: {fileID: 0}
+  gameMode: 0
 --- !u!4 &2080899211
 Transform:
   m_ObjectHideFlags: 0
